@@ -1,7 +1,7 @@
 const User = require('../../../models/users');
 
 module.exports = {
-    createUser: (args) => {
+    createUser: (_, args) => {
 
         const user = new User({
             name : args.userInput.name,
