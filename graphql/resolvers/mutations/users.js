@@ -5,7 +5,12 @@ module.exports = {
 
         const user = new User({
             name : args.userInput.name,
-            lastName : args.userInput.lastName
+            lastName : args.userInput.lastName,
+            birthdate : args.userInput.birthdate,
+            mail : args.userInput.mail,
+            password : args.userInput.password,
+            zone : args.userInput.zone,
+            cellphone : args.userInput.cellphone
         });
         
         user.save().then(result => {

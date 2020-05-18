@@ -24,61 +24,6 @@ const serverGraphQL = new ApolloServer({
   //apply server graphql in express
   serverGraphQL.applyMiddleware({ app, cors: false });
 
-// app.use('/graphql', graphqlHttp({
-//     schema: buildSchema(`
-//         type User {
-//             _id: ID!
-//             name: String!
-//             lastName: String!
-//         }
-
-//         input UserInput {
-//             name: String!
-//             lastName: String!
-//         }
-    
-//         type RootQuery {
-//             users: [User!]!
-//         }
-
-//         type RootMutation {
-//             createUser(userInput: UserInput): User
-//         }
-    
-//         schema {
-//             query: RootQuery
-//             mutation: RootMutation
-//         }
-//     `),
-//     rootValue:{
-//         users: () => {
-//             return User.find()
-//             .then(users => {
-//                 return users.map(user => {
-//                     return {...user._doc};
-//                 });
-//             }).catch();
-//         },
-//         createUser: (args) => {
-
-//             const user = new User({
-//                 name : args.userInput.name,
-//                 lastName : args.userInput.lastName
-//             });
-            
-//             user.save().then(result => {
-//                 console.log(result);
-//                 return { ...result._doc, _id: user.id };
-//             }).catch(err => {
-//                 console.log(err);
-//                 throw err;
-//             });
-//             return user
-//         } 
-//     },
-//     graphiql: true
-// }));
-
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${
     process.env.MONGO_PASSWORD
     }@cluster0-uxdk4.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
