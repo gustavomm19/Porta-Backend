@@ -23,13 +23,52 @@ module.exports = gql`
         cellphone:String!
     }
 
+    type Repartidor {
+        _id: ID!
+        name: String!
+        lastName: String!
+        birthdate: String!
+        mail: String!
+        password:String!
+        zone:String!
+        cellphone:String!
+        status:String!
+        hiringDate:String!
+    }
+
+    input RepartidorInput {
+        name: String!
+        lastName: String!
+        birthdate: String!
+        mail: String!
+        password:String!
+        zone:String!
+        cellphone:String!
+        status:String!
+        hiringDate:String!
+    }
+
+// Querys-------------------------------------------------------------------------------------------------------------------
+    
     type Query {
         users: [User!]!
     }
 
+    type Query {
+        repartidores: [Repartidor!]!
+    }
+
+// Mutations----------------------------------------------------------------------------------------------------------------
+    
     type Mutation {
         createUser(userInput: UserInput): User
     }
+
+    type Mutation {
+        createRepartidor(repartidorInput: RepartidorInput): Repartidor
+    }
+
+// Schema-------------------------------------------------------------------------------------------------------------------
 
     schema {
         query: Query
