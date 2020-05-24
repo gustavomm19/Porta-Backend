@@ -1,5 +1,4 @@
 const { gql } = require("apollo-server-express");
-const User = require("../../models/users");
 
 module.exports = gql`
   type User {
