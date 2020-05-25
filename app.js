@@ -6,7 +6,7 @@ const { buildSchema } = require("graphql");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
-
+const isAuth = require("./middleware/auth");
 const User = require("./models/users");
 
 const app = express();
@@ -19,7 +19,7 @@ const serverGraphQL = new ApolloServer({
   typeDefs,
   resolvers,
   playground: !!(process.env.NODE_ENV !== "production"),
-  context: ({ req }) => ({}),
+  context: isAuth,
 });
 //apply server graphql in express
 serverGraphQL.applyMiddleware({ app, cors: false });
