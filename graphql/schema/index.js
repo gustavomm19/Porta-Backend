@@ -12,6 +12,12 @@ module.exports = gql`
     cellphone: String!
   }
 
+  type AuthUser {
+    userId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
+
   input UserInput {
     name: String!
     lastName: String!
@@ -50,6 +56,7 @@ module.exports = gql`
   type Query {
     users: [User!]!
     repartidores: [Repartidor!]!
+    userLogin(mail: String!, password: String!): AuthUser!
   }
 
   type Mutation {
