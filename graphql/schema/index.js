@@ -7,7 +7,7 @@ module.exports = gql`
     lastName: String!
     birthdate: String!
     mail: String!
-    password: String!
+    password: String
     zone: String!
     cellphone: String!
   }
