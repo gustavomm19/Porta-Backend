@@ -13,15 +13,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods','POST,GET,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization');
-  if(req.method === 'OPTIONS'){
-    return res.sendStatus(200);
-  }
-  next();
-});
+
 
 // // bodyParser is needed just for POST.
 const port = process.env.PORT || 4000;
@@ -32,7 +24,7 @@ const serverGraphQL = new ApolloServer({
   context: isAuth,
 });
 //apply server graphql in express
-serverGraphQL.applyMiddleware({ app, cors: false });
+serverGraphQL.applyMiddleware({ app, cors: true });
 
 mongoose
   .connect(
