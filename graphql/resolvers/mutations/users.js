@@ -4,9 +4,7 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     createUser: (_, args) => {
-        // if(!req.isAuth){
-        //     throw new Error('not authenticated');
-        // }
+        
         return User.findOne({ mail: args.userInput.mail}).then(user => {
             if(user){
                 throw new Error('User exists already');
