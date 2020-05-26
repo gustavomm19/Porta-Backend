@@ -8,8 +8,10 @@ const typeDefs = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
 const isAuth = require("./middleware/auth");
 const User = require("./models/users");
-
+const cors = require("cors");
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -24,7 +26,7 @@ const serverGraphQL = new ApolloServer({
   context: isAuth,
 });
 //apply server graphql in express
-serverGraphQL.applyMiddleware({ app, cors: true });
+serverGraphQL.applyMiddleware({ app, cors: false });
 
 mongoose
   .connect(
