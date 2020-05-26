@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const graphqlHttp = require("express-graphql");
 const { ApolloServer } = require("apollo-server-express");
-const { buildSchema } = require("graphql");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
@@ -14,8 +12,6 @@ const app = express();
 app.use(cors());
 
 app.use(bodyParser.json());
-
-
 
 // // bodyParser is needed just for POST.
 const port = process.env.PORT || 4000;
