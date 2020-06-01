@@ -70,9 +70,31 @@ module.exports = gql`
     hiringDate: String!
   }
 
+  type Solicitud {
+    _id: ID!
+
+    repartidorID: Repartidor
+
+    vehiculo: String!
+    licencia: String!
+    carnetCirculacion: String!
+    seguroVehiculo: String!
+  }
+
+  input SolicitudInput {
+
+    repartidorID: Repartidor
+    
+    vehiculo: String!
+    licencia: String!
+    carnetCirculacion: String!
+    seguroVehiculo: String!
+  }
+
   type Query {
     users: [User!]!
     repartidores: [Repartidor!]!
+    solicitudes: [Solicitud!]!
     userLogin(mail: String!, password: String!): AuthUser!
     admins: [Admin!]!
     adminLogin(mail: String!, password: String!): AuthAdmin!
@@ -82,5 +104,6 @@ module.exports = gql`
     createUser(userInput: UserInput): User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
+    createSolicitud(solicitudInput: SolicitudInput): Solicitud
   }
 `;
