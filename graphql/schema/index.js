@@ -10,6 +10,7 @@ module.exports = gql`
     password: String
     zone: String!
     cellphone: String!
+    signinDate: String!
   }
 
   type AuthUser {

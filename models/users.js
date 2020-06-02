@@ -30,6 +30,10 @@ const userSchema = new Schema({
     cellphone: {
         type: String,
         require: true
+    },
+    signinDate: {
+        type: Date,
+        require: true
     }
 });
 

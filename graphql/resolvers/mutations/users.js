@@ -19,7 +19,8 @@ module.exports = {
                 mail : args.userInput.mail,
                 password : hashedPassword,
                 zone : args.userInput.zone,
-                cellphone : args.userInput.cellphone
+                cellphone : args.userInput.cellphone,
+                signinDate: new Date
             });
             return user.save();
         }).then(result => {
