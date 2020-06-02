@@ -20,7 +20,7 @@ module.exports = {
                 password : hashedPassword,
                 zone : args.userInput.zone,
                 cellphone : args.userInput.cellphone,
-                signinDate: new Date
+                signinDate: new Date()
             });
             return user.save();
         }).then(result => {
