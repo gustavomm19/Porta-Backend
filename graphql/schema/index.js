@@ -10,6 +10,7 @@ module.exports = gql`
     password: String
     zone: String!
     cellphone: String!
+    signinDate: String!
   }
 
   type AuthUser {
@@ -26,6 +27,23 @@ module.exports = gql`
     password: String!
     zone: String!
     cellphone: String!
+  }
+  
+  type Admin {
+    _id: ID!
+    mail: String!
+    password: String
+  }
+
+  input AdminInput{
+    mail: String!
+    password: String!
+  }
+
+  type AuthAdmin{
+    adminId: ID!
+    token: String!
+    tokenExpiration: Int!
   }
 
   type Repartidor {
@@ -50,7 +68,6 @@ module.exports = gql`
     zone: String!
     cellphone: String!
     status: String!
-    hiringDate: String!
   }
 
   type Query {
@@ -58,10 +75,13 @@ module.exports = gql`
     repartidores: [Repartidor!]!
     currentUser: User
     userLogin(mail: String!, password: String!): AuthUser!
+    admins: [Admin!]!
+    adminLogin(mail: String!, password: String!): AuthAdmin!
   }
 
   type Mutation {
     createUser(userInput: UserInput): User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
+    createAdmin(adminInput: AdminInput): Admin
   }
 `;

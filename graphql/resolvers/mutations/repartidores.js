@@ -12,7 +12,7 @@ module.exports = {
             zone : args.repartidorInput.zone,
             cellphone : args.repartidorInput.cellphone,
             status: args.repartidorInput.status,
-            hiringDate: args.repartidorInput.hiringDate
+            hiringDate: new Date()
         });
         
         repartidor.save().then(result => {

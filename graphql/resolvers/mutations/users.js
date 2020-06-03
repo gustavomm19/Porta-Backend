@@ -15,11 +15,12 @@ module.exports = {
             const user = new User({
                 name : args.userInput.name,
                 lastName : args.userInput.lastName,
-                birthdate : args.userInput.birthdate,
+                birthdate : new Date(args.userInput.birthdate),
                 mail : args.userInput.mail,
                 password : hashedPassword,
                 zone : args.userInput.zone,
-                cellphone : args.userInput.cellphone
+                cellphone : args.userInput.cellphone,
+                signinDate: new Date()
             });
             return user.save();
         }).then(result => {
