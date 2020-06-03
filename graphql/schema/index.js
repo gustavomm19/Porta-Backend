@@ -68,7 +68,6 @@ module.exports = gql`
     zone: String!
     cellphone: String!
     status: String!
-    hiringDate: String!
   }
 
   type Query {
