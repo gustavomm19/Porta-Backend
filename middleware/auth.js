@@ -24,12 +24,8 @@ module.exports = async ({ req, connection }) => {
     return;
   }
   if (!decodedToken) {
-    req.isAuth = false;
     return;
   }
 
-  req.isAuth = true;
-  req.userId = decodedToken.userId;
-
-  return { token };
+  return { token: decodedToken };
 };
