@@ -4,7 +4,6 @@ module.exports = {
     createSolicitud: (_, args) => {
 
         const solicitud = new Solicitud({
-            repartidorID : args.solicitudInput.repartidorID,
             vehiculo : args.solicitudInput.vehiculo,
             licencia : args.solicitudInput.licencia,
             carnetCirculacion : args.solicitudInput.carnetCirculacion,

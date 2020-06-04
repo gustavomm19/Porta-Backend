@@ -73,7 +73,6 @@ module.exports = gql`
   type Solicitud {
     _id: ID!
 
-    repartidorID: Repartidor
 
     vehiculo: String!
     licencia: String!
@@ -83,7 +82,6 @@ module.exports = gql`
 
   input SolicitudInput {
 
-    repartidorID: Repartidor
     
     vehiculo: String!
     licencia: String!
