@@ -14,6 +14,17 @@ module.exports = {
         throw err;
       });
   },
+  newestUsers: (_, args, context) => {
+    return User.find().sort({signinDate:-1}).limit(2)
+      .then((users) => {
+        return users.map((user) => {
+          return { ...user._doc };
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  },
   userLogin: async (_, args, context) => {
     const user = await User.findOne({ mail: args.mail });
     if (!user) {

@@ -28,5 +28,19 @@ module.exports = {
       expiresIn: '1h'
     });
     return { adminId: admin.id, token: token, tokenExpiration: 1 }
+  },
+  currentAdmin: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        return;
+      }
+      const admin = await Admin.findById(context.token.adminId);
+      return {
+        ...admin._doc,
+        password: null,
+      };
+    } catch (err) {
+      throw err;
+    }
   }
 };

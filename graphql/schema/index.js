@@ -72,11 +72,14 @@ module.exports = gql`
 
   type Query {
     users: [User!]!
+    newestUsers: [User!]!
     repartidores: [Repartidor!]!
+    newestRepartidores: [Repartidor!]!
     currentUser: User
     userLogin(mail: String!, password: String!): AuthUser!
     admins: [Admin!]!
     adminLogin(mail: String!, password: String!): AuthAdmin!
+    currentAdmin: Admin
   }
 
   type Mutation {
