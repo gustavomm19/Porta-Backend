@@ -70,6 +70,12 @@ module.exports = gql`
     hiringDate: String!
   }
 
+  type AuthRepartidor {
+    repartidorId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
+
   type Solicitud {
     _id: ID!
      
