@@ -70,21 +70,45 @@ module.exports = gql`
     status: String!
   }
 
+  type AuthRepartidor {
+    repartidorId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
+
+  type Solicitud {
+    _id: ID!
+    vehiculo: String!
+    licencia: String!
+    carnetCirculacion: String!
+    seguroVehiculo: String!
+  }
+
+  input SolicitudInput {
+    vehiculo: String!
+    licencia: String!
+    carnetCirculacion: String!
+    seguroVehiculo: String!
+  }
+
   type Query {
     users: [User!]!
     newestUsers: [User!]!
-    repartidores: [Repartidor!]!
-    newestRepartidores: [Repartidor!]!
     currentUser: User
     userLogin(mail: String!, password: String!): AuthUser!
+    repartidores: [Repartidor!]!
+    newestRepartidores: [Repartidor!]!
+    repartidorLogin(mail: String!, password: String!): AuthRepartidor!
     admins: [Admin!]!
     adminLogin(mail: String!, password: String!): AuthAdmin!
     currentAdmin: Admin
+    solicitudes: [Solicitud!]!
   }
 
   type Mutation {
     createUser(userInput: UserInput): User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
+    createSolicitud(solicitudInput: SolicitudInput): Solicitud
   }
 `;

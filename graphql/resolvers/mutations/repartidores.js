@@ -1,27 +1,37 @@
-const Repartidor = require('../../../models/repartidores');
+const Repartidor = require('../../../models/users');
+const bcrypt = require('bcryptjs');
+
 
 module.exports = {
     createRepartidor: (_, args) => {
-
-        const repartidor = new Repartidor({
-            name : args.repartidorInput.name,
-            lastName : args.repartidorInput.lastName,
-            birthdate : args.repartidorInput.birthdate,
-            mail : args.repartidorInput.mail,
-            password : args.repartidorInput.password,
-            zone : args.repartidorInput.zone,
-            cellphone : args.repartidorInput.cellphone,
-            status: args.repartidorInput.status,
-            hiringDate: new Date()
-        });
         
-        repartidor.save().then(result => {
+        return Repartidor.findOne({ mail: args.repartidorInput.mail}).then(repartidor => {
+            if(repartidor){
+                throw new Error('Repartidor exists already');
+            }
+            return bcrypt.hash(args.repartidorInput.password, 12);
+        })
+        .then(hashedPassword => {
+            const repartidor = new Repartidor({
+                name : args.repartidorInput.name,
+                lastName : args.repartidorInput.lastName,
+                birthdate : args.repartidorInput.birthdate,
+                mail : args.repartidorInput.mail,
+                password : hashedPassword,
+                zone : args.repartidorInput.zone,
+                cellphone : args.repartidorInput.cellphone,
+                status: args.repartidorInput.status,
+                hiringDate: new Date()
+            });
+            return repartidor.save();
+        }).then(result => {
             console.log(result);
-            return { ...result._doc, _id: repartidor.id };
-        }).catch(err => {
-            console.log(err);
+            return { ...result._doc, password:null, _id: result.id };
+        })
+        .catch(err =>{
             throw err;
-        });
-        return repartidor
+        })
+        
     }
+
 }
