@@ -2,7 +2,6 @@ const Admin = require('../../../models/admin');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
-
 module.exports = {
   admins: async (_, args, context) => {
     return Admin.find()
