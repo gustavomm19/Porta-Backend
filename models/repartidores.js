@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const repartidorSchema = new Schema({
+    cedula: {
+        type: String,
+        require: true
+    },
     name: {
         type: String,
         require: true
@@ -31,14 +35,30 @@ const repartidorSchema = new Schema({
         type: String,
         require: true
     },
-    statuts: {
-        type: String,
+    available: {
+        type: Boolean,
         require: true
     },
-    hiringDate: {
-        type: Date,
+    workingStatus: {
+        type: Boolean,
         require: true
-    }
-});
+    },
+    vehiculo: {
+        type: String,
+        require: false
+    },
+    licencia: {
+        type: String,
+        require: false
+    },
+    carnetCirculacion: {
+        type: String,
+        require: false
+    },
+    seguroVehiculo: {
+        type: String,
+        require: false
+    },
+}, { timestamps: true} );
 
 module.exports = mongoose.model('Repartidores', repartidorSchema);

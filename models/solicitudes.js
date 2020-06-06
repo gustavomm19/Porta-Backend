@@ -23,7 +23,11 @@ const solicitudSchema = new Schema({
     seguroVehiculo: {
         type:String,
         require: true
+    },
+    status:{
+        type: Boolean,
+        required: false
     }
-});
+}, { timestamps: true} );
 
 module.exports = mongoose.model('Solicitudes', solicitudSchema);

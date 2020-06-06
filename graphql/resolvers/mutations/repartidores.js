@@ -1,4 +1,4 @@
-const Repartidor = require('../../../models/users');
+const Repartidor = require('../../../models/repartidores');
 const bcrypt = require('bcryptjs');
 
 
@@ -13,15 +13,21 @@ module.exports = {
         })
         .then(hashedPassword => {
             const repartidor = new Repartidor({
+                cedula: args.repartidorInput.cedula,
                 name : args.repartidorInput.name,
                 lastName : args.repartidorInput.lastName,
-                birthdate : args.repartidorInput.birthdate,
+                birthdate : new Date(args.repartidorInput.birthdate).toISOString(),
                 mail : args.repartidorInput.mail,
                 password : hashedPassword,
                 zone : args.repartidorInput.zone,
                 cellphone : args.repartidorInput.cellphone,
-                status: args.repartidorInput.status,
-                hiringDate: new Date()
+                available: false,
+                hiringDate: new Date().toISOString(),
+                workingStatus: false,
+                vehiculo: null,
+                licencia: null,
+                carnetCirculacion: null,
+                seguroVehiculo: null
             });
             return repartidor.save();
         }).then(result => {

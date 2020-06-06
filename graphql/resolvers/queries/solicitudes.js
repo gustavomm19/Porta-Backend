@@ -7,7 +7,9 @@ module.exports = {
     return Solicitud.find()
       .then((solicitudes) => {
         return solicitudes.map((solicitud) => {
-          return { ...solicitud._doc };
+          return { ...solicitud._doc,
+            createdAt: new Date(solicitud._doc.createdAt).toISOString(),
+            updatedAt: new Date(solicitud._doc.updatedAt).toISOString()};
         });
       })
       .catch((err) => {

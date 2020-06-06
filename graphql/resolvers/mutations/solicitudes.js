@@ -7,7 +7,8 @@ module.exports = {
             vehiculo : args.solicitudInput.vehiculo,
             licencia : args.solicitudInput.licencia,
             carnetCirculacion : args.solicitudInput.carnetCirculacion,
-            seguroVehiculo : args.solicitudInput.seguroVehiculo
+            seguroVehiculo : args.solicitudInput.seguroVehiculo,
+            status: null
         });
         
         solicitud.save().then(result => {

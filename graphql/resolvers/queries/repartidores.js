@@ -7,7 +7,10 @@ module.exports = {
     return Repartidor.find()
       .then((repartidores) => {
         return repartidores.map((repartidor) => {
-          return { ...repartidor._doc };
+          return { ...repartidor._doc,
+            birthdate: new Date(repartidor._doc.birthdate).toISOString(),
+            createdAt: new Date(repartidor._doc.createdAt).toISOString(),
+            updatedAt: new Date(repartidor._doc.updatedAt).toISOString()};
         });
       })
       .catch((err) => {
@@ -15,7 +18,7 @@ module.exports = {
       });
   },
   newestRepartidores: async (_, args, context) => {
-    return Repartidor.find().sort({hiringDate:-1}).limit(2)
+    return Repartidor.find().sort({createdAt:-1}).limit(2)
       .then((repartidores) => {
         return repartidores.map((repartidor) => {
           return { ...repartidor._doc };

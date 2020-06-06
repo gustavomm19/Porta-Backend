@@ -30,11 +30,7 @@ const userSchema = new Schema({
     cellphone: {
         type: String,
         require: true
-    },
-    signinDate: {
-        type: Date,
-        require: true
     }
-});
+}, { timestamps: true} );
 
 module.exports = mongoose.model('Users', userSchema);

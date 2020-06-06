@@ -10,7 +10,8 @@ module.exports = gql`
     password: String
     zone: String!
     cellphone: String!
-    signinDate: String!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type AuthUser {
@@ -48,18 +49,26 @@ module.exports = gql`
 
   type Repartidor {
     _id: ID!
+    cedula: String!
     name: String!
     lastName: String!
     birthdate: String!
     mail: String!
-    password: String!
+    password: String
     zone: String!
     cellphone: String!
-    status: String!
-    hiringDate: String!
+    available: Boolean!
+    workingStatus: Boolean!
+    vehiculo: String
+    licencia: String
+    carnetCirculacion: String
+    seguroVehiculo: String
+    createdAt: String!
+    updatedAt: String!
   }
 
   input RepartidorInput {
+    cedula: String!
     name: String!
     lastName: String!
     birthdate: String!
@@ -67,7 +76,6 @@ module.exports = gql`
     password: String!
     zone: String!
     cellphone: String!
-    status: String!
   }
 
   type AuthRepartidor {
@@ -82,6 +90,9 @@ module.exports = gql`
     licencia: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+    status: Boolean
+    createdAt: String!
+    updatedAt: String!
   }
 
   input SolicitudInput {
@@ -89,6 +100,15 @@ module.exports = gql`
     licencia: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+  }
+
+  type Rate{
+    _id: ID!
+    user: User!
+    repartidor: Repartidor!
+    score:Int!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Query {
@@ -103,6 +123,8 @@ module.exports = gql`
     adminLogin(mail: String!, password: String!): AuthAdmin!
     currentAdmin: Admin
     solicitudes: [Solicitud!]!
+    rates: [Rate!]!
+    
   }
 
   type Mutation {
@@ -110,5 +132,6 @@ module.exports = gql`
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
+    createRate(user: ID!, repartidor: ID!, score: Int!): Rate
   }
 `;

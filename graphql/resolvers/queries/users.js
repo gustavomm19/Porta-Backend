@@ -7,7 +7,10 @@ module.exports = {
     return User.find()
       .then((users) => {
         return users.map((user) => {
-          return { ...user._doc };
+          return { ...user._doc,
+            birthdate: new Date(user._doc.birthdate).toISOString(),
+            createdAt: new Date(user._doc.createdAt).toISOString(),
+            updatedAt: new Date(user._doc.updatedAt).toISOString()};
         });
       })
       .catch((err) => {
@@ -15,7 +18,7 @@ module.exports = {
       });
   },
   newestUsers: (_, args, context) => {
-    return User.find().sort({signinDate:-1}).limit(2)
+    return User.find().sort({createdAt:-1}).limit(2)
       .then((users) => {
         return users.map((user) => {
           return { ...user._doc };
