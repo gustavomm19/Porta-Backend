@@ -59,6 +59,12 @@ const repartidorSchema = new Schema({
         type: String,
         require: false
     },
+    rating:[
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Rate'
+        }
+    ]
 }, { timestamps: true} );
 
 module.exports = mongoose.model('Repartidores', repartidorSchema);

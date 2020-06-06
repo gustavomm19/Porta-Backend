@@ -63,6 +63,7 @@ module.exports = gql`
     licencia: String
     carnetCirculacion: String
     seguroVehiculo: String
+    rating: [Rate!]
     createdAt: String!
     updatedAt: String!
   }

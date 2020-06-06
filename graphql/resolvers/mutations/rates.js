@@ -1,5 +1,5 @@
 const Rate = require('../../../models/rates');
-
+const Repartidor = require('../../../models/repartidores');
 
 module.exports = {
     createRate: async (_, args) => {
@@ -20,11 +20,20 @@ module.exports = {
             repartidor: args.repartidor,
             score: args.score
         });
-
+        let createdRate;
         rate.save().then(result => {
-            console.log(result);
-            return { ...result._doc, _id: rate.id };
-        }).catch(err => {
+            createdRate = { ...result._doc, _id: rate.id };
+            return Repartidor.findById(args.repartidor);
+        })
+        .then(repartidor => {
+            console.log(repartidor)
+            repartidor.rating.push(rate);
+            return repartidor.save();
+        })
+        .then(result => {
+            return createdRate;
+        })
+        .catch(err => {
             console.log(err);
             throw err;
         });
