@@ -41,5 +41,19 @@ module.exports = {
       expiresIn: '1h'
     });
     return { repartidorId: repartidor.id, token: token, tokenExpiration: 1 }
+  },
+  currentRepartidor: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        return;
+      }
+      const repartidor = await Repartidor.findById(context.token.repartidorId);
+      return {
+        ...repartidor._doc,
+        password: null,
+      };
+    } catch (err) {
+      throw err;
+    }
   }
 };

@@ -115,11 +115,12 @@ module.exports = gql`
   type Query {
     users: [User!]!
     newestUsers: [User!]!
-    currentUser: User
     userLogin(mail: String!, password: String!): AuthUser!
+    currentUser: User
     repartidores: [Repartidor!]!
     newestRepartidores: [Repartidor!]!
     repartidorLogin(mail: String!, password: String!): AuthRepartidor!
+    currentRepartidor: Repartidor
     admins: [Admin!]!
     adminLogin(mail: String!, password: String!): AuthAdmin!
     currentAdmin: Admin
