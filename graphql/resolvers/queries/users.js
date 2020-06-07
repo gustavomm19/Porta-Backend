@@ -50,7 +50,7 @@ module.exports = {
   currentUser: async (_, args, context) => {
     try {
       if (!context.token) {
-        return;
+        throw new Error("No authorized");
       }
       const user = await User.findById(context.token.userId);
       return {
