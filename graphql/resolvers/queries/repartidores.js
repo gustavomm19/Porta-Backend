@@ -1,6 +1,41 @@
 const Repartidor = require("../../../models/repartidores");
+const Rate = require("../../../models/rates");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+
+const rates = ratesIds => {
+  return Rate.find({_id: {$in: ratesIds}})
+  .then(rates => {
+    return rates.map(rate => {
+      return { 
+        ...rate._doc, 
+        _id: rate.id,
+        createdAt: new Date(rate._doc.createdAt).toISOString(),
+        updatedAt: new Date(rate._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, rate.repartidor)
+      }
+    })
+  })
+  .catch(err => {
+    throw err;
+  });
+}
+
+const repartidor = repartidorId => {
+  return Repartidor.findById(repartidorId)
+    .then(repartidor =>{
+      return {
+        ...repartidor._doc,
+        _id: repartidor.id,
+        birthdate: new Date(repartidor._doc.birthdate).toISOString(),
+        createdAt: new Date(repartidor._doc.createdAt).toISOString(),
+        updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
+        rating: rates.bind(this, repartidor._doc.rating)}
+    })
+    .catch(err => {
+      throw err;
+    });
+};
 
 module.exports = {
   repartidores: async (_, args, context) => {
@@ -10,7 +45,9 @@ module.exports = {
           return { ...repartidor._doc,
             birthdate: new Date(repartidor._doc.birthdate).toISOString(),
             createdAt: new Date(repartidor._doc.createdAt).toISOString(),
-            updatedAt: new Date(repartidor._doc.updatedAt).toISOString()};
+            updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
+            rating: rates.bind(this, repartidor._doc.rating)
+          };
         });
       })
       .catch((err) => {

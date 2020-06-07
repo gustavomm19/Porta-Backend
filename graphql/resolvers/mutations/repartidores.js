@@ -22,7 +22,6 @@ module.exports = {
                 zone : args.repartidorInput.zone,
                 cellphone : args.repartidorInput.cellphone,
                 available: false,
-                hiringDate: new Date().toISOString(),
                 workingStatus: false,
                 vehiculo: null,
                 licencia: null,
