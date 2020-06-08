@@ -57,10 +57,12 @@ module.exports = {
       if (!context.token) {
         throw new Error("No authorized");
       }
-      const user = await User.findOne({sesion:context.token.sesionId});
+      const user = await User.findOne({sesion:context.token.sesionId}).populate('sesion');
+      // user.populate('Sesion');
       return {
         ...user._doc,
         password: null,
+        sesion: user._doc.sesion
       };
     } catch (err) {
       throw err;

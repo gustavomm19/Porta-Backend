@@ -6,9 +6,6 @@ module.exports = gql`
     mail: String!
     password: String
     role: String!
-    user: User
-    repartidor: Repartidor
-    admin: Admin
   }
 
   input SesionInput {
@@ -38,6 +35,7 @@ module.exports = gql`
     cellphone: String!
     createdAt: String!
     updatedAt: String!
+    sesion: Sesion
   }
 
   type AuthUser {
@@ -58,6 +56,7 @@ module.exports = gql`
     _id: ID!
     name: String!
     lastName: String!
+    sesion: Sesion
   }
 
   input AdminInput{
@@ -86,6 +85,7 @@ module.exports = gql`
     carnetCirculacion: String
     seguroVehiculo: String
     rating: [Rate!]
+    sesion: Sesion
     createdAt: String!
     updatedAt: String!
   }
