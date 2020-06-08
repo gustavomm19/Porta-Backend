@@ -1,13 +1,33 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
+  type Sesion {
+    _id: ID!
+    mail: String!
+    password: String
+    role: String!
+    user: User
+    repartidor: Repartidor
+    admin: Admin
+  }
+
+  input SesionInput {
+    role: String!
+    name: String!
+    lastName: String
+    birthdate: String
+    mail: String!
+    password: String!
+    zone: String
+    cellphone: String
+    cedula: String
+  }
+
   type User {
     _id: ID!
     name: String!
     lastName: String!
     birthdate: String!
-    mail: String!
-    password: String
     zone: String!
     cellphone: String!
     createdAt: String!
@@ -24,16 +44,14 @@ module.exports = gql`
     name: String!
     lastName: String!
     birthdate: String!
-    mail: String!
-    password: String!
     zone: String!
     cellphone: String!
   }
   
   type Admin {
     _id: ID!
-    mail: String!
-    password: String
+    name: String!
+    lastName: String!
   }
 
   input AdminInput{
@@ -53,8 +71,6 @@ module.exports = gql`
     name: String!
     lastName: String!
     birthdate: String!
-    mail: String!
-    password: String
     zone: String!
     cellphone: String!
     available: Boolean!
@@ -126,6 +142,7 @@ module.exports = gql`
     currentAdmin: Admin
     solicitudes: [Solicitud!]!
     rates: [Rate!]!
+    sesions: [Sesion!]!
     
   }
 
@@ -135,5 +152,6 @@ module.exports = gql`
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
+    createSesion(sesionInput: SesionInput): Sesion
   }
 `;

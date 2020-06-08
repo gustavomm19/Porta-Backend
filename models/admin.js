@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const adminSchema = new Schema({
-    mail: {
+    name: {
         type: String,
         require: true
     },
-    password: {
-        type: String,
-        require: true
+    sesion:{
+        type: Schema.Types.ObjectId,
+        ref: 'Sesion'
     }
 });
 

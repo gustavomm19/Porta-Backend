@@ -19,14 +19,6 @@ const repartidorSchema = new Schema({
         type: Date,
         require: true
     },
-    mail: {
-        type: String,
-        require: true
-    },
-    password: {
-        type: String,
-        require: true
-    },
     zone: {
         type: String,
         require: true
@@ -58,6 +50,10 @@ const repartidorSchema = new Schema({
     seguroVehiculo: {
         type: String,
         require: false
+    },
+    sesion:{
+        type: Schema.Types.ObjectId,
+        ref: 'Sesion'
     },
     rating:[
         {

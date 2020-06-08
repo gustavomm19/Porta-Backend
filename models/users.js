@@ -15,14 +15,6 @@ const userSchema = new Schema({
         type: Date,
         require: true
     },
-    mail: {
-        type: String,
-        require: true
-    },
-    password: {
-        type: String,
-        require: true
-    },
     zone: {
         type: String,
         require: true
@@ -30,7 +22,12 @@ const userSchema = new Schema({
     cellphone: {
         type: String,
         require: true
+    },
+    sesion:{
+        type: Schema.Types.ObjectId,
+        ref: 'Sesion'
     }
+    
 }, { timestamps: true} );
 
 module.exports = mongoose.model('Users', userSchema);
