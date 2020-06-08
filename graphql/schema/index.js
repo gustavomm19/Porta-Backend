@@ -23,6 +23,12 @@ module.exports = gql`
     cedula: String
   }
 
+  type AuthSesion{
+    sesionId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
+
   type User {
     _id: ID!
     name: String!
@@ -143,6 +149,9 @@ module.exports = gql`
     solicitudes: [Solicitud!]!
     rates: [Rate!]!
     sesions: [Sesion!]!
+    sesionLogin(mail: String!, password: String!): AuthSesion!
+    currentSesion: Sesion
+    currentSesionUser: User
     
   }
 

@@ -24,14 +24,15 @@ module.exports = {
             let createdSesion;
             return sesion.save();
         }).then(result => {
-            createdSesion = { ...result._doc, _id: sesion.id };
+            createdSesion = { ...result._doc, password:null};
             if(args.sesionInput.role === "user"){
                 const user = new User({
                     name : args.sesionInput.name,
                     lastName : args.sesionInput.lastName,
-                    birthdate : new Date(args.userInput.birthdate).toISOString(),
+                    birthdate : new Date(args.sesionInput.birthdate).toISOString(),
                     zone : args.sesionInput.zone,
-                    cellphone : args.sesionInput.cellphone
+                    cellphone : args.sesionInput.cellphone,
+                    sesion : result.id
                 });
                 return user.save().then(result => {
                     return createdSesion
@@ -44,6 +45,7 @@ module.exports = {
                     birthdate : new Date(args.sesionInput.birthdate).toISOString(),
                     zone : args.sesionInput.zone,
                     cellphone : args.sesionInput.cellphone,
+                    sesion : result.id,
                     available: false,
                     workingStatus: false,
                     vehiculo: null,
@@ -57,6 +59,7 @@ module.exports = {
             }else{
                 const admin = new Admin({
                     name : args.sesionInput.name,
+                    sesion : result.id
                 });
                 return admin.save().then(result => {
                     return createdSesion
