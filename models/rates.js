@@ -9,7 +9,7 @@ const rateSchema = new Schema({
     },
     repartidor: {
         type: Schema.Types.ObjectId,
-        ref: 'Repartidores'
+        ref: 'Users'
     },
     score: {
         type: Number,

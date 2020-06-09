@@ -3,6 +3,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const repartidorSchema = new Schema({
+    role: {
+        type: String,
+        default:"DRIVER",
+        require: true
+    },
+    mail: {
+        type: String,
+        require: true
+    },
+    password: {
+        type: String,
+        require: true
+    },
     cedula: {
         type: String,
         require: true
@@ -50,10 +63,6 @@ const repartidorSchema = new Schema({
     seguroVehiculo: {
         type: String,
         require: false
-    },
-    sesion:{
-        type: Schema.Types.ObjectId,
-        ref: 'Sesion'
     },
     rating:[
         {

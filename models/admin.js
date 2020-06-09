@@ -3,14 +3,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const adminSchema = new Schema({
-    name: {
+    role: {
+        type: String,
+        default:"ADMIN",
+        require: true
+    },
+    mail: {
         type: String,
         require: true
     },
-    sesion:{
-        type: Schema.Types.ObjectId,
-        ref: 'Sesion'
-    }
+    password: {
+        type: String,
+        require: true
+    }  
 });
 
 module.exports = mongoose.model('Admin', adminSchema);
