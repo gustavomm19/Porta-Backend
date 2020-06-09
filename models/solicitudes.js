@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const solicitudSchema = new Schema({
     repartidorID: {
         type: Schema.Types.ObjectId,
-        ref:'Repartidores',
+        ref:'Users',
         require: true
     },
     vehiculo: {

@@ -1,41 +1,26 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
-  type Sesion {
+  type User {
     _id: ID!
+    cedula: String
+    name: String
+    lastName: String
+    birthdate: String
+    zone: String
+    cellphone: String
     mail: String!
     password: String
     role: String!
-  }
-
-  input SesionInput {
-    role: String!
-    name: String!
-    lastName: String
-    birthdate: String
-    mail: String!
-    password: String!
-    zone: String
-    cellphone: String
-    cedula: String
-  }
-
-  type AuthSesion {
-    sesionId: ID!
-    token: String!
-    tokenExpiration: Int!
-  }
-
-  type User {
-    _id: ID!
-    name: String!
-    lastName: String!
-    birthdate: String!
-    zone: String!
-    cellphone: String!
+    available: Boolean
+    workingStatus: Boolean
+    vehiculo: String
+    licencia: String
+    carnetCirculacion: String
+    seguroVehiculo: String
+    rating: [Rate!]
     createdAt: String!
     updatedAt: String!
-    sesion: Sesion
   }
 
   type AuthUser {
@@ -45,11 +30,15 @@ module.exports = gql`
   }
 
   input UserInput {
+    role: String!
+    mail: String!
+    password: String!
     name: String!
     lastName: String!
     birthdate: String!
-    zone: String!
+    zone: String
     cellphone: String!
+    cedula: String
   }
 
   type Admin {
@@ -85,7 +74,6 @@ module.exports = gql`
     carnetCirculacion: String
     seguroVehiculo: String
     rating: [Rate!]
-    sesion: Sesion
     createdAt: String!
     updatedAt: String!
   }
@@ -109,6 +97,7 @@ module.exports = gql`
 
   type Solicitud {
     _id: ID!
+    repartidor: User
     vehiculo: String!
     licencia: String!
     carnetCirculacion: String!
@@ -134,9 +123,37 @@ module.exports = gql`
     updatedAt: String!
   }
 
+  type Sesion {
+    _id: ID!
+    mail: String!
+    password: String
+    role: String!
+  }
+
+  input SesionInput {
+    role: String!
+    name: String!
+    lastName: String
+    birthdate: String
+    mail: String!
+    password: String!
+    zone: String
+    cellphone: String
+    cedula: String
+  }
+
+  type AuthSesion {
+    sesionId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
+
   type Query {
     users: [User!]!
     newestUsers: [User!]!
+    newestDrivers: [User!]!
+    costumers: [User!]!
+    drivers: [User!]!
     userLogin(mail: String!, password: String!): AuthUser!
     currentUser: User
     repartidores: [Repartidor!]!

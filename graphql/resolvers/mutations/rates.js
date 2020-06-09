@@ -1,5 +1,5 @@
 const Rate = require('../../../models/rates');
-const Repartidor = require('../../../models/repartidores');
+const User = require('../../../models/users');
 
 module.exports = {
     createRate: async (_, args) => {
@@ -23,7 +23,7 @@ module.exports = {
         let createdRate;
         rate.save().then(result => {
             createdRate = { ...result._doc, _id: rate.id };
-            return Repartidor.findById(args.repartidor);
+            return User.findById(args.repartidor);
         })
         .then(repartidor => {
             console.log(repartidor)
