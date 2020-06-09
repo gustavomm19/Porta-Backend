@@ -1,13 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = async ({ req, connection }) => {
+module.exports = async ({ req }) => {
   let authToken;
-  if (connection) {
-    authToken = connection.context.authToken;
-    if (!authToken) return;
-  } else {
-    authToken = req.get("Authorization");
-  }
+
+  authToken = req.get("Authorization");
+
   if (!authToken) {
     req.isAuth = false;
     return;
