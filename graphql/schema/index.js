@@ -30,6 +30,15 @@ module.exports = gql`
     tokenExpiration: Int!
   }
 
+  input UpdateUserInput {
+    id: ID!
+    mail: String!
+    name: String!
+    lastName: String!
+    birthdate: String!
+    zone: String
+  }
+
   input UserInput {
     role: String!
     mail: String!
@@ -187,6 +196,7 @@ module.exports = gql`
 
   type Mutation {
     createUser(userInput: UserInput): User
+    updateUser(updateInput: UpdateUserInput): User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
