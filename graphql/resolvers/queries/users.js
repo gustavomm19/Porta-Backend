@@ -137,4 +137,16 @@ module.exports = {
       throw err;
     }
   },
+  selectedDriver: async (_, args, context) => {
+    try {
+      const driver = await User.findById();
+      return {
+        ...driver._doc,
+        password: null,
+        rating: rates.bind(this, user._doc.rating)
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
 };
