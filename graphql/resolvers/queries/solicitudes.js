@@ -4,7 +4,7 @@ module.exports = {
   solicitudes: async (_, args, context) => {
     // if (!context.token) throw new Error("No authorized");
 
-    return Solicitud.find()
+    return Solicitud.find().populate('repartidorID')
       .then((solicitudes) => {
         return solicitudes.map((solicitud) => {
           return { ...solicitud._doc,
@@ -16,4 +16,5 @@ module.exports = {
         throw err;
       });
   },
+  
 };

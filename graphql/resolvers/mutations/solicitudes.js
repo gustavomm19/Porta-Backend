@@ -9,6 +9,8 @@ module.exports = {
             licencia : args.solicitudInput.licencia,
             carnetCirculacion : args.solicitudInput.carnetCirculacion,
             seguroVehiculo : args.solicitudInput.seguroVehiculo,
+            repartidorID: args.solicitudInput.repartidorID,
+            experience: args.solicitudInput.experience,
             status: null
         });
         
