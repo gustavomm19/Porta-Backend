@@ -13,13 +13,15 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
+app.use(isAuth);
+
 // // bodyParser is needed just for POST.
 const port = process.env.PORT || 4000;
 const serverGraphQL = new ApolloServer({
   typeDefs,
   resolvers,
   playground: !!(process.env.NODE_ENV !== "production"),
-  context: isAuth,
+  context: ({req}) =>({token: req.token}),
 });
 //apply server graphql in express
 serverGraphQL.applyMiddleware({ app, cors: false });
