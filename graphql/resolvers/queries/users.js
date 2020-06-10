@@ -1,5 +1,6 @@
 const User = require("../../../models/users");
 const Rate = require("../../../models/rates");
+const Comment = require("../../../models/comment");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -21,6 +22,25 @@ const rates = (ratesIds) => {
     });
 };
 
+const comments = (commentsIds) => {
+  return Comment.find({ _id: { $in: commentsIds } })
+    .then((comments) => {
+      return comments.map((comment) => {
+        return {
+          ...comment._doc,
+          _id: comment.id,
+          createdAt: new Date(comment._doc.createdAt).toISOString(),
+          updatedAt: new Date(comment._doc.updatedAt).toISOString(),
+          repartidor: repartidor.bind(this, comment.repartidor),
+          user: user.bind(this, comment.user)
+        };
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
 const repartidor = (repartidorId) => {
   return User.findById(repartidorId)
     .then((repartidor) => {
@@ -31,6 +51,23 @@ const repartidor = (repartidorId) => {
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
         rating: rates.bind(this, repartidor._doc.rating),
+        comments: comments.bind(this, repartidor._doc.comments)
+      };
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+const user = (userId) => {
+  return User.findById(userId)
+    .then((user) => {
+      return {
+        ...user._doc,
+        _id: user.id,
+        birthdate: new Date(user._doc.birthdate).toISOString(),
+        createdAt: new Date(user._doc.createdAt).toISOString(),
+        updatedAt: new Date(user._doc.updatedAt).toISOString(),
       };
     })
     .catch((err) => {
@@ -82,6 +119,7 @@ module.exports = {
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
             rating: rates.bind(this, user._doc.rating),
+            comments: comments.bind(this, user._doc.comments),
           };
         });
       })

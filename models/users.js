@@ -70,6 +70,12 @@ const userSchema = new Schema(
         ref: "Rate",
       },
     ],
+    comments: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Comment",
+        },
+      ],
   },
   { timestamps: true }
 );

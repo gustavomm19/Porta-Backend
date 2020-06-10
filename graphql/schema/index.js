@@ -19,6 +19,7 @@ module.exports = gql`
     carnetCirculacion: String
     seguroVehiculo: String
     rating: [Rate!]
+    comments: [Comment!]
     createdAt: String!
     updatedAt: String!
   }
@@ -61,6 +62,7 @@ module.exports = gql`
 
   type Repartidor {
     _id: ID!
+    role: String!
     cedula: String!
     name: String!
     lastName: String!
@@ -98,6 +100,7 @@ module.exports = gql`
   type Solicitud {
     _id: ID!
     repartidor: User
+    experiencia: String!
     vehiculo: String!
     licencia: String!
     carnetCirculacion: String!
@@ -119,6 +122,15 @@ module.exports = gql`
     user: User!
     repartidor: Repartidor!
     score: Int!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Comment {
+    _id: ID!
+    user: User!
+    repartidor: Repartidor!
+    content: String!
     createdAt: String!
     updatedAt: String!
   }
@@ -166,6 +178,7 @@ module.exports = gql`
     currentAdmin: Admin
     solicitudes: [Solicitud!]!
     rates: [Rate!]!
+    comments: [Comment!]
     sesions: [Sesion!]!
     sesionLogin(mail: String!, password: String!): AuthSesion!
     currentSesion: Sesion
@@ -178,6 +191,7 @@ module.exports = gql`
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
+    createComment(user: ID!, repartidor: ID!, content: String!): Comment
     createSesion(sesionInput: SesionInput): Sesion
   }
 `;
