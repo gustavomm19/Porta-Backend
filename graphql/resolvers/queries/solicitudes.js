@@ -3,7 +3,6 @@ const Solicitud = require("../../../models/solicitudes");
 module.exports = {
   solicitudes: async (_, args, context) => {
     // if (!context.token) throw new Error("No authorized");
-
     return Solicitud.find().populate('repartidorID')
       .then((solicitudes) => {
         return solicitudes.map((solicitud) => {
@@ -16,5 +15,14 @@ module.exports = {
         throw err;
       });
   },
-  
+  selectedRequest: async (_, args, context) => {
+    try {
+      const solicitud = await Solicitud.findById(args.solicitudId).populate('repartidorID');
+      return {
+        ...solicitud._doc
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
 };

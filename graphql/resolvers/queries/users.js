@@ -188,11 +188,12 @@ module.exports = {
   },
   selectedDriver: async (_, args, context) => {
     try {
-      const driver = await User.findById();
+      const driver = await User.findById(args.driverId);
       return {
         ...driver._doc,
         password: null,
-        rating: rates.bind(this, user._doc.rating)
+        rating: rates.bind(this, driver._doc.rating),
+        comments: comments.bind(this, driver._doc.comments)
       };
     } catch (err) {
       throw err;

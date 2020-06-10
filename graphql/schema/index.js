@@ -188,8 +188,8 @@ module.exports = gql`
     newestDrivers: [User!]!
     costumers:[User!]!
     drivers:[User!]!
-    selectedDriver: User
-    selectedRequest: Solicitud
+    selectedDriver(driverId: ID!): User
+    selectedRequest(solicitudId: ID!): Solicitud
     userLogin(mail: String!, password: String!): AuthUser!
     currentUser: User
     repartidores: [Repartidor!]!
