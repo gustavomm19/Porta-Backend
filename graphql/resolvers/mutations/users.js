@@ -35,12 +35,13 @@ module.exports = {
                     password : hashedPassword,
                     zone : args.userInput.zone,
                     cellphone : args.userInput.cellphone,
+                    experience: "Not declared",
                     available: false,
                     workingStatus: false,
-                    vehiculo: null,
-                    licencia: null,
-                    carnetCirculacion: null,
-                    seguroVehiculo: null
+                    vehiculo: "Not declared",
+                    licencia: "Not declared",
+                    carnetCirculacion: "Not declared",
+                    seguroVehiculo: "Not declared"
                 });
             }else{
                  user = new User({

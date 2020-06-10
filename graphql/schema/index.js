@@ -14,6 +14,7 @@ module.exports = gql`
     role: String!
     available: Boolean
     workingStatus: Boolean
+    experience: String
     vehiculo: String
     licencia: String
     carnetCirculacion: String
@@ -108,8 +109,8 @@ module.exports = gql`
 
   type Solicitud {
     _id: ID!
-    repartidor: User
-    experiencia: String!
+    repartidorID: User
+    experience: String!
     vehiculo: String!
     licencia: String!
     carnetCirculacion: String!
@@ -120,10 +121,22 @@ module.exports = gql`
   }
 
   input SolicitudInput {
+    repartidorID: ID!
     vehiculo: String!
     licencia: String!
+    experience: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+  }
+
+  input ReviewInput {
+    id: ID!
+    vehiculo: String!
+    licencia: String!
+    experience: String!
+    carnetCirculacion: String!
+    seguroVehiculo: String!
+    status: Boolean!
   }
 
   type Rate {
@@ -200,6 +213,7 @@ module.exports = gql`
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
+    reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
     createComment(user: ID!, repartidor: ID!, content: String!): Comment
     createSesion(sesionInput: SesionInput): Sesion
