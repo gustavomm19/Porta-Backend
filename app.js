@@ -5,15 +5,14 @@ const mongoose = require("mongoose");
 const typeDefs = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
 const isAuth = require("./middleware/auth");
-const User = require("./models/users");
 const cors = require("cors");
 const app = express();
+const routes = require("./routes");
 
 app.use(cors());
-
 app.use(bodyParser.json());
-
 app.use(isAuth);
+app.use("/api", routes);
 
 // // bodyParser is needed just for POST.
 const port = process.env.PORT || 4000;
@@ -21,7 +20,7 @@ const serverGraphQL = new ApolloServer({
   typeDefs,
   resolvers,
   playground: !!(process.env.NODE_ENV !== "production"),
-  context: ({req}) =>({token: req.token}),
+  context: ({ req }) => ({ token: req.token }),
 });
 //apply server graphql in express
 serverGraphQL.applyMiddleware({ app, cors: false });
