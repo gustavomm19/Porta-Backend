@@ -3,18 +3,7 @@ const User = require('../../../models/users');
 
 module.exports = {
     createComment: async (_, args) => {
-        const lookComment = await Comment.findOne({ user: args.user, repartidor: args.repartidor});
-            if(lookComment){
-                lookComment.content = args.content;
-                lookComment.save().then(result => {
-                    console.log(result);
-                    return { ...result._doc, _id: lookComment.id };
-                }).catch(err => {
-                    console.log(err);
-                    throw err;
-                });
-                return lookComment
-            }
+        
         const comment = new Comment({
             user: args.user,
             repartidor: args.repartidor,
