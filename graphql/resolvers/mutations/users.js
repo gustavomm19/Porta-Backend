@@ -35,12 +35,13 @@ module.exports = {
                     password : hashedPassword,
                     zone : args.userInput.zone,
                     cellphone : args.userInput.cellphone,
+                    experience: "Not declared",
                     available: false,
                     workingStatus: false,
-                    vehiculo: null,
-                    licencia: null,
-                    carnetCirculacion: null,
-                    seguroVehiculo: null
+                    vehiculo: "Not declared",
+                    licencia: "Not declared",
+                    carnetCirculacion: "Not declared",
+                    seguroVehiculo: "Not declared"
                 });
             }else{
                  user = new User({
@@ -62,6 +63,23 @@ module.exports = {
             throw err;
         })
         
+    },
+    updateUser: async (_, args) => {
+
+        const user = await User.findById(args.updateInput.id);
+        user.name = args.updateInput.name;
+        user.lastName = args.updateInput.lastName;
+        user.mail = args.updateInput.mail;
+        user.birthdate = new Date(args.updateInput.birthdate).toISOString()
+        user.zone = args.updateInput.zone;
+        user.save().then(result => {
+            console.log(result);
+            return { ...result._doc, _id: user.id };
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+        return user
     }
 
 }

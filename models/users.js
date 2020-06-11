@@ -48,6 +48,10 @@ const userSchema = new Schema(
       type: Boolean,
       require: false,
     },
+    experience: {
+      type: String,
+      require: false,
+    },
     vehiculo: {
       type: String,
       require: false,
@@ -70,6 +74,12 @@ const userSchema = new Schema(
         ref: "Rate",
       },
     ],
+    comments: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Comment",
+        },
+      ],
   },
   { timestamps: true }
 );

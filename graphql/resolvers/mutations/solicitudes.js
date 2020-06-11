@@ -1,4 +1,5 @@
 const Solicitud = require('../../../models/solicitudes');
+const User = require("../../../models/users");
 
 module.exports = {
     createSolicitud: (_, args) => {
@@ -8,6 +9,8 @@ module.exports = {
             licencia : args.solicitudInput.licencia,
             carnetCirculacion : args.solicitudInput.carnetCirculacion,
             seguroVehiculo : args.solicitudInput.seguroVehiculo,
+            repartidorID: args.solicitudInput.repartidorID,
+            experience: args.solicitudInput.experience,
             status: null
         });
         
@@ -19,5 +22,34 @@ module.exports = {
             throw err;
         });
         return solicitud
+    },
+    reviewSolicitud: async (_, args) =>{
+
+        try {
+            const solicitud = await Solicidud.findById(args.reviewInput.id);
+            let solResult;
+            solicitud.status = args.reviewInput.approved;
+            await solicitud.save();
+            solResult = {
+                ...result._doc,
+                _id: solResult.id
+            }
+            const driver = await User.findById(solicitud.repartidorID);
+            if(args.approved){
+                driver.workingStatus = true;
+                driver.experience = args.reviewInput.experience;
+                driver.vehiculo = args.reviewInput.vehiculo;
+                driver.licencia = args.reviewInput.licencia;
+                driver.carnetCirculacion = args.reviewInput.carnetCirculacion;
+                driver.seguroVehiculo = args.reviewInput.seguroVehiculo;
+
+                await driver.save();
+            }
+
+            return  solResult ;
+          } catch (err) {
+            throw err;
+          }
+
     }
 }

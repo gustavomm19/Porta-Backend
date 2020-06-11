@@ -16,6 +16,10 @@ const solicitudSchema = new Schema({
         type:String,
         require: true
     },
+    experience: {
+        type:String,
+        require: true
+    },
     carnetCirculacion: {
         type:String,
         require: true

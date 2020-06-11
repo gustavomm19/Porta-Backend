@@ -14,11 +14,13 @@ module.exports = gql`
     role: String!
     available: Boolean
     workingStatus: Boolean
+    experience: String
     vehiculo: String
     licencia: String
     carnetCirculacion: String
     seguroVehiculo: String
     rating: [Rate!]
+    comments: [Comment!]
     createdAt: String!
     updatedAt: String!
   }
@@ -27,6 +29,15 @@ module.exports = gql`
     userId: ID!
     token: String!
     tokenExpiration: Int!
+  }
+
+  input UpdateUserInput {
+    id: ID!
+    mail: String!
+    name: String!
+    lastName: String!
+    birthdate: String!
+    zone: String
   }
 
   input UserInput {
@@ -61,6 +72,7 @@ module.exports = gql`
 
   type Repartidor {
     _id: ID!
+    role: String!
     cedula: String!
     name: String!
     lastName: String!
@@ -97,7 +109,8 @@ module.exports = gql`
 
   type Solicitud {
     _id: ID!
-    repartidor: User
+    repartidorID: User
+    experience: String!
     vehiculo: String!
     licencia: String!
     carnetCirculacion: String!
@@ -108,10 +121,22 @@ module.exports = gql`
   }
 
   input SolicitudInput {
+    repartidorID: ID!
     vehiculo: String!
     licencia: String!
+    experience: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+  }
+
+  input ReviewInput {
+    id: ID!
+    vehiculo: String!
+    licencia: String!
+    experience: String!
+    carnetCirculacion: String!
+    seguroVehiculo: String!
+    status: Boolean!
   }
 
   type Rate {
@@ -119,6 +144,15 @@ module.exports = gql`
     user: User!
     repartidor: Repartidor!
     score: Int!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Comment {
+    _id: ID!
+    user: User!
+    repartidor: Repartidor!
+    content: String!
     createdAt: String!
     updatedAt: String!
   }
@@ -152,8 +186,10 @@ module.exports = gql`
     users: [User!]!
     newestUsers: [User!]!
     newestDrivers: [User!]!
-    costumers: [User!]!
-    drivers: [User!]!
+    costumers:[User!]!
+    drivers:[User!]!
+    selectedDriver(driverId: ID!): User
+    selectedRequest(solicitudId: ID!): Solicitud
     userLogin(mail: String!, password: String!): AuthUser!
     currentUser: User
     repartidores: [Repartidor!]!
@@ -165,6 +201,7 @@ module.exports = gql`
     currentAdmin: Admin
     solicitudes: [Solicitud!]!
     rates: [Rate!]!
+    comments: [Comment!]
     sesions: [Sesion!]!
     sesionLogin(mail: String!, password: String!): AuthSesion!
     currentSesion: Sesion
@@ -173,10 +210,13 @@ module.exports = gql`
 
   type Mutation {
     createUser(userInput: UserInput): User
+    updateUser(updateInput: UpdateUserInput): User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
+    reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
+    createComment(user: ID!, repartidor: ID!, content: String!): Comment
     createSesion(sesionInput: SesionInput): Sesion
   }
 `;
