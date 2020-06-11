@@ -1,8 +1,8 @@
 {
-    "env":{
-        "MONGO_USER": "gustavo",
-        "MONGO_PASSWORD": "12345",
-        "MONGO_DB": "porta",
-        "CREDENTIALS_JWT": "somesupersecretkey"
-    }
+  "env": {
+    "MONGO_USER": "gustavo",
+    "MONGO_PASSWORD": "12345",
+    "MONGO_DB": "porta",
+    "CREDENTIALS_JWT": "somesupersecretkey"
+  }
 }
