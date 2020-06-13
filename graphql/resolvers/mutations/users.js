@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 module.exports = {
     createUser: (_, args) => {
         
-        return User.findOne({ mail: args.userInput.mail}).then(user => {
+        return User.findOne({ mail: args.userInput.mail, role:args.userInput.role}).then(user => {
             if(user){
                 throw new Error('User exists already');
             }
