@@ -1,5 +1,7 @@
 const { gql } = require("apollo-server-express");
 
+
+
 module.exports = gql`
   type User {
     _id: ID!
@@ -56,7 +58,6 @@ module.exports = gql`
     _id: ID!
     name: String!
     lastName: String!
-    sesion: Sesion
   }
 
   input AdminInput {
@@ -157,31 +158,6 @@ module.exports = gql`
     updatedAt: String!
   }
 
-  type Sesion {
-    _id: ID!
-    mail: String!
-    password: String
-    role: String!
-  }
-
-  input SesionInput {
-    role: String!
-    name: String!
-    lastName: String
-    birthdate: String
-    mail: String!
-    password: String!
-    zone: String
-    cellphone: String
-    cedula: String
-  }
-
-  type AuthSesion {
-    sesionId: ID!
-    token: String!
-    tokenExpiration: Int!
-  }
-
   type Query {
     users: [User!]!
     newestUsers: [User!]!
@@ -202,10 +178,6 @@ module.exports = gql`
     solicitudes: [Solicitud!]!
     rates: [Rate!]!
     comments: [Comment!]
-    sesions: [Sesion!]!
-    sesionLogin(mail: String!, password: String!): AuthSesion!
-    currentSesion: Sesion
-    currentSesionUser: User
   }
 
   type Mutation {
@@ -217,6 +189,5 @@ module.exports = gql`
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
     createComment(user: ID!, repartidor: ID!, content: String!): Comment
-    createSesion(sesionInput: SesionInput): Sesion
   }
 `;
