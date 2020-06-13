@@ -28,6 +28,18 @@ module.exports = {
         });
         return comment
         
+    },
+    updateComment: async (_, args) => {
+        try {
+            const comment = await Comment.findById(args.commentId);
+            comment.content = args.content;
+            comment.save();
+            return {
+                ...comment._doc
+            };
+        } catch (err) {
+            throw err;
+        }
     }
 
 }

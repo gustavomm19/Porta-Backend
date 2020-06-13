@@ -80,6 +80,21 @@ module.exports = {
             throw err;
         });
         return user
+    },
+    changeAvailable: async (_, args) => {
+        try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
+            const user = await User.findById(context.token.userId);
+            user.available = !user.available;
+            return {
+                ...user._doc,
+                password: null,
+            };
+        } catch (err) {
+            throw err;
+        }
     }
 
 }

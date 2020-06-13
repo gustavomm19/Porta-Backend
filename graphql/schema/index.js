@@ -183,11 +183,13 @@ module.exports = gql`
   type Mutation {
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
+    changeAvailable: User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
     createComment(user: ID!, repartidor: ID!, content: String!): Comment
+    updateComment(commentId: ID!, content: String!): Comment
   }
 `;

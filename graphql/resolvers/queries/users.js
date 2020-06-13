@@ -166,10 +166,10 @@ module.exports = {
       { userId: user.id, mail: user.mail },
       "somesupersecretkey",
       {
-        expiresIn: "1h",
+        expiresIn: "12h",
       }
     );
-    return { userId: user.id, token: token, tokenExpiration: 1 };
+    return { userId: user.id, token: token, tokenExpiration: 12 };
   },
 
   currentUser: async (_, args, context) => {
