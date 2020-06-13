@@ -154,7 +154,7 @@ module.exports = {
       });
   },
   userLogin: async (_, args, context) => {
-    const user = await User.findOne({ mail: args.mail });
+    const user = await User.findOne({ mail: args.mail, role:args.role });
     if (!user) {
       throw new Error("User does not exist");
     }

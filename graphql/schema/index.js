@@ -166,7 +166,7 @@ module.exports = gql`
     drivers:[User!]!
     selectedDriver(driverId: ID!): User
     selectedRequest(solicitudId: ID!): Solicitud
-    userLogin(mail: String!, password: String!): AuthUser!
+    userLogin(mail: String!, password: String!, role: String!): AuthUser!
     currentUser: User
     repartidores: [Repartidor!]!
     newestRepartidores: [Repartidor!]!
