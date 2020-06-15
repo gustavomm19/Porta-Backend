@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const solicitudSchema = new Schema({
-    repartidorID: {
+    repartidor: {
         type: Schema.Types.ObjectId,
         ref:'Users',
         require: true
