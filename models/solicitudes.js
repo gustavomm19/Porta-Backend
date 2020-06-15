@@ -28,6 +28,10 @@ const solicitudSchema = new Schema({
         type:String,
         require: true
     },
+    placaVehiculo: {
+      type: String,
+      require: false,
+    },
     status:{
         type: Boolean,
         required: false
