@@ -3,7 +3,7 @@ const Solicitud = require("../../../models/solicitudes");
 module.exports = {
   solicitudes: async (_, args, context) => {
     // if (!context.token) throw new Error("No authorized");
-    return Solicitud.find({status: null}).populate('repartidorID')
+    return Solicitud.find({status: null}).populate('repartidor')
       .then((solicitudes) => {
         return solicitudes.map((solicitud) => {
           return { ...solicitud._doc,
@@ -17,7 +17,7 @@ module.exports = {
   },
   selectedRequest: async (_, args, context) => {
     try {
-      const solicitud = await Solicitud.findById(args.solicitudId).populate('repartidorID');
+      const solicitud = await Solicitud.findById(args.solicitudId).populate('repartidor');
       return {
         ...solicitud._doc
       };
