@@ -11,6 +11,7 @@ module.exports = {
             seguroVehiculo : args.solicitudInput.seguroVehiculo,
             repartidor: args.solicitudInput.repartidorID,
             experience: args.solicitudInput.experience,
+            placaVehiculo: args.solicitudInput.placaVehiculo,
             status: null
         });
         

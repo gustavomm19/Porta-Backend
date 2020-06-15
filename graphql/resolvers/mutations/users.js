@@ -41,7 +41,8 @@ module.exports = {
                     vehiculo: "Not declared",
                     licencia: "Not declared",
                     carnetCirculacion: "Not declared",
-                    seguroVehiculo: "Not declared"
+                    seguroVehiculo: "Not declared",
+                    placaVehiculo: "Not declared"
                 });
             }else{
                  user = new User({

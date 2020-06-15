@@ -68,6 +68,10 @@ const userSchema = new Schema(
       type: String,
       require: false,
     },
+    placaVehiculo: {
+      type: String,
+      require: false,
+    },
     rating: [
       {
         type: Schema.Types.ObjectId,

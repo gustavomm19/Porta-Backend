@@ -21,6 +21,7 @@ module.exports = gql`
     licencia: String
     carnetCirculacion: String
     seguroVehiculo: String
+    placaVehiculo: String
     rating: [Rate!]
     comments: [Comment!]
     createdAt: String!
@@ -116,6 +117,7 @@ module.exports = gql`
     licencia: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+    placaVehiculo: String
     status: Boolean
     createdAt: String!
     updatedAt: String!
@@ -128,6 +130,7 @@ module.exports = gql`
     experience: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+    placaVehiculo: String!
   }
 
   input ReviewInput {
