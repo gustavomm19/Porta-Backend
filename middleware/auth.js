@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = async (req, res, next) => {
+module.exports = async ({ req }) => {
   let authToken;
   authToken = req.get("Authorization");
   if (!authToken) {
@@ -19,6 +19,7 @@ module.exports = async (req, res, next) => {
   if (!decodedToken) {
     return;
   }
-  req.token = decodedToken;
-  return next();
+  return {
+    token: decodedToken,
+  };
 };
