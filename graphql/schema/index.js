@@ -1,5 +1,7 @@
 const { gql } = require("apollo-server-express");
 
+
+
 module.exports = gql`
   type User {
     _id: ID!
@@ -19,6 +21,7 @@ module.exports = gql`
     licencia: String
     carnetCirculacion: String
     seguroVehiculo: String
+    placaVehiculo: String
     rating: [Rate!]
     comments: [Comment!]
     createdAt: String!
@@ -60,7 +63,6 @@ module.exports = gql`
     _id: ID!
     name: String!
     lastName: String!
-    sesion: Sesion
   }
 
   input AdminInput {
@@ -113,12 +115,13 @@ module.exports = gql`
 
   type Solicitud {
     _id: ID!
-    repartidorID: User
+    repartidor: User
     experience: String!
     vehiculo: String!
     licencia: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+    placaVehiculo: String
     status: Boolean
     createdAt: String!
     updatedAt: String!
@@ -131,6 +134,7 @@ module.exports = gql`
     experience: String!
     carnetCirculacion: String!
     seguroVehiculo: String!
+    placaVehiculo: String!
   }
 
   input ReviewInput {
@@ -161,31 +165,6 @@ module.exports = gql`
     updatedAt: String!
   }
 
-  type Sesion {
-    _id: ID!
-    mail: String!
-    password: String
-    role: String!
-  }
-
-  input SesionInput {
-    role: String!
-    name: String!
-    lastName: String
-    birthdate: String
-    mail: String!
-    password: String!
-    zone: String
-    cellphone: String
-    cedula: String
-  }
-
-  type AuthSesion {
-    sesionId: ID!
-    token: String!
-    tokenExpiration: Int!
-  }
-
   type Query {
     users: [User!]!
     newestUsers: [User!]!
@@ -194,7 +173,7 @@ module.exports = gql`
     drivers:[User!]!
     selectedDriver(driverId: ID!): User
     selectedRequest(solicitudId: ID!): Solicitud
-    userLogin(mail: String!, password: String!): AuthUser!
+    userLogin(mail: String!, password: String!, role: String!): AuthUser!
     currentUser: User
     repartidores: [Repartidor!]!
     newestRepartidores: [Repartidor!]!
@@ -206,21 +185,18 @@ module.exports = gql`
     solicitudes: [Solicitud!]!
     rates: [Rate!]!
     comments: [Comment!]
-    sesions: [Sesion!]!
-    sesionLogin(mail: String!, password: String!): AuthSesion!
-    currentSesion: Sesion
-    currentSesionUser: User
   }
 
   type Mutation {
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
+    changeAvailable: User
     createRepartidor(repartidorInput: RepartidorInput): Repartidor
     createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
     createComment(user: ID!, repartidor: ID!, content: String!): Comment
-    createSesion(sesionInput: SesionInput): Sesion
+    updateComment(commentId: ID!, content: String!): Comment
   }
 `;

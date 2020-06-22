@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 module.exports = {
     createUser: (_, args) => {
         
-        return User.findOne({ mail: args.userInput.mail}).then(user => {
+        return User.findOne({ mail: args.userInput.mail, role:args.userInput.role}).then(user => {
             if(user){
                 throw new Error('User exists already');
             }
@@ -43,7 +43,8 @@ module.exports = {
                     vehiculo: "Not declared",
                     licencia: "Not declared",
                     carnetCirculacion: "Not declared",
-                    seguroVehiculo: "Not declared"
+                    seguroVehiculo: "Not declared",
+                    placaVehiculo: "Not declared"
                 });
             }else{
                  user = new User({
@@ -82,6 +83,21 @@ module.exports = {
             throw err;
         });
         return user
+    },
+    changeAvailable: async (_, args) => {
+        try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
+            const user = await User.findById(context.token.userId);
+            user.available = !user.available;
+            return {
+                ...user._doc,
+                password: null,
+            };
+        } catch (err) {
+            throw err;
+        }
     }
 
 }

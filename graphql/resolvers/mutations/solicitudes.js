@@ -9,8 +9,9 @@ module.exports = {
             licencia : args.solicitudInput.licencia,
             carnetCirculacion : args.solicitudInput.carnetCirculacion,
             seguroVehiculo : args.solicitudInput.seguroVehiculo,
-            repartidorID: args.solicitudInput.repartidorID,
+            repartidor: args.solicitudInput.repartidorID,
             experience: args.solicitudInput.experience,
+            placaVehiculo: args.solicitudInput.placaVehiculo,
             status: null
         });
         
@@ -34,7 +35,7 @@ module.exports = {
                 ...result._doc,
                 _id: solResult.id
             }
-            const driver = await User.findById(solicitud.repartidorID);
+            const driver = await User.findById(solicitud.repartidor);
             if(args.approved){
                 driver.workingStatus = true;
                 driver.experience = args.reviewInput.experience;

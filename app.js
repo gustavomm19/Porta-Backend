@@ -15,7 +15,6 @@ const path = require('path');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(isAuth);
 app.use("/api", routes);
 
 //Morgan y multer (Middlewares)
@@ -38,7 +37,7 @@ const serverGraphQL = new ApolloServer({
   typeDefs,
   resolvers,
   playground: !!(process.env.NODE_ENV !== "production"),
-  context: ({ req }) => ({ token: req.token }),
+  context: isAuth,
 });
 
 //Apply server graphql in express

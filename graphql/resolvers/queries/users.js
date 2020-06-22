@@ -32,7 +32,7 @@ const comments = (commentsIds) => {
           createdAt: new Date(comment._doc.createdAt).toISOString(),
           updatedAt: new Date(comment._doc.updatedAt).toISOString(),
           repartidor: repartidor.bind(this, comment.repartidor),
-          user: user.bind(this, comment.user)
+          user: user.bind(this, comment.user),
         };
       });
     })
@@ -51,7 +51,7 @@ const repartidor = (repartidorId) => {
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
         rating: rates.bind(this, repartidor._doc.rating),
-        comments: comments.bind(this, repartidor._doc.comments)
+        comments: comments.bind(this, repartidor._doc.comments),
       };
     })
     .catch((err) => {
@@ -154,7 +154,7 @@ module.exports = {
       });
   },
   userLogin: async (_, args, context) => {
-    const user = await User.findOne({ mail: args.mail });
+    const user = await User.findOne({ mail: args.mail, role: args.role });
     if (!user) {
       throw new Error("User does not exist");
     }
@@ -166,16 +166,16 @@ module.exports = {
       { userId: user.id, mail: user.mail },
       "somesupersecretkey",
       {
-        expiresIn: "1h",
+        expiresIn: "12h",
       }
     );
-    return { userId: user.id, token: token, tokenExpiration: 1 };
+    return { userId: user.id, token: token, tokenExpiration: 12 };
   },
 
   currentUser: async (_, args, context) => {
     try {
       if (!context.token) {
-        throw new Error("No authorized");
+        return null;
       }
       const user = await User.findById(context.token.userId);
       return {
@@ -193,7 +193,7 @@ module.exports = {
         ...driver._doc,
         password: null,
         rating: rates.bind(this, driver._doc.rating),
-        comments: comments.bind(this, driver._doc.comments)
+        comments: comments.bind(this, driver._doc.comments),
       };
     } catch (err) {
       throw err;
