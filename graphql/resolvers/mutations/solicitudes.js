@@ -30,11 +30,12 @@ module.exports = {
             const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
             solicitud.status = args.reviewInput.approved;
-            await solicitud.save();
-            solResult = {
-                ...result._doc,
-                _id: solResult.id
-            }
+            await solicitud.save().then(result =>{
+                solResult = {
+                    ...result._doc,
+                    _id: result._doc.id
+                }
+            });
             const driver = await User.findById(solicitud.repartidor);
             if(args.approved){
                 driver.workingStatus = true;
