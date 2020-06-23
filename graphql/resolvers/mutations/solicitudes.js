@@ -27,7 +27,7 @@ module.exports = {
     reviewSolicitud: async (_, args) =>{
 
         try {
-            const solicitud = await Solicidud.findById(args.reviewInput.id);
+            const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
             solicitud.status = args.reviewInput.approved;
             await solicitud.save();
