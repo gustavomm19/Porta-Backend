@@ -29,7 +29,7 @@ module.exports = {
         try {
             const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
-            solicitud.status = args.reviewInput.approved;
+            solicitud.status = args.reviewInput.status;
             await solicitud.save().then(result =>{
                 solResult = {
                     ...result._doc,
