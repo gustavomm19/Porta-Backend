@@ -1,7 +1,5 @@
 const { gql } = require("apollo-server-express");
 
-
-
 module.exports = gql`
   type User {
     _id: ID!
@@ -26,6 +24,8 @@ module.exports = gql`
     comments: [Comment!]
     createdAt: String!
     updatedAt: String!
+    userImageURL: String
+    userImageId: String
   }
 
   type AuthUser {
@@ -53,6 +53,8 @@ module.exports = gql`
     zone: String
     cellphone: String!
     cedula: String
+    userImageURL: String
+    userImageId: String
   }
 
   type Admin {

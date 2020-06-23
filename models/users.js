@@ -84,6 +84,16 @@ const userSchema = new Schema(
           ref: "Comment",
         },
       ],
+    //URL de la imagen en Cloudinary
+    userImageURL: {
+      type: String,
+      require: false,
+    },
+    //public_id de Cloudinary
+    userImageId: {
+      type: String,
+      require: false,
+    }
   },
   { timestamps: true }
 );

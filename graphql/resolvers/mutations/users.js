@@ -22,7 +22,9 @@ module.exports = {
                     mail : args.userInput.mail,
                     password : hashedPassword,
                     zone : args.userInput.zone,
-                    cellphone : args.userInput.cellphone
+                    cellphone : args.userInput.cellphone,
+                    userImageURL: args.userInput.userImageURL,
+                    userImageURL: args.userInput.userImageURL
                 });
             }else if(args.userInput.role === "DRIVER"){
                  user = new User({
