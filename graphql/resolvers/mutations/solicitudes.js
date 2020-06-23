@@ -40,6 +40,7 @@ module.exports = {
                 driver.workingStatus = true;
                 driver.experience = args.reviewInput.experience;
                 driver.vehiculo = args.reviewInput.vehiculo;
+                driver.placaVehiculo = args.reviewInput.placaVehiculo;
                 driver.licencia = args.reviewInput.licencia;
                 driver.carnetCirculacion = args.reviewInput.carnetCirculacion;
                 driver.seguroVehiculo = args.reviewInput.seguroVehiculo;

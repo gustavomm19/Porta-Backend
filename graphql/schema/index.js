@@ -136,6 +136,7 @@ module.exports = gql`
   input ReviewInput {
     id: ID!
     vehiculo: String!
+    placaVehiculo: String!
     licencia: String!
     experience: String!
     carnetCirculacion: String!
