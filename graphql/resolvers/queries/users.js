@@ -14,6 +14,7 @@ const rates = (ratesIds) => {
           createdAt: new Date(rate._doc.createdAt).toISOString(),
           updatedAt: new Date(rate._doc.updatedAt).toISOString(),
           repartidor: repartidor.bind(this, rate.repartidor),
+          user: user.bind(this, rate.user),
         };
       });
     })
