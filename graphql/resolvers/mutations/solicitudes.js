@@ -37,7 +37,7 @@ module.exports = {
                 }
             });
             const driver = await User.findById(solicitud.repartidor);
-            if(args.status){
+            if(args.reviewInput.status){
                 driver.workingStatus = true;
                 driver.experience = args.reviewInput.experience;
                 driver.vehiculo = args.reviewInput.vehiculo;
