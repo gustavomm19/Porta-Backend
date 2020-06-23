@@ -112,7 +112,7 @@ module.exports = gql`
   }
 
   type Solicitud {
-    _id: ID!
+    _id: ID
     repartidor: User
     experience: String!
     vehiculo: String!
