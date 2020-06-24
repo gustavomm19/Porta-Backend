@@ -91,6 +91,7 @@ module.exports = {
             }
             const user = await User.findById(context.token.userId);
             user.available = !user.available;
+            await user.save();
             return {
                 ...user._doc,
                 password: null,
