@@ -22,6 +22,7 @@ module.exports = gql`
     placaVehiculo: String
     rating: [Rate!]
     comments: [Comment!]
+    orders: [Order!]
     createdAt: String!
     updatedAt: String!
     userImageURL: String
@@ -164,6 +165,27 @@ module.exports = gql`
     updatedAt: String!
   }
 
+  type Order {
+    user: User!
+    repartidor: User
+    pickUp: String!
+    deliver: String!
+    km: Int!
+    price: Int!
+    status: String!
+    succeeded: Boolean
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  input OrderInput {
+    user: ID!
+    pickUp: String!
+    deliver: String!
+    km: Int!
+    price: Int!
+  }
+
   type Query {
     users: [User!]!
     newestUsers: [User!]!
@@ -182,8 +204,11 @@ module.exports = gql`
     adminLogin(mail: String!, password: String!): AuthAdmin!
     currentAdmin: Admin
     solicitudes: [Solicitud!]!
+    newestRequests: [Solicitud!]!
     rates: [Rate!]!
     comments: [Comment!]
+    orders: [Order!]!
+    pendingOrders: [Order!]!
   }
 
   type Mutation {
@@ -197,5 +222,7 @@ module.exports = gql`
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
     createComment(user: ID!, repartidor: ID!, content: String!): Comment
     updateComment(commentId: ID!, content: String!): Comment
+    createOrder(orderInput: OrderInput): Order
+    acceptOrder(orderId:ID!, repartidor: ID!): Order
   }
 `;

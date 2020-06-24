@@ -1,6 +1,7 @@
 const User = require("../../../models/users");
 const Rate = require("../../../models/rates");
 const Comment = require("../../../models/comment");
+const Order = require("../../../models/orders");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -42,9 +43,27 @@ const comments = (commentsIds) => {
     });
 };
 
-const repartidor = (repartidorId) => {
-  return User.findById(repartidorId)
-    .then((repartidor) => {
+const orders = async (ordersIds) => {
+  try {
+    const orders = await Order.find({ _id: { $in: ordersIds } });
+    return orders.map((order) => {
+      return {
+        ...order._doc,
+        _id: order.id,
+        createdAt: new Date(order._doc.createdAt).toISOString(),
+        updatedAt: new Date(order._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, order.repartidor),
+        user: user.bind(this, order.user),
+      };
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+const repartidor = async (repartidorId) => {
+  try{
+    const repartidor = await User.findById(repartidorId)
       return {
         ...repartidor._doc,
         _id: repartidor.id,
@@ -53,27 +72,27 @@ const repartidor = (repartidorId) => {
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
         rating: rates.bind(this, repartidor._doc.rating),
         comments: comments.bind(this, repartidor._doc.comments),
+        orders: orders.bind(this, repartidor._doc.orders),
       };
-    })
-    .catch((err) => {
+    } catch(err) {
       throw err;
-    });
+    }
 };
 
-const user = (userId) => {
-  return User.findById(userId)
-    .then((user) => {
+const user = async (userId) => {
+  try {
+      const user = await User.findById(userId)
       return {
-        ...user._doc,
-        _id: user.id,
-        birthdate: new Date(user._doc.birthdate).toISOString(),
-        createdAt: new Date(user._doc.createdAt).toISOString(),
-        updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          ...user._doc,
+          _id: user.id,
+          birthdate: new Date(user._doc.birthdate).toISOString(),
+          createdAt: new Date(user._doc.createdAt).toISOString(),
+          updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          orders: orders.bind(this, repartidor._doc.orders),
       };
-    })
-    .catch((err) => {
+  } catch (err) {
       throw err;
-    });
+  }
 };
 
 module.exports = {
@@ -103,6 +122,7 @@ module.exports = {
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
+            orders: orders.bind(this, user._doc.orders),
           };
         });
       })
@@ -111,7 +131,7 @@ module.exports = {
       });
   },
   drivers: (_, args, context) => {
-    return User.find({ role: "DRIVER" })
+    return User.find({ role: "DRIVER" , workingStatus: true})
       .then((users) => {
         return users.map((user) => {
           return {
@@ -121,6 +141,7 @@ module.exports = {
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
             rating: rates.bind(this, user._doc.rating),
             comments: comments.bind(this, user._doc.comments),
+            orders: orders.bind(this, user._doc.orders),
           };
         });
       })
@@ -142,7 +163,7 @@ module.exports = {
       });
   },
   newestDrivers: (_, args, context) => {
-    return User.find({ role: "DRIVER" })
+    return User.find({ role: "DRIVER" , workingStatus: true})
       .sort({ createdAt: -1 })
       .limit(2)
       .then((users) => {

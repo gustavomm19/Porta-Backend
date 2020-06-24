@@ -84,6 +84,12 @@ const userSchema = new Schema(
           ref: "Comment",
         },
       ],
+    orders: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Order",
+        },
+      ],
     //URL de la imagen en Cloudinary
     userImageURL: {
       type: String,

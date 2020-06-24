@@ -25,4 +25,17 @@ module.exports = {
       throw err;
     }
   },
+  newestRequests: (_, args, context) => {
+    return Solicitud.find({status: null})
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .then((solicitudes) => {
+        return solicitudes.map((solicitud) => {
+          return { ...solicitud._doc };
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
 };
