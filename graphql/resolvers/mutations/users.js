@@ -84,7 +84,7 @@ module.exports = {
         });
         return user
     },
-    changeAvailable: async (_, args) => {
+    changeAvailable: async (_, args, context) => {
         try {
             if (!context.token) {
                 throw new Error("No authorized");
