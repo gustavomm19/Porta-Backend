@@ -149,7 +149,7 @@ module.exports = gql`
   type Rate {
     _id: ID!
     user: User!
-    repartidor: Repartidor!
+    repartidor: User!
     score: Int!
     createdAt: String!
     updatedAt: String!
@@ -158,7 +158,7 @@ module.exports = gql`
   type Comment {
     _id: ID!
     user: User!
-    repartidor: Repartidor!
+    repartidor: User!
     content: String!
     createdAt: String!
     updatedAt: String!
