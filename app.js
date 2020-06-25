@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { ApolloServer } = require("apollo-server-express");
+const { createServer } = require("http");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
@@ -45,6 +46,8 @@ const serverGraphQL = new ApolloServer({
 //Apply server graphql in express
 serverGraphQL.applyMiddleware({ app, cors: false });
 
+const httpServer = createServer(app);
+serverGraphQL.installSubscriptionHandlers(httpServer);
 //Conexión con MongoDB Atlas
 mongoose
   .connect(
@@ -55,7 +58,14 @@ mongoose
     }
   )
   .then(() => {
-    app.listen(port);
+    httpServer.listen({ port }, () => {
+      console.log(
+        `🚀 Server ready at http://localhost:${port}${serverGraphQL.graphqlPath}`
+      );
+      console.log(
+        `🚀 Subscriptions ready at ws://localhost:${port}${serverGraphQL.subscriptionsPath}`
+      );
+    });
   })
   .catch((err) => {
     console.log(err);

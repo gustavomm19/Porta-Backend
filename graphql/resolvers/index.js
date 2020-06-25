@@ -15,21 +15,24 @@ const commentMutation = require("./mutations/comments");
 const orderMutation = require("./mutations/orders");
 
 // SUBSCRIPTION------------------------------------------------
-
+const repartidoresSubscription = require("./subscriptions/repartidores");
 const rootResolvers = {
   Query: {
     ...userQuerys,
     ...solicitudQuerys,
     ...rateQuerys,
     ...commentQuerys,
-    ...orderQuerys
+    ...orderQuerys,
   },
   Mutation: {
     ...userMutation,
     ...solicitudMutation,
     ...rateMutation,
     ...commentMutation,
-    ...orderMutation
-  }
+    ...orderMutation,
+  },
+  Subscription: {
+    ...repartidoresSubscription,
+  },
 };
 module.exports = rootResolvers;
