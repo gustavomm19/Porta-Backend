@@ -191,8 +191,8 @@ module.exports = gql`
     users: [User!]!
     newestUsers: [User!]!
     newestDrivers: [User!]!
-    costumers:[User!]!
-    drivers:[User!]!
+    costumers: [User!]!
+    drivers: [User!]!
     selectedDriver(driverId: ID!): User
     selectedRequest(solicitudId: ID!): Solicitud
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
@@ -224,6 +224,10 @@ module.exports = gql`
     createComment(user: ID!, repartidor: ID!, content: String!): Comment
     updateComment(commentId: ID!, content: String!): Comment
     createOrder(orderInput: OrderInput): Order
-    acceptOrder(orderId:ID!, repartidor: ID!): Order
+    acceptOrder(orderId: ID!, repartidor: ID!): Order
+  }
+
+  type Subscription {
+    notificationAdded: Order
   }
 `;
