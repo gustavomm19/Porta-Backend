@@ -5,9 +5,9 @@ const Order = require("../../../models/orders");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const rates = (ratesIds) => {
-  return Rate.find({ _id: { $in: ratesIds } })
-    .then((rates) => {
+const rates = async (ratesIds) => {
+  try{
+  const rates = await Rate.find({ _id: { $in: ratesIds } })
       return rates.map((rate) => {
         return {
           ...rate._doc,
@@ -18,29 +18,27 @@ const rates = (ratesIds) => {
           user: user.bind(this, rate.user),
         };
       });
-    })
-    .catch((err) => {
+    }catch(err) {
       throw err;
-    });
+    }
 };
 
-const comments = (commentsIds) => {
-  return Comment.find({ _id: { $in: commentsIds } })
-    .then((comments) => {
-      return comments.map((comment) => {
-        return {
-          ...comment._doc,
-          _id: comment.id,
-          createdAt: new Date(comment._doc.createdAt).toISOString(),
-          updatedAt: new Date(comment._doc.updatedAt).toISOString(),
-          repartidor: repartidor.bind(this, comment.repartidor),
-          user: user.bind(this, comment.user),
-        };
-      });
-    })
-    .catch((err) => {
-      throw err;
+const comments = async (commentsIds) => {
+  try {
+    const comments = await Comment.find({ _id: { $in: commentsIds } })
+    return comments.map((comment) => {
+      return {
+        ...comment._doc,
+        _id: comment.id,
+        createdAt: new Date(comment._doc.createdAt).toISOString(),
+        updatedAt: new Date(comment._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, comment.repartidor),
+        user: user.bind(this, comment.user),
+      };
     });
+  } catch (err) {
+    throw err;
+  }
 };
 
 const orders = async (ordersIds) => {
@@ -88,7 +86,7 @@ const user = async (userId) => {
           birthdate: new Date(user._doc.birthdate).toISOString(),
           createdAt: new Date(user._doc.createdAt).toISOString(),
           updatedAt: new Date(user._doc.updatedAt).toISOString(),
-          orders: orders.bind(this, repartidor._doc.orders),
+          orders: orders.bind(this, user._doc.orders),
       };
   } catch (err) {
       throw err;
@@ -106,6 +104,8 @@ module.exports = {
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
             rating: rates.bind(this, user._doc.rating),
+            comments: comments.bind(this, user._doc.comments),
+            orders: orders.bind(this, user._doc.orders)
           };
         });
       })

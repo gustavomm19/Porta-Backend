@@ -166,6 +166,7 @@ module.exports = gql`
   }
 
   type Order {
+    _id: ID!
     user: User!
     repartidor: User
     pickUp: String!
