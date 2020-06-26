@@ -62,9 +62,11 @@ const orders = async (ordersIds) => {
 const repartidor = async (repartidorId) => {
   try{
     const repartidor = await User.findById(repartidorId)
+    if(repartidor){
       return {
         ...repartidor._doc,
         _id: repartidor.id,
+        password: null,
         birthdate: new Date(repartidor._doc.birthdate).toISOString(),
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
@@ -72,6 +74,10 @@ const repartidor = async (repartidorId) => {
         comments: comments.bind(this, repartidor._doc.comments),
         orders: orders.bind(this, repartidor._doc.orders),
       };
+    }else{
+      return null
+    }
+    
     } catch(err) {
       throw err;
     }
@@ -83,6 +89,7 @@ const user = async (userId) => {
       return {
           ...user._doc,
           _id: user.id,
+          password: null,
           birthdate: new Date(user._doc.birthdate).toISOString(),
           createdAt: new Date(user._doc.createdAt).toISOString(),
           updatedAt: new Date(user._doc.updatedAt).toISOString(),
@@ -100,6 +107,7 @@ module.exports = {
         return users.map((user) => {
           return {
             ...user._doc,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
@@ -119,6 +127,7 @@ module.exports = {
         return users.map((user) => {
           return {
             ...user._doc,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
@@ -136,6 +145,7 @@ module.exports = {
         return users.map((user) => {
           return {
             ...user._doc,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
@@ -155,7 +165,7 @@ module.exports = {
       .limit(2)
       .then((users) => {
         return users.map((user) => {
-          return { ...user._doc };
+          return { ...user._doc, password: null, };
         });
       })
       .catch((err) => {
@@ -168,7 +178,7 @@ module.exports = {
       .limit(2)
       .then((users) => {
         return users.map((user) => {
-          return { ...user._doc };
+          return { ...user._doc, password: null, };
         });
       })
       .catch((err) => {
@@ -191,7 +201,17 @@ module.exports = {
         expiresIn: "12h",
       }
     );
-    return { userId: user.id, token: token, tokenExpiration: 12 };
+    const loggedUser = {
+      ...user._doc,
+      password: null,
+      birthdate: new Date(user._doc.birthdate).toISOString(),
+      createdAt: new Date(user._doc.createdAt).toISOString(),
+      updatedAt: new Date(user._doc.updatedAt).toISOString(),
+      rating: rates.bind(this, user._doc.rating),
+      comments: comments.bind(this, user._doc.comments),
+      orders: orders.bind(this, user._doc.orders),
+  }
+    return { user: loggedUser, token: token, tokenExpiration: 12 };
   },
 
   currentUser: async (_, args, context) => {
@@ -203,6 +223,13 @@ module.exports = {
       return {
         ...user._doc,
         password: null,
+        birthdate: new Date(user._doc.birthdate).toISOString(),
+        createdAt: new Date(user._doc.createdAt).toISOString(),
+        updatedAt: new Date(user._doc.updatedAt).toISOString(),
+        rating: rates.bind(this, user._doc.rating),
+        comments: comments.bind(this, user._doc.comments),
+        orders: orders.bind(this, user._doc.orders),
+
       };
     } catch (err) {
       throw err;

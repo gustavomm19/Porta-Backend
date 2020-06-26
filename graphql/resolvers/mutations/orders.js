@@ -23,14 +23,22 @@ const orders = async (ordersIds) => {
 const repartidor = async (repartidorId) => {
   try{
     const repartidor = await User.findById(repartidorId)
+    if(repartidor){
       return {
         ...repartidor._doc,
         _id: repartidor.id,
+        password: null,
         birthdate: new Date(repartidor._doc.birthdate).toISOString(),
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
+        rating: rates.bind(this, repartidor._doc.rating),
+        comments: comments.bind(this, repartidor._doc.comments),
         orders: orders.bind(this, repartidor._doc.orders),
       };
+    }else{
+      return null
+    }
+    
     } catch(err) {
       throw err;
     }
@@ -42,6 +50,7 @@ const user = async (userId) => {
         return {
             ...user._doc,
             _id: user.id,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
@@ -93,58 +102,27 @@ module.exports = {
   },
   acceptOrder: async (_, args) => {
     try {
+      let acceptedOrder;
       const order = await Order.findById(args.orderId);
       order.repartidor = args.repartidor;
       order.status = "Driver accepted";
-      await order.save();
+      acceptedOrder = await order.save();
+
       const repartidor = await User.findById(args.repartidor);
       repartidor.orders.push(order);
       repartidor.available = false;
       await repartidor.save();
+
+      // pubsub.publish("NOTIFICATION_DELETED", {
+      //   notificationDeleted: order,
+      // });
+
       return {
-        ...order._doc,
+        ...acceptedOrder._doc,
+        user: user.bind(this, args.orderInput.user)
       };
     } catch (err) {
       throw err;
     }
-  },
-  createOrder2: async (_, args) => {
-    try {
-      const order = new Order({
-        user: args.orderInput.user,
-        repartidor: null,
-        pickUp: args.orderInput.pickUp,
-        deliver: args.orderInput.deliver,
-        km: args.orderInput.km,
-        price: args.orderInput.price,
-        status: "Waiting for a driver to accept",
-        succeeded: false,
-      });
-
-      let createdOrder;
-
-      createdOrder = await order.save();
-
-      createdOrder = {
-        ...createdOrder._doc,
-        user: user.bind(this, args.orderInput.user)
-      }
-
-      const theuser = await User.findById(args.orderInput.user);
-
-      theuser.orders.push(order);
-
-      await theuser.save();
-
-      pubsub.publish("NOTIFICATION_ADDED", {
-        notificationAdded: createdOrder,
-      });
-      return createdOrder;
-
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-
   },
 };

@@ -9,6 +9,7 @@ const orders = async (ordersIds) => {
         return {
           ...order._doc,
           _id: order.id,
+          password: null,
           createdAt: new Date(order._doc.createdAt).toISOString(),
           updatedAt: new Date(order._doc.updatedAt).toISOString(),
           repartidor: repartidor.bind(this, order.repartidor),
@@ -23,14 +24,21 @@ const orders = async (ordersIds) => {
 const repartidor = async (repartidorId) => {
   try{
     const repartidor = await User.findById(repartidorId)
+    if(repartidor){
       return {
         ...repartidor._doc,
         _id: repartidor.id,
         birthdate: new Date(repartidor._doc.birthdate).toISOString(),
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
+        rating: rates.bind(this, repartidor._doc.rating),
+        comments: comments.bind(this, repartidor._doc.comments),
         orders: orders.bind(this, repartidor._doc.orders),
       };
+    }else{
+      return null
+    }
+    
     } catch(err) {
       throw err;
     }

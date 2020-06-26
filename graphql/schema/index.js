@@ -30,7 +30,7 @@ module.exports = gql`
   }
 
   type AuthUser {
-    userId: ID!
+    user: User!
     token: String!
     tokenExpiration: Int!
   }
@@ -56,60 +56,6 @@ module.exports = gql`
     cedula: String
     userImageURL: String
     userImageId: String
-  }
-
-  type Admin {
-    _id: ID!
-    name: String!
-    lastName: String!
-  }
-
-  input AdminInput {
-    mail: String!
-    password: String!
-  }
-
-  type AuthAdmin {
-    adminId: ID!
-    token: String!
-    tokenExpiration: Int!
-  }
-
-  type Repartidor {
-    _id: ID!
-    role: String!
-    cedula: String!
-    name: String!
-    lastName: String!
-    birthdate: String!
-    zone: String!
-    cellphone: String!
-    available: Boolean!
-    workingStatus: Boolean!
-    vehiculo: String
-    licencia: String
-    carnetCirculacion: String
-    seguroVehiculo: String
-    rating: [Rate!]
-    createdAt: String!
-    updatedAt: String!
-  }
-
-  input RepartidorInput {
-    cedula: String!
-    name: String!
-    lastName: String!
-    birthdate: String!
-    mail: String!
-    password: String!
-    zone: String!
-    cellphone: String!
-  }
-
-  type AuthRepartidor {
-    repartidorId: ID!
-    token: String!
-    tokenExpiration: Int!
   }
 
   type Solicitud {
@@ -197,13 +143,6 @@ module.exports = gql`
     selectedRequest(solicitudId: ID!): Solicitud
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
     currentUser: User
-    repartidores: [Repartidor!]!
-    newestRepartidores: [Repartidor!]!
-    repartidorLogin(mail: String!, password: String!): AuthRepartidor!
-    currentRepartidor: Repartidor
-    admins: [Admin!]!
-    adminLogin(mail: String!, password: String!): AuthAdmin!
-    currentAdmin: Admin
     solicitudes: [Solicitud!]!
     newestRequests: [Solicitud!]!
     rates: [Rate!]!
@@ -216,9 +155,8 @@ module.exports = gql`
   type Mutation {
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
+    userLogin(mail: String!, password: String!, role: String!): AuthUser!
     changeAvailable: User
-    createRepartidor(repartidorInput: RepartidorInput): Repartidor
-    createAdmin(adminInput: AdminInput): Admin
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
@@ -226,10 +164,10 @@ module.exports = gql`
     updateComment(commentId: ID!, content: String!): Comment
     createOrder(orderInput: OrderInput): Order
     acceptOrder(orderId: ID!, repartidor: ID!): Order
-    createOrder2(orderInput: OrderInput): Order
   }
 
   type Subscription {
     notificationAdded: Order
+    notificationDeleted: Order
   }
 `;
