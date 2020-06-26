@@ -209,6 +209,7 @@ module.exports = gql`
     rates: [Rate!]!
     comments: [Comment!]
     orders: [Order!]!
+    newOrders: [Order!]!
     pendingOrders: [Order!]!
   }
 
