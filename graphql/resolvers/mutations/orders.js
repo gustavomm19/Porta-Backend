@@ -52,42 +52,44 @@ const user = async (userId) => {
 };
 
 module.exports = {
-  createOrder: (_, args) => {
-    const order = new Order({
-      user: args.orderInput.user,
-      repartidor: null,
-      pickUp: args.orderInput.pickUp,
-      deliver: args.orderInput.deliver,
-      km: args.orderInput.km,
-      price: args.orderInput.price,
-      status: "Waiting for a driver to accept",
-      succeeded: false,
-    });
-    let createdOrder;
-    order
-      .save()
-      .then((result) => {
-        createdOrder = { ...result._doc,
-          _id: order.id,
-          user: user.bind(this, args.orderInput.user),
-        };
-        return User.findById(args.orderInput.user);
-      })
-      .then((user) => {
-        user.orders.push(order);
-        return user.save();
-      })
-      .then((result) => {
-        pubsub.publish("NOTIFICATION_ADDED", {
-          notificationAdded: createdOrder,
-        });
-        return createdOrder;
-      })
-      .catch((err) => {
-        console.log(err);
-        throw err;
+  createOrder: async (_, args) => {
+    try {
+      const order = new Order({
+        user: args.orderInput.user,
+        repartidor: null,
+        pickUp: args.orderInput.pickUp,
+        deliver: args.orderInput.deliver,
+        km: args.orderInput.km,
+        price: args.orderInput.price,
+        status: "Waiting for a driver to accept",
+        succeeded: false,
       });
-    return order;
+
+      let createdOrder;
+
+      createdOrder = await order.save();
+
+      createdOrder = {
+        ...createdOrder._doc,
+        user: user.bind(this, args.orderInput.user)
+      }
+
+      const theuser = await User.findById(args.orderInput.user);
+
+      theuser.orders.push(order);
+
+      await theuser.save();
+
+      pubsub.publish("NOTIFICATION_ADDED", {
+        notificationAdded: createdOrder,
+      });
+      return createdOrder;
+
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+      
   },
   acceptOrder: async (_, args) => {
     try {
@@ -104,5 +106,44 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  createOrder2: async (_, args) => {
+    try {
+      const order = new Order({
+        user: args.orderInput.user,
+        repartidor: null,
+        pickUp: args.orderInput.pickUp,
+        deliver: args.orderInput.deliver,
+        km: args.orderInput.km,
+        price: args.orderInput.price,
+        status: "Waiting for a driver to accept",
+        succeeded: false,
+      });
+
+      let createdOrder;
+
+      createdOrder = await order.save();
+
+      createdOrder = {
+        ...createdOrder._doc,
+        user: user.bind(this, args.orderInput.user)
+      }
+
+      const theuser = await User.findById(args.orderInput.user);
+
+      theuser.orders.push(order);
+
+      await theuser.save();
+
+      pubsub.publish("NOTIFICATION_ADDED", {
+        notificationAdded: createdOrder,
+      });
+      return createdOrder;
+
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+
   },
 };

@@ -226,6 +226,7 @@ module.exports = gql`
     updateComment(commentId: ID!, content: String!): Comment
     createOrder(orderInput: OrderInput): Order
     acceptOrder(orderId: ID!, repartidor: ID!): Order
+    createOrder2(orderInput: OrderInput): Order
   }
 
   type Subscription {
