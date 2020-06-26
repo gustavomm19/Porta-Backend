@@ -55,7 +55,7 @@ const user = async (userId) => {
 module.exports = {
     orders: async (_, args, context) => {
     // if (!context.token) throw new Error("No authorized");
-    return Order.find()
+    return Order.find({ status: "Waiting for a driver to accept" })
       .then((orders) => {
         return orders.map((order) => {
           return { ...order._doc,
