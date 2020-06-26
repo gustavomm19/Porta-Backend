@@ -99,6 +99,7 @@ module.exports = {
       await order.save();
       const repartidor = await User.findById(args.repartidor);
       repartidor.orders.push(order);
+      repartidor.available = false;
       await repartidor.save();
       return {
         ...order._doc,
