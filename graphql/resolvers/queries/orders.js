@@ -62,6 +62,7 @@ module.exports = {
             createdAt: new Date(order._doc.createdAt).toISOString(),
             updatedAt: new Date(order._doc.updatedAt).toISOString(),
             user: user.bind(this, order._doc.user),
+            repartidor: repartidor.bind(this, order._doc.repartidor),
             };
         });
       })

@@ -208,7 +208,7 @@ module.exports = gql`
     newestRequests: [Solicitud!]!
     rates: [Rate!]!
     comments: [Comment!]
-    orders: [Order!]!
+    orders: [Order!]
     newOrders: [Order!]!
     pendingOrders: [Order!]!
   }
