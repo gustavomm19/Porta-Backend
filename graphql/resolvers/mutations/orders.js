@@ -105,13 +105,16 @@ module.exports = {
       let acceptedOrder;
       const order = await Order.findById(args.orderId);
       order.repartidor = args.repartidor;
+      if(order.status == "Driver accepted"){
+        throw new Error("Order already taken");
+      }
       order.status = "Driver accepted";
       acceptedOrder = await order.save();
 
-      const repartidor = await User.findById(args.repartidor);
-      repartidor.orders.push(order);
-      repartidor.available = false;
-      await repartidor.save();
+      const driver = await User.findById(args.repartidor);
+      driver.orders.push(order);
+      driver.available = false;
+      await driver.save();
 
       // pubsub.publish("NOTIFICATION_DELETED", {
       //   notificationDeleted: order,
@@ -119,7 +122,8 @@ module.exports = {
 
       return {
         ...acceptedOrder._doc,
-        user: user.bind(this, args.orderInput.user)
+        user: user.bind(this, acceptedOrder._doc.user),
+        repartidor: repartidor.bind(this, acceptedOrder._doc.repartidor),
       };
     } catch (err) {
       throw err;

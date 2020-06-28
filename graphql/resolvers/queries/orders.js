@@ -9,7 +9,6 @@ const orders = async (ordersIds) => {
         return {
           ...order._doc,
           _id: order.id,
-          password: null,
           createdAt: new Date(order._doc.createdAt).toISOString(),
           updatedAt: new Date(order._doc.updatedAt).toISOString(),
           repartidor: repartidor.bind(this, order.repartidor),

@@ -211,7 +211,6 @@ module.exports = {
             expiresIn: "12h",
           }
         );
-
         const loggedUser = {
             ...user._doc,
             password: null,

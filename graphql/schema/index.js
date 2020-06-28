@@ -23,10 +23,11 @@ module.exports = gql`
     rating: [Rate!]
     comments: [Comment!]
     orders: [Order!]
-    createdAt: String!
-    updatedAt: String!
+    conversations: [Conversation!]
     userImageURL: String
     userImageId: String
+    createdAt: String!
+    updatedAt: String!
   }
 
   type AuthUser {
@@ -133,6 +134,31 @@ module.exports = gql`
     price: Int!
   }
 
+  type Message {
+    _id: ID!
+    conversation: Conversation!
+    sender: User!
+    receiver: User!
+    content: String!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  input MessageInput {
+    conversation: ID
+    sender: ID!
+    receiver: ID!
+    content: String!
+  }
+
+  type Conversation {
+    _id: ID!
+    participants: [User!]
+    messages:[Message!]
+    createdAt: String!
+    updatedAt: String!
+  }
+
   type Query {
     users: [User!]!
     newestUsers: [User!]!
@@ -150,6 +176,7 @@ module.exports = gql`
     orders: [Order!]
     newOrders: [Order!]!
     pendingOrders: [Order!]!
+    messages(user: ID!): [Message!]!
   }
 
   type Mutation {
@@ -164,6 +191,7 @@ module.exports = gql`
     updateComment(commentId: ID!, content: String!): Comment
     createOrder(orderInput: OrderInput): Order
     acceptOrder(orderId: ID!, repartidor: ID!): Order
+    createMessage(messageInput: MessageInput!): Message
   }
 
   type Subscription {
