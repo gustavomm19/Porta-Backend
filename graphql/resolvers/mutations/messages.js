@@ -35,12 +35,9 @@ module.exports = {
         if(!conversation){
             const sender = await User.findById(args.messageInput.sender);
             const receiver = await User.findById(args.messageInput.receiver);
-            // conversation = new Conversation({
-            //     participants: [args.messageInput.sender, args.messageInput.receiver],
-            // });
-            conversation = new Conversation();
-            conversation.participants.push(sender);
-            conversation.participants.push(receiver);
+            conversation = new Conversation({
+                participants: [args.messageInput.sender, args.messageInput.receiver],
+            });
             await conversation.save();
             sender.conversations.push(conversation);
             receiver.conversations.push(conversation);
@@ -59,13 +56,19 @@ module.exports = {
         conversation.messages.push(message);
         await conversation.save();
 
-        return {
+        const createdMessage = {
             ...message._doc,
             createdAt: new Date(message._doc.createdAt).toISOString(),
             updatedAt: new Date(message._doc.updatedAt).toISOString(),
             sender: user.bind(this, message.sender),
             receiver: user.bind(this, message.receiver)
         }
+        
+        pubsub.publish("NEW_MESSAGE", {
+            newMessage: createdMessage,
+        });
+
+        return createdMessage
 
     } catch (err) {
       console.log(err);

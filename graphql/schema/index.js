@@ -121,7 +121,7 @@ module.exports = gql`
     km: Int!
     price: Int!
     status: String!
-    succeeded: Boolean
+    concluded: Boolean
     createdAt: String!
     updatedAt: String!
   }
@@ -197,5 +197,6 @@ module.exports = gql`
   type Subscription {
     notificationAdded: Order
     notificationDeleted: Order
+    newMessage: Message
   }
 `;

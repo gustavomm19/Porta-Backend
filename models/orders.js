@@ -31,7 +31,7 @@ const orderSchema = new Schema({
         type: String,
         require: true
     },
-    succeeded: {
+    concluded: {
         type: Boolean,
         require: false
     }
