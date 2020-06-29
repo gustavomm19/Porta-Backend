@@ -71,7 +71,7 @@ module.exports = {
         km: args.orderInput.km,
         price: args.orderInput.price,
         status: "Waiting for a driver to accept",
-        succeeded: false,
+        concluded: false,
       });
 
       let createdOrder;
