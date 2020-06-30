@@ -185,7 +185,7 @@ module.exports = gql`
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
-    changeAvailable(location: String): User
+    changeAvailable(lat: String, lng:String): User
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate
