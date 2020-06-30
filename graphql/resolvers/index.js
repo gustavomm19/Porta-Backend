@@ -19,6 +19,7 @@ const messageMutation = require("./mutations/messages");
 // SUBSCRIPTION------------------------------------------------
 const repartidoresSubscription = require("./subscriptions/repartidores");
 const messagesSubscription = require("./subscriptions/messages");
+const usersSubscription = require("./subscriptions/users");
 
 
 const rootResolvers = {
@@ -40,7 +41,8 @@ const rootResolvers = {
   },
   Subscription: {
     ...repartidoresSubscription,
-    ...messagesSubscription
+    ...messagesSubscription,
+    ...usersSubscription
   },
 };
 module.exports = rootResolvers;

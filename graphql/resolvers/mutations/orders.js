@@ -31,8 +31,6 @@ const repartidor = async (repartidorId) => {
         birthdate: new Date(repartidor._doc.birthdate).toISOString(),
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
-        rating: rates.bind(this, repartidor._doc.rating),
-        comments: comments.bind(this, repartidor._doc.comments),
         orders: orders.bind(this, repartidor._doc.orders),
       };
     }else{
@@ -116,15 +114,21 @@ module.exports = {
       driver.available = false;
       await driver.save();
 
+      acceptedOrder = {
+        ...acceptedOrder._doc,
+        user: user.bind(this, acceptedOrder._doc.user),
+        repartidor: repartidor.bind(this, acceptedOrder._doc.repartidor),
+      }
+
+      pubsub.publish("ORDER_ACCEPTED", {
+        orderAccepted: acceptedOrder,
+      });
+
       // pubsub.publish("NOTIFICATION_DELETED", {
       //   notificationDeleted: order,
       // });
 
-      return {
-        ...acceptedOrder._doc,
-        user: user.bind(this, acceptedOrder._doc.user),
-        repartidor: repartidor.bind(this, acceptedOrder._doc.repartidor),
-      };
+      return acceptedOrder;
     } catch (err) {
       throw err;
     }

@@ -202,5 +202,6 @@ module.exports = gql`
     notificationAdded: Order
     notificationDeleted: Order
     newMessage: Message
+    orderAccepted: Order
   }
 `;
