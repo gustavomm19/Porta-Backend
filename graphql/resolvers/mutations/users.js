@@ -227,5 +227,22 @@ module.exports = {
         }
         return { user: loggedUser, token: token, tokenExpiration: 12 };
       },
+      updateLocationDriver: async (_, args, context) => {
+        try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
+            const user = await User.findById(context.token.userId);
+              user.latitud = args.lat;
+              user.longitud = args.lng;
+            await user.save();
+            return {
+                ...user._doc,
+                password: null,
+            };
+        } catch (err) {
+            throw err;
+        }
+    },
 
 }
