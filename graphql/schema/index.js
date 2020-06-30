@@ -12,7 +12,8 @@ module.exports = gql`
     mail: String!
     password: String
     role: String!
-    location: String!
+    lat: String
+    lng: String
     available: Boolean
     workingStatus: Boolean
     experience: String
