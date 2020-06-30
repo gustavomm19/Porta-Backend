@@ -12,6 +12,7 @@ module.exports = gql`
     mail: String!
     password: String
     role: String!
+    location: String!
     available: Boolean
     workingStatus: Boolean
     experience: String
@@ -183,7 +184,7 @@ module.exports = gql`
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
-    changeAvailable: User
+    changeAvailable(location: String): User
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
     createRate(user: ID!, repartidor: ID!, score: Int!): Rate

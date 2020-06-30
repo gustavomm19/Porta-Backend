@@ -186,6 +186,9 @@ module.exports = {
             }
             const user = await User.findById(context.token.userId);
             user.available = !user.available;
+            if(user.available){
+              user.location = args.location;
+            }
             await user.save();
             return {
                 ...user._doc,

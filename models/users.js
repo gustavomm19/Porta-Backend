@@ -40,6 +40,11 @@ const userSchema = new Schema(
       type: String,
       require: true,
     },
+    location: {
+      type: String,
+      require: false,
+      default:null
+    },
     available: {
       type: Boolean,
       require: false,
