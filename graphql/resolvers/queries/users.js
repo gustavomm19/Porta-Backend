@@ -248,4 +248,23 @@ module.exports = {
       throw err;
     }
   },
+  driversAroundMe: async (_, args, context) => {
+    try{
+    drivers = await User.find({ role: "DRIVER" , available: true, latitud: { $ne: null }, longitud: { $ne: null }})
+        return drivers.map((driver) => {
+          return {
+            ...driver._doc,
+            password: null,
+            birthdate: new Date(driver._doc.birthdate).toISOString(),
+            createdAt: new Date(driver._doc.createdAt).toISOString(),
+            updatedAt: new Date(driver._doc.updatedAt).toISOString(),
+            rating: rates.bind(this, driver._doc.rating),
+            comments: comments.bind(this, driver._doc.comments),
+            orders: orders.bind(this, driver._doc.orders),
+          };
+        });
+      }catch(err) {
+        throw err;
+      }
+  },
 };
