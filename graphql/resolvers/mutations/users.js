@@ -186,10 +186,10 @@ module.exports = {
             }
             const user = await User.findById(context.token.userId);
             user.available = !user.available;
-            if(user.available){
-              user.latitud = args.lat;
-              user.longitud = args.lng;
-            }
+            // if(user.available){
+            //   user.latitud = args.lat;
+            //   user.longitud = args.lng;
+            // }
             await user.save();
             return {
                 ...user._doc,
