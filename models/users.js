@@ -40,12 +40,12 @@ const userSchema = new Schema(
       type: String,
       require: true,
     },
-    lat: {
+    latitud: {
       type: String,
       require: false,
       default:null
     },
-    lng: {
+    longitud: {
       type: String,
       require: false,
       default:null

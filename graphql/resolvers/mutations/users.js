@@ -187,8 +187,8 @@ module.exports = {
             const user = await User.findById(context.token.userId);
             user.available = !user.available;
             if(user.available){
-              user.lat = args.lat;
-              user.lng = args.lng;
+              user.latitud = args.lat;
+              user.longitud = args.lng;
             }
             await user.save();
             return {
