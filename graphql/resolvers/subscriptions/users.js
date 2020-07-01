@@ -2,11 +2,11 @@ const { pubsub } = require("../../puhsub");
 const { withFilter } = require("apollo-server-express");
 
 module.exports = {
-    orderUpdate: {
+  orderUpdate: {
     subscribe: withFilter( 
       () => pubsub.asyncIterator("ORDER_UPDATED"),
-      (payload, variables) => {
-        return payload.orderUpdate.user === variables.user;
+      ({ order }, { userId }) => {
+        return order.user == userId;
       }
     )
   }

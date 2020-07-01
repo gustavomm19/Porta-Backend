@@ -103,9 +103,9 @@ module.exports = {
       let acceptedOrder;
       const order = await Order.findById(args.orderId);
       order.repartidor = args.repartidor;
-      if(order.status == "Driver accepted"){
-        throw new Error("Order already taken");
-      }
+      // if(order.status == "Driver accepted"){
+      //   throw new Error("Order already taken");
+      // }
       order.status = "Driver accepted";
       acceptedOrder = await order.save();
 
@@ -122,6 +122,7 @@ module.exports = {
 
       pubsub.publish("ORDER_UPDATED", {
         orderUpdate: acceptedOrder,
+        order: order
       });
 
       // pubsub.publish("NOTIFICATION_DELETED", {
