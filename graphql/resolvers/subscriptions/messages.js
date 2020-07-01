@@ -5,8 +5,8 @@ module.exports = {
   newMessage: {
     subscribe: withFilter(
       () => pubsub.asyncIterator("NEW_MESSAGE"),
-      ({ message }, { orderId }) => {
-        return message.order == orderId;
+      ({ newMessage }, { orderId }) => {
+        return newMessage.order == orderId;
       }
     ),
   },
