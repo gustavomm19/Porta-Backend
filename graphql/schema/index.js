@@ -40,7 +40,7 @@ module.exports = gql`
   }
 
   input UpdateUserInput {
-    id: ID!
+    id: String!
     mail: String!
     name: String!
     lastName: String!
@@ -77,7 +77,7 @@ module.exports = gql`
   }
 
   input SolicitudInput {
-    repartidorID: ID!
+    repartidorID: String!
     vehiculo: String!
     licencia: String!
     experience: String!
@@ -87,7 +87,7 @@ module.exports = gql`
   }
 
   input ReviewInput {
-    id: ID!
+    id: String!
     vehiculo: String!
     placaVehiculo: String!
     licencia: String!
@@ -125,13 +125,13 @@ module.exports = gql`
     price: Int!
     status: String!
     concluded: Boolean
-    messages:[Message!]
+    messages: [Message!]
     createdAt: String!
     updatedAt: String!
   }
 
   input OrderInput {
-    user: ID!
+    user: String!
     pickUp: String!
     deliver: String!
     km: Int!
@@ -150,17 +150,17 @@ module.exports = gql`
   }
 
   input MessageInput {
-    conversation: ID
-    order: ID!
-    sender: ID!
-    receiver: ID!
+    conversation: String
+    order: String!
+    sender: String!
+    receiver: String!
     content: String!
   }
 
   type Conversation {
     _id: ID!
     participants: [User!]
-    messages:[Message!]
+    messages: [Message!]
     createdAt: String!
     updatedAt: String!
   }
@@ -172,8 +172,8 @@ module.exports = gql`
     costumers: [User!]!
     drivers: [User!]!
     driversAroundMe: [User!]!
-    selectedDriver(driverId: ID!): User
-    selectedRequest(solicitudId: ID!): Solicitud
+    selectedDriver(driverId: String!): User
+    selectedRequest(solicitudId: String!): Solicitud
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
     currentUser: User
     solicitudes: [Solicitud!]!
@@ -183,7 +183,7 @@ module.exports = gql`
     orders: [Order!]
     newOrders: [Order!]!
     pendingOrders: [Order!]!
-    messages(order: ID!): [Message!]!
+    messages(order: String!): [Message!]!
     getCurrentOrder: Order
   }
 
@@ -191,22 +191,22 @@ module.exports = gql`
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
-    changeAvailable(lat: String, lng:String): User
+    changeAvailable(lat: String, lng: String): User
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
-    createRate(user: ID!, repartidor: ID!, score: Int!): Rate
-    createComment(user: ID!, repartidor: ID!, content: String!): Comment
-    updateComment(commentId: ID!, content: String!): Comment
+    createRate(user: String!, repartidor: String!, score: Int!): Rate
+    createComment(user: String!, repartidor: String!, content: String!): Comment
+    updateComment(commentId: String!, content: String!): Comment
     createOrder(orderInput: OrderInput): Order
-    acceptOrder(orderId: ID!, repartidor: ID!): Order
+    acceptOrder(orderId: String!, repartidor: String!): Order
     createMessage(messageInput: MessageInput!): Message
-    updateLocationDriver(lat: String, lng:String): User
+    updateLocationDriver(lat: String, lng: String): User
   }
 
   type Subscription {
     notificationAdded: Order
     notificationDeleted: Order
-    newMessage(userId: ID!, orderId:ID!): Message
-    orderUpdate(userId: ID!): Order
+    newMessage(userId: String!, orderId: String!): Message
+    orderUpdate(userId: String!): Order
   }
 `;
