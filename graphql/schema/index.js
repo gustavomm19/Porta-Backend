@@ -200,7 +200,6 @@ module.exports = gql`
     createOrder(orderInput: OrderInput): Order
     acceptOrder(orderId: ID!, repartidor: ID!): Order
     createMessage(messageInput: MessageInput!): Message
-    createNewMessage(messageInput: MessageInput!): Message
     updateLocationDriver(lat: String, lng:String): User
   }
 

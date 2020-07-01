@@ -19,6 +19,10 @@ const messageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Conversation'
     },
+    order: {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+    }
 }, { timestamps: true} );
 
 module.exports = mongoose.model('Message', messageSchema);

@@ -291,11 +291,10 @@ module.exports = {
       if (!context.token) {
         throw new Error("No authorized");
       }
-      const user = await User.findById(context.token.userId);
-      const order = await Order.find({ _id: user.currentOrder })
-      
+      const theuser = await User.findById(context.token.userId);
+      const order = await Order.findById(theuser.currentOrder);
+
       return {
-        ...order,
         ...order._doc,
         _id: order.id,
         createdAt: new Date(order._doc.createdAt).toISOString(),

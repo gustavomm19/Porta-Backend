@@ -112,6 +112,7 @@ module.exports = {
       const driver = await User.findById(args.repartidor);
       driver.orders.push(order);
       driver.available = false;
+      driver.currentOrder = order;
       await driver.save();
 
       acceptedOrder = {
