@@ -75,13 +75,20 @@ module.exports = {
 
             await order.save();
 
-            return {
-                ...theMessage._doc,
-                createdAt: new Date(theMessage._doc.createdAt).toISOString(),
-                updatedAt: new Date(theMessage._doc.updatedAt).toISOString(),
-                sender: user.bind(this, theMessage.sender),
-                receiver: user.bind(this, theMessage.receiver)
+            theMessage = {
+              ...theMessage._doc,
+              createdAt: new Date(theMessage._doc.createdAt).toISOString(),
+              updatedAt: new Date(theMessage._doc.updatedAt).toISOString(),
+              sender: user.bind(this, theMessage.sender),
+              receiver: user.bind(this, theMessage.receiver)
             }
+
+            pubsub.publish("NEW_MESSAGE", {
+              newMessage: theMessage,
+              message: message
+            });
+
+            return theMessage
 
         } catch (err) {
             console.log(err);
