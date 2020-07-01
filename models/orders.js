@@ -34,7 +34,13 @@ const orderSchema = new Schema({
     concluded: {
         type: Boolean,
         require: false
-    }
+    },
+    messages: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Message",
+        },
+    ],
 }, { timestamps: true} );
 
 module.exports = mongoose.model('Order', orderSchema);
