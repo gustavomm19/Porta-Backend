@@ -5,7 +5,23 @@ const Order = require("../../../models/orders");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
+const messages = async (messagesIds) => {
+  try {
+    const mesagges = await Message.find({ _id: { $in: messagesIds } });
+    return mesagges.map((message) => {
+        return {
+          ...message._doc,
+          _id: message.id,
+          createdAt: new Date(message._doc.createdAt).toISOString(),
+          updatedAt: new Date(message._doc.updatedAt).toISOString(),
+          sender: user.bind(this, message.sender),
+          receiver: user.bind(this, message.receiver),
+        };
+      });
+    } catch(err) {
+      throw err;
+    }
+};
 
 const rates = async (ratesIds) => {
     try{
@@ -59,6 +75,28 @@ const rates = async (ratesIds) => {
     } catch (err) {
       throw err;
     }
+  };
+
+  const order = async (orderId) => {
+    try{
+      const order = await Order.findById(orderId)
+      if(order){
+        return {
+          ...order._doc,
+          _id: order.id,
+          createdAt: new Date(order._doc.createdAt).toISOString(),
+          updatedAt: new Date(order._doc.updatedAt).toISOString(),
+          repartidor: repartidor.bind(this, order.repartidor),
+          user: user.bind(this, order.user),
+          messages: messages.bind(this, order._doc.messages),
+        };
+      }else{
+        return null
+      }
+      
+      } catch(err) {
+        throw err;
+      }
   };
   
   const repartidor = async (repartidorId) => {
@@ -224,6 +262,7 @@ module.exports = {
             rating: rates.bind(this, user._doc.rating),
             comments: comments.bind(this, user._doc.comments),
             orders: orders.bind(this, user._doc.orders),
+            currentOrder: order.bind(this, user._doc.currentOrder),
         }
         return { user: loggedUser, token: token, tokenExpiration: 12 };
       },

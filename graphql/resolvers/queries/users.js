@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 
 const messages = async (messagesIds) => {
   try {
-    const mesagges = await Message.find({ _id: { $in: ordersIds } });
+    const mesagges = await Message.find({ _id: { $in: messagesIds } });
     return mesagges.map((message) => {
         return {
           ...message._doc,
@@ -71,11 +71,34 @@ const orders = async (ordersIds) => {
         updatedAt: new Date(order._doc.updatedAt).toISOString(),
         repartidor: repartidor.bind(this, order.repartidor),
         user: user.bind(this, order.user),
+        messages: messages.bind(this, order._doc.messages),
       };
     });
   } catch (err) {
     throw err;
   }
+};
+
+const order = async (orderId) => {
+  try{
+    const order = await Order.findById(orderId)
+    if(order){
+      return {
+        ...order._doc,
+        _id: order.id,
+        createdAt: new Date(order._doc.createdAt).toISOString(),
+        updatedAt: new Date(order._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, order.repartidor),
+        user: user.bind(this, order.user),
+        messages: messages.bind(this, order._doc.messages),
+      };
+    }else{
+      return null
+    }
+    
+    } catch(err) {
+      throw err;
+    }
 };
 
 const repartidor = async (repartidorId) => {
@@ -118,6 +141,8 @@ const user = async (userId) => {
       throw err;
   }
 };
+
+
 
 module.exports = {
   users: (_, args, context) => {
@@ -171,6 +196,7 @@ module.exports = {
             rating: rates.bind(this, user._doc.rating),
             comments: comments.bind(this, user._doc.comments),
             orders: orders.bind(this, user._doc.orders),
+            currentOrder: order.bind(this, user._doc.currentOrder),
           };
         });
       })
@@ -229,6 +255,7 @@ module.exports = {
       rating: rates.bind(this, user._doc.rating),
       comments: comments.bind(this, user._doc.comments),
       orders: orders.bind(this, user._doc.orders),
+      currentOrder: order.bind(this, user._doc.currentOrder),
   }
     return { user: loggedUser, token: token, tokenExpiration: 12 };
   },
@@ -248,7 +275,7 @@ module.exports = {
         rating: rates.bind(this, user._doc.rating),
         comments: comments.bind(this, user._doc.comments),
         orders: orders.bind(this, user._doc.orders),
-
+        currentOrder: order.bind(this, user._doc.currentOrder),
       };
     } catch (err) {
       throw err;

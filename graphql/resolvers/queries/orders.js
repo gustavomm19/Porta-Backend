@@ -5,7 +5,7 @@ const User = require('../../../models/users');
 
 const messages = async (messagesIds) => {
   try {
-    const mesagges = await Message.find({ _id: { $in: ordersIds } });
+    const mesagges = await Message.find({ _id: { $in: messagesIds } });
     return mesagges.map((message) => {
         return {
           ...message._doc,
