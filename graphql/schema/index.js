@@ -183,7 +183,7 @@ module.exports = gql`
     orders: [Order!]
     newOrders: [Order!]!
     pendingOrders: [Order!]!
-    messages(user: ID!): [Message!]!
+    messages(order: ID!): [Message!]!
     getCurrentOrder: Order
   }
 
