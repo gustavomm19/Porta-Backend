@@ -120,8 +120,8 @@ module.exports = {
         repartidor: repartidor.bind(this, acceptedOrder._doc.repartidor),
       }
 
-      pubsub.publish("ORDER_ACCEPTED", {
-        orderAccepted: acceptedOrder,
+      pubsub.publish("ORDER_UPDATED", {
+        orderUpdate: acceptedOrder,
       });
 
       // pubsub.publish("NOTIFICATION_DELETED", {
