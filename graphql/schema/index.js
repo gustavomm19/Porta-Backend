@@ -206,7 +206,7 @@ module.exports = gql`
   type Subscription {
     notificationAdded: Order
     notificationDeleted: Order
-    newMessage(userId: String!, orderId: String!): Message
+    newMessage(orderId: String!): Message!
     orderUpdate(userId: String!): Order
   }
 `;
