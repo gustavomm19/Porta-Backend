@@ -11,6 +11,7 @@ module.exports = gql`
     cellphone: String
     mail: String!
     password: String
+    currentOrder: Order
     role: String!
     latitud: String
     longitud: String

@@ -40,6 +40,11 @@ const userSchema = new Schema(
       type: String,
       require: true,
     },
+    currentOrder: {
+      type: Schema.Types.ObjectId,
+      ref: "Order",
+      default:null
+    },
     latitud: {
       type: String,
       require: false,
