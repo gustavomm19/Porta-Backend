@@ -2,6 +2,7 @@ const User = require('../../../models/users');
 const Rate = require("../../../models/rates");
 const Comment = require("../../../models/comment");
 const Order = require("../../../models/orders");
+const Message = require("../../../models/messages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
