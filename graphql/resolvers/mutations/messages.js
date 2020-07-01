@@ -22,59 +22,87 @@ const user = async (userId) => {
 
 module.exports = {
     createMessage: async (_, args) => {
-    try {
-        
-        let conversation
-        conversation = await Conversation.findOne({
-            $or:[ 
-                {'participants':[args.messageInput.sender, args.messageInput.receiver]}, 
-                {'participants':[args.messageInput.receiver, args.messageInput.sender]}
-            ]
-        });
+        try {
 
-        if(!conversation){
-            const sender = await User.findById(args.messageInput.sender);
-            const receiver = await User.findById(args.messageInput.receiver);
-            conversation = new Conversation({
-                participants: [args.messageInput.sender, args.messageInput.receiver],
+            let conversation
+            conversation = await Conversation.findOne({
+                $or: [
+                    { 'participants': [args.messageInput.sender, args.messageInput.receiver] },
+                    { 'participants': [args.messageInput.receiver, args.messageInput.sender] }
+                ]
             });
+
+            if (!conversation) {
+                const sender = await User.findById(args.messageInput.sender);
+                const receiver = await User.findById(args.messageInput.receiver);
+                conversation = new Conversation({
+                    participants: [args.messageInput.sender, args.messageInput.receiver],
+                });
+                await conversation.save();
+                sender.conversations.push(conversation);
+                receiver.conversations.push(conversation);
+                await sender.save();
+                await receiver.save();
+            }
+
+            const message = new Message({
+                sender: args.messageInput.sender,
+                receiver: args.messageInput.receiver,
+                content: args.messageInput.content,
+                conversation: conversation._id,
+            });
+
+            await message.save();
+            conversation.messages.push(message);
             await conversation.save();
-            sender.conversations.push(conversation);
-            receiver.conversations.push(conversation);
-            await sender.save();
-            await receiver.save();
+
+            const createdMessage = {
+                ...message._doc,
+                createdAt: new Date(message._doc.createdAt).toISOString(),
+                updatedAt: new Date(message._doc.updatedAt).toISOString(),
+                sender: user.bind(this, message.sender),
+                receiver: user.bind(this, message.receiver)
+            }
+
+            pubsub.publish("NEW_MESSAGE", {
+                newMessage: createdMessage,
+            });
+
+            return createdMessage
+
+        } catch (err) {
+            console.log(err);
+            throw err;
         }
 
-        const message = new Message({
-            sender: args.messageInput.sender,
-            receiver: args.messageInput.receiver,
-            content: args.messageInput.content,
-            conversation: conversation._id,
-        });
+    },
+    createNewMessage: async (_, args) => {
+        try {
+            let order
+            const message = new Message({
+                sender: args.messageInput.sender,
+                receiver: args.messageInput.receiver,
+                content: args.messageInput.content,
+                order: args.messageInput.order,
+            });
+            const createdMessage = await message.save();
+            order = await Message.findById(args.messageInput.order);
+            order.messages.push(message);
 
-        await message.save();
-        conversation.messages.push(message);
-        await conversation.save();
+            await order.save();
 
-        const createdMessage = {
-            ...message._doc,
-            createdAt: new Date(message._doc.createdAt).toISOString(),
-            updatedAt: new Date(message._doc.updatedAt).toISOString(),
-            sender: user.bind(this, message.sender),
-            receiver: user.bind(this, message.receiver)
+            return {
+                ...createdMessage,
+                createdAt: new Date(createdMessage._doc.createdAt).toISOString(),
+                updatedAt: new Date(createdMessage._doc.updatedAt).toISOString(),
+                sender: user.bind(this, createdMessage.sender),
+                receiver: user.bind(this, createdMessage.receiver)
+            }
+
+        } catch (err) {
+            console.log(err);
+            throw err;
         }
-        
-        pubsub.publish("NEW_MESSAGE", {
-            newMessage: createdMessage,
-        });
-
-        return createdMessage
-
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-      
-  },
+    },
 
 };

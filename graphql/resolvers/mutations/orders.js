@@ -84,7 +84,7 @@ module.exports = {
       const theuser = await User.findById(args.orderInput.user);
 
       theuser.orders.push(order);
-
+      theuser.currentOrder = order;
       await theuser.save();
 
       pubsub.publish("NOTIFICATION_ADDED", {

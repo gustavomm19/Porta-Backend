@@ -125,6 +125,7 @@ module.exports = gql`
     price: Int!
     status: String!
     concluded: Boolean
+    messages:[Message!]
     createdAt: String!
     updatedAt: String!
   }
@@ -139,7 +140,8 @@ module.exports = gql`
 
   type Message {
     _id: ID!
-    conversation: Conversation!
+    conversation: Conversation
+    order: Order!
     sender: User!
     receiver: User!
     content: String!
@@ -149,6 +151,7 @@ module.exports = gql`
 
   input MessageInput {
     conversation: ID
+    order: ID!
     sender: ID!
     receiver: ID!
     content: String!
@@ -181,6 +184,7 @@ module.exports = gql`
     newOrders: [Order!]!
     pendingOrders: [Order!]!
     messages(user: ID!): [Message!]!
+    getCurrentOrder: Order
   }
 
   type Mutation {
@@ -196,6 +200,7 @@ module.exports = gql`
     createOrder(orderInput: OrderInput): Order
     acceptOrder(orderId: ID!, repartidor: ID!): Order
     createMessage(messageInput: MessageInput!): Message
+    createNewMessage(messageInput: MessageInput!): Message
     updateLocationDriver(lat: String, lng:String): User
   }
 

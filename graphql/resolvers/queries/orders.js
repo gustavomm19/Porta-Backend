@@ -1,6 +1,25 @@
 const Order = require("../../../models/orders");
+const Message = require("../../../models/messages");
 const User = require('../../../models/users');
 
+
+const messages = async (messagesIds) => {
+  try {
+    const mesagges = await Message.find({ _id: { $in: ordersIds } });
+    return mesagges.map((message) => {
+        return {
+          ...message._doc,
+          _id: message.id,
+          createdAt: new Date(message._doc.createdAt).toISOString(),
+          updatedAt: new Date(message._doc.updatedAt).toISOString(),
+          sender: user.bind(this, message.sender),
+          receiver: user.bind(this, message.receiver),
+        };
+      });
+    } catch(err) {
+      throw err;
+    }
+};
 
 const orders = async (ordersIds) => {
   try {
@@ -13,6 +32,7 @@ const orders = async (ordersIds) => {
           updatedAt: new Date(order._doc.updatedAt).toISOString(),
           repartidor: repartidor.bind(this, order.repartidor),
           user: user.bind(this, order.user),
+          messages: messages.bind(this, order._doc.messages),
         };
       });
     } catch(err) {
@@ -30,8 +50,6 @@ const repartidor = async (repartidorId) => {
         birthdate: new Date(repartidor._doc.birthdate).toISOString(),
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
-        rating: rates.bind(this, repartidor._doc.rating),
-        comments: comments.bind(this, repartidor._doc.comments),
         orders: orders.bind(this, repartidor._doc.orders),
       };
     }else{

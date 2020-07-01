@@ -2,8 +2,27 @@ const User = require("../../../models/users");
 const Rate = require("../../../models/rates");
 const Comment = require("../../../models/comment");
 const Order = require("../../../models/orders");
+const Message = require("../../../models/messages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const messages = async (messagesIds) => {
+  try {
+    const mesagges = await Message.find({ _id: { $in: ordersIds } });
+    return mesagges.map((message) => {
+        return {
+          ...message._doc,
+          _id: message.id,
+          createdAt: new Date(message._doc.createdAt).toISOString(),
+          updatedAt: new Date(message._doc.updatedAt).toISOString(),
+          sender: user.bind(this, message.sender),
+          receiver: user.bind(this, message.receiver),
+        };
+      });
+    } catch(err) {
+      throw err;
+    }
+};
 
 const rates = async (ratesIds) => {
   try{
@@ -266,5 +285,27 @@ module.exports = {
       }catch(err) {
         throw err;
       }
+  },
+  getCurrentOrder: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const user = await User.findById(context.token.userId);
+      const order = await Order.find({ _id: user.currentOrder })
+      
+      return {
+        ...order,
+        ...order._doc,
+        _id: order.id,
+        createdAt: new Date(order._doc.createdAt).toISOString(),
+        updatedAt: new Date(order._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, order.repartidor),
+        user: user.bind(this, order.user),
+        messages: messages.bind(this, order._doc.messages),
+      }
+    } catch (err) {
+      throw err;
+    }
   },
 };
