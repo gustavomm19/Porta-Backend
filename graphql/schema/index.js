@@ -203,6 +203,6 @@ module.exports = gql`
     notificationAdded: Order
     notificationDeleted: Order
     newMessage: Message
-    orderUpdate: Order
+    orderUpdate(user: ID!): Order
   }
 `;
