@@ -83,7 +83,9 @@ module.exports = {
         // if (!context.token) throw new Error("No authorized");
         try {
             //const messages = await Message.find({ $or:[ {'receiver':args.user}, {'sender':args.user},  ]});
-            const theMessages = await Message.find({ order:args.order });
+            const theMessages = await Message.find({ order:args.order }).sort({
+              _id: -1,
+            });
             //const messages = await Message.find({'receiver':args.user});
             return theMessages.map((message) => {
                 return {

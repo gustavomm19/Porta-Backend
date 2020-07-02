@@ -319,16 +319,16 @@ module.exports = {
         throw new Error("No authorized");
       }
       const theuser = await User.findById(context.token.userId);
-      const order = await Order.findById(theuser.currentOrder);
+      const currentOrder = await Order.findById(theuser.currentOrder);
 
       return {
-        ...order._doc,
-        _id: order.id,
-        createdAt: new Date(order._doc.createdAt).toISOString(),
-        updatedAt: new Date(order._doc.updatedAt).toISOString(),
-        repartidor: repartidor.bind(this, order.repartidor),
-        user: user.bind(this, order.user),
-        messages: messages.bind(this, order._doc.messages),
+        ...currentOrder._doc,
+        _id: currentOrder.id,
+        createdAt: new Date(currentOrder._doc.createdAt).toISOString(),
+        updatedAt: new Date(currentOrder._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, currentOrder.repartidor),
+        user: user.bind(this, currentOrder.user),
+        messages: messages.bind(this, currentOrder._doc.messages),
       }
     } catch (err) {
       throw err;
