@@ -41,7 +41,9 @@ const orders = async (ordersIds) => {
 
 const messages = async (messagesIds) => {
   try {
-    const mesagges = await Message.find({ _id: { $in: ordersIds } });
+    const mesagges = await Message.find({ _id: { $in: ordersIds } }).sort({
+      _id: -1,
+    });
     return mesagges.map((message) => {
       return {
         ...message._doc,
