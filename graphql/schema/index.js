@@ -207,6 +207,6 @@ module.exports = gql`
     notificationAdded: Order
     notificationDeleted: Order
     newMessage(orderId: String!): Message!
-    orderUpdate(userId: ID!): Order
+    orderUpdate(userId: String!): Order
   }
 `;
