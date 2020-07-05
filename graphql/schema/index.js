@@ -120,7 +120,11 @@ module.exports = gql`
     user: User!
     repartidor: User
     pickUp: String!
+    pickUpLat: String!
+    pickUpLng: String!
     deliver: String!
+    deliverLat: String!
+    deliverLng: String!
     km: Int!
     price: Int!
     status: String!
@@ -133,7 +137,11 @@ module.exports = gql`
   input OrderInput {
     user: String!
     pickUp: String!
+    pickUpLat: String!
+    pickUpLng: String!
     deliver: String!
+    deliverLat: String!
+    deliverLng: String!
     km: Int!
     price: Int!
   }

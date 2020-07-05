@@ -15,7 +15,23 @@ const orderSchema = new Schema({
         type: String,
         require: true
     },
+    pickUpLat: {
+        type: String,
+        require: true
+    },
+    pickUpLng: {
+        type: String,
+        require: true
+    },
     deliver: {
+        type: String,
+        require: true
+    },
+    deliverLat: {
+        type: String,
+        require: true
+    },
+    deliverLng: {
         type: String,
         require: true
     },
