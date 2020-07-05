@@ -26,7 +26,6 @@ module.exports = gql`
     rating: [Rate!]
     comments: [Comment!]
     orders: [Order!]
-    conversations: [Conversation!]
     userImageURL: String
     userImageId: String
     createdAt: String!
@@ -148,7 +147,6 @@ module.exports = gql`
 
   type Message {
     _id: ID!
-    conversation: Conversation
     order: Order!
     sender: User!
     receiver: User!

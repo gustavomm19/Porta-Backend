@@ -15,10 +15,6 @@ const messageSchema = new Schema({
         type: String,
         require: true
     },
-    conversation: {
-        type: Schema.Types.ObjectId,
-        ref: 'Conversation'
-    },
     order: {
         type: Schema.Types.ObjectId,
         ref: "Order",
