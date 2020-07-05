@@ -223,15 +223,20 @@ module.exports = {
             if (!context.token) {
                 throw new Error("No authorized");
             }
-            const user = await User.findById(context.token.userId);
-            user.available = !user.available;
+            const driver = await User.findById(context.token.userId);
+            driver.available = !driver.available;
             // if(user.available){
             //   user.latitud = args.lat;
             //   user.longitud = args.lng;
             // }
-            await user.save();
+            await driver.save();
+
+            pubsub.publish("DRIVER_ADDED", {
+              addDriver: driver,
+            });
+            
             return {
-                ...user._doc,
+                ...driver._doc,
                 password: null,
             };
         } catch (err) {

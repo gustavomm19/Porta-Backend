@@ -6,4 +6,7 @@ module.exports = {
   notificationDeleted: {
     subscribe: () => pubsub.asyncIterator("NOTIFICATION_DELETED"),
   },
+  addDriver: {
+    subscribe: () => pubsub.asyncIterator("DRIVER_ADDED"),
+  },
 };

@@ -214,5 +214,6 @@ module.exports = gql`
     notificationDeleted: Order
     newMessage(orderId: String!): Message!
     orderUpdate(userId: String!): Order
+    addDriver: User
   }
 `;
