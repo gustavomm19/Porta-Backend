@@ -5,6 +5,7 @@ const Order = require("../../../models/orders");
 const Message = require("../../../models/messages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { pubsub } = require("../../puhsub");
 
 const messages = async (messagesIds) => {
   try {
@@ -234,7 +235,7 @@ module.exports = {
             pubsub.publish("DRIVER_ADDED", {
               addDriver: driver,
             });
-            
+
             return {
                 ...driver._doc,
                 password: null,
