@@ -36,7 +36,7 @@ const orderSchema = new Schema({
         require: true
     },
     km: {
-        type: Number,
+        type: String,
         require: true
     },
     price: {

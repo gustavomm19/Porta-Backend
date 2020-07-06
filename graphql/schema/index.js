@@ -124,8 +124,8 @@ module.exports = gql`
     deliver: String!
     deliverLat: String!
     deliverLng: String!
-    km: Int!
-    price: Int!
+    km: String!
+    price: Float!
     status: String!
     concluded: Boolean
     messages: [Message!]
@@ -141,8 +141,8 @@ module.exports = gql`
     deliver: String!
     deliverLat: String!
     deliverLng: String!
-    km: Int!
-    price: Int!
+    km: String!
+    price: Float!
   }
 
   type Message {

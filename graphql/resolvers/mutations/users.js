@@ -231,11 +231,11 @@ module.exports = {
             //   user.longitud = args.lng;
             // }
             await driver.save();
-
-            pubsub.publish("DRIVER_ADDED", {
-              addDriver: driver,
-            });
-
+            if(driver.latitud != null){
+              pubsub.publish("DRIVER_ADDED", {
+                addDriver: driver,
+              });
+            }   
             return {
                 ...driver._doc,
                 password: null,
