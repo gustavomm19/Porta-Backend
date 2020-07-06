@@ -110,7 +110,7 @@ module.exports = {
       // if(order.status == "Driver accepted"){
       //   throw new Error("Order already taken");
       // }
-      order.status = "Driver accepted";
+      order.status = "Picking up package";
       acceptedOrder = await order.save();
 
       const driver = await User.findById(args.repartidor);
