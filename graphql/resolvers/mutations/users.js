@@ -104,6 +104,7 @@ const rates = async (ratesIds) => {
   const repartidor = async (repartidorId) => {
     try{
       const repartidor = await User.findById(repartidorId)
+      if(repartidor){
         return {
           ...repartidor._doc,
           _id: repartidor.id,
@@ -115,6 +116,9 @@ const rates = async (ratesIds) => {
           comments: comments.bind(this, repartidor._doc.comments),
           orders: orders.bind(this, repartidor._doc.orders),
         };
+      }else{
+        return null
+      }
       } catch(err) {
         throw err;
       }
