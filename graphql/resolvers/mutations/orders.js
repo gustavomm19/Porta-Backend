@@ -156,6 +156,24 @@ module.exports = {
       throw err;
     }
   },
+  orderArrived: async (_, args) => {
+    try {
+      let orderArrived;
+      const order = await Order.findById(args.orderId);
+      order.status = "Your package arrived!";
+      orderArrived = await order.save();
+
+      orderArrived = {
+        ...orderArrived._doc,
+        user: user.bind(this, orderArrived._doc.user),
+        repartidor: repartidor.bind(this, orderArrived._doc.repartidor),
+      }
+
+      return orderArrived;
+    } catch (err) {
+      throw err;
+    }
+  },
   orderDelivered: async (_, args) => {
     try {
       let orderDelivered;
