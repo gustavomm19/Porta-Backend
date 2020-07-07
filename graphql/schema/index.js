@@ -207,6 +207,9 @@ module.exports = gql`
     acceptOrder(orderId: String!, repartidor: String!): Order
     createMessage(messageInput: MessageInput!): Message
     updateLocationDriver(lat: String, lng: String): User
+    orderPickedUp(orderId: String!): Order
+    orderArrived(orderId: String!): Order
+    orderCompleted(orderId: String!): Order
   }
 
   type Subscription {

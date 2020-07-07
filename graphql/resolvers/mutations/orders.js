@@ -174,11 +174,11 @@ module.exports = {
       throw err;
     }
   },
-  orderDelivered: async (_, args) => {
+  orderCompleted: async (_, args) => {
     try {
       let orderDelivered;
       const order = await Order.findById(args.orderId);
-      order.status = "Package delivered!";
+      order.status = "Completed";
       order.repartidor.currentOrder = null;
       order.concluded = true;
       orderDelivered = await order.save();
