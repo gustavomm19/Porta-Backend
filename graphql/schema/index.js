@@ -61,6 +61,13 @@ module.exports = gql`
     userImageId: String
   }
 
+  input ContactInput {
+    from: String!
+    subject: String!
+    text: String!
+    name: String!
+  }
+
   type Solicitud {
     _id: ID
     repartidor: User
@@ -210,6 +217,7 @@ module.exports = gql`
     orderPickedUp(orderId: String!): Order
     orderArrived(orderId: String!): Order
     orderCompleted(orderId: String!): Order
+    contactUs(contactInput: ContactInput): Boolean
   }
 
   type Subscription {

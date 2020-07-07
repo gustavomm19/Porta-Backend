@@ -142,7 +142,7 @@ module.exports = {
     try {
       let orderPickedUp;
       const order = await Order.findById(args.orderId);
-      order.status = "Package picked up!";
+      order.status = "Delivering package";
       orderPickedUp = await order.save();
 
       orderPickedUp = {
@@ -160,7 +160,7 @@ module.exports = {
     try {
       let orderArrived;
       const order = await Order.findById(args.orderId);
-      order.status = "Your package arrived!";
+      order.status = "Your package arrived";
       orderArrived = await order.save();
 
       orderArrived = {
@@ -179,7 +179,9 @@ module.exports = {
       let orderDelivered;
       const order = await Order.findById(args.orderId);
       order.status = "Completed";
-      order.repartidor.currentOrder = null;
+      const driver = await User.findById(order.repartidor);
+      driver.currentOrder = null;
+      await driver.save();
       order.concluded = true;
       orderDelivered = await order.save();
 

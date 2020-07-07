@@ -3,6 +3,8 @@
     "MONGO_USER": "gustavo",
     "MONGO_PASSWORD": "12345",
     "MONGO_DB": "porta",
-    "CREDENTIALS_JWT": "somesupersecretkey"
+    "CREDENTIALS_JWT": "somesupersecretkey",
+    "EMAIL_CONTACT":"portaapp20@gmail.com",
+    "PASS_CONTACT":"hasta tu puerta"
   }
 }
