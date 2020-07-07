@@ -40,6 +40,21 @@ const userSchema = new Schema(
       type: String,
       require: true,
     },
+    currentOrder: {
+      type: Schema.Types.ObjectId,
+      ref: "Order",
+      default:null
+    },
+    latitud: {
+      type: String,
+      require: false,
+      default:null
+    },
+    longitud: {
+      type: String,
+      require: false,
+      default:null
+    },
     available: {
       type: Boolean,
       require: false,
@@ -82,6 +97,12 @@ const userSchema = new Schema(
         {
           type: Schema.Types.ObjectId,
           ref: "Comment",
+        },
+      ],
+    orders: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Order",
         },
       ],
     //URL de la imagen en Cloudinary

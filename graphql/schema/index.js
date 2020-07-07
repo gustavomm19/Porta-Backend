@@ -11,7 +11,10 @@ module.exports = gql`
     cellphone: String
     mail: String!
     password: String
+    currentOrder: Order
     role: String!
+    latitud: String
+    longitud: String
     available: Boolean
     workingStatus: Boolean
     experience: String
@@ -22,20 +25,21 @@ module.exports = gql`
     placaVehiculo: String
     rating: [Rate!]
     comments: [Comment!]
-    createdAt: String!
-    updatedAt: String!
+    orders: [Order!]
     userImageURL: String
     userImageId: String
+    createdAt: String!
+    updatedAt: String!
   }
 
   type AuthUser {
-    userId: ID!
+    user: User!
     token: String!
     tokenExpiration: Int!
   }
 
   input UpdateUserInput {
-    id: ID!
+    id: String!
     mail: String!
     name: String!
     lastName: String!
@@ -57,62 +61,8 @@ module.exports = gql`
     userImageId: String
   }
 
-  type Admin {
-    _id: ID!
-    name: String!
-    lastName: String!
-  }
-
-  input AdminInput {
-    mail: String!
-    password: String!
-  }
-
-  type AuthAdmin {
-    adminId: ID!
-    token: String!
-    tokenExpiration: Int!
-  }
-
-  type Repartidor {
-    _id: ID!
-    role: String!
-    cedula: String!
-    name: String!
-    lastName: String!
-    birthdate: String!
-    zone: String!
-    cellphone: String!
-    available: Boolean!
-    workingStatus: Boolean!
-    vehiculo: String
-    licencia: String
-    carnetCirculacion: String
-    seguroVehiculo: String
-    rating: [Rate!]
-    createdAt: String!
-    updatedAt: String!
-  }
-
-  input RepartidorInput {
-    cedula: String!
-    name: String!
-    lastName: String!
-    birthdate: String!
-    mail: String!
-    password: String!
-    zone: String!
-    cellphone: String!
-  }
-
-  type AuthRepartidor {
-    repartidorId: ID!
-    token: String!
-    tokenExpiration: Int!
-  }
-
   type Solicitud {
-    _id: ID!
+    _id: ID
     repartidor: User
     experience: String!
     vehiculo: String!
@@ -126,7 +76,7 @@ module.exports = gql`
   }
 
   input SolicitudInput {
-    repartidorID: ID!
+    repartidorID: String!
     vehiculo: String!
     licencia: String!
     experience: String!
@@ -136,8 +86,9 @@ module.exports = gql`
   }
 
   input ReviewInput {
-    id: ID!
+    id: String!
     vehiculo: String!
+    placaVehiculo: String!
     licencia: String!
     experience: String!
     carnetCirculacion: String!
@@ -148,7 +99,7 @@ module.exports = gql`
   type Rate {
     _id: ID!
     user: User!
-    repartidor: Repartidor!
+    repartidor: User!
     score: Int!
     createdAt: String!
     updatedAt: String!
@@ -157,8 +108,65 @@ module.exports = gql`
   type Comment {
     _id: ID!
     user: User!
-    repartidor: Repartidor!
+    repartidor: User!
     content: String!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Order {
+    _id: ID!
+    user: User!
+    repartidor: User
+    pickUp: String!
+    pickUpLat: String!
+    pickUpLng: String!
+    deliver: String!
+    deliverLat: String!
+    deliverLng: String!
+    km: String!
+    price: Float!
+    status: String!
+    concluded: Boolean
+    messages: [Message!]
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  input OrderInput {
+    user: String!
+    pickUp: String!
+    pickUpLat: String!
+    pickUpLng: String!
+    deliver: String!
+    deliverLat: String!
+    deliverLng: String!
+    km: String!
+    price: Float!
+  }
+
+  type Message {
+    _id: ID!
+    order: Order!
+    sender: User!
+    receiver: User!
+    content: String!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  input MessageInput {
+    conversation: String
+    order: String!
+    sender: String!
+    receiver: String!
+    content: String!
+  }
+
+  type Conversation {
+    _id: ID!
+    participants: [User!]
+    messages: [Message!]
     createdAt: String!
     updatedAt: String!
   }
@@ -167,34 +175,45 @@ module.exports = gql`
     users: [User!]!
     newestUsers: [User!]!
     newestDrivers: [User!]!
-    costumers:[User!]!
-    drivers:[User!]!
-    selectedDriver(driverId: ID!): User
-    selectedRequest(solicitudId: ID!): Solicitud
+    costumers: [User!]!
+    drivers: [User!]!
+    driversAroundMe: [User!]!
+    selectedDriver(driverId: String!): User
+    selectedRequest(solicitudId: String!): Solicitud
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
     currentUser: User
-    repartidores: [Repartidor!]!
-    newestRepartidores: [Repartidor!]!
-    repartidorLogin(mail: String!, password: String!): AuthRepartidor!
-    currentRepartidor: Repartidor
-    admins: [Admin!]!
-    adminLogin(mail: String!, password: String!): AuthAdmin!
-    currentAdmin: Admin
     solicitudes: [Solicitud!]!
+    newestRequests: [Solicitud!]!
     rates: [Rate!]!
     comments: [Comment!]
+    orders: [Order!]
+    newOrders: [Order!]!
+    pendingOrders: [Order!]!
+    messages(order: String!): [Message!]!
+    getCurrentOrder: Order
   }
 
   type Mutation {
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
-    changeAvailable: User
-    createRepartidor(repartidorInput: RepartidorInput): Repartidor
-    createAdmin(adminInput: AdminInput): Admin
+    userLogin(mail: String!, password: String!, role: String!): AuthUser!
+    changeAvailable(lat: String, lng: String): User
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
     reviewSolicitud(reviewInput: ReviewInput): Solicitud
-    createRate(user: ID!, repartidor: ID!, score: Int!): Rate
-    createComment(user: ID!, repartidor: ID!, content: String!): Comment
-    updateComment(commentId: ID!, content: String!): Comment
+    createRate(user: String!, repartidor: String!, score: Int!): Rate
+    createComment(user: String!, repartidor: String!, content: String!): Comment
+    updateComment(commentId: String!, content: String!): Comment
+    createOrder(orderInput: OrderInput): Order
+    acceptOrder(orderId: String!, repartidor: String!): Order
+    createMessage(messageInput: MessageInput!): Message
+    updateLocationDriver(lat: String, lng: String): User
+  }
+
+  type Subscription {
+    notificationAdded: Order
+    notificationDeleted: Order
+    newMessage(orderId: String!): Message!
+    orderUpdate(userId: String!): Order
+    addDriver: User
   }
 `;

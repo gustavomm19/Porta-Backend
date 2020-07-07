@@ -1,12 +1,32 @@
 const User = require("../../../models/users");
 const Rate = require("../../../models/rates");
 const Comment = require("../../../models/comment");
+const Order = require("../../../models/orders");
+const Message = require("../../../models/messages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const rates = (ratesIds) => {
-  return Rate.find({ _id: { $in: ratesIds } })
-    .then((rates) => {
+const messages = async (messagesIds) => {
+  try {
+    const mesagges = await Message.find({ _id: { $in: messagesIds } });
+    return mesagges.map((message) => {
+        return {
+          ...message._doc,
+          _id: message.id,
+          createdAt: new Date(message._doc.createdAt).toISOString(),
+          updatedAt: new Date(message._doc.updatedAt).toISOString(),
+          sender: user.bind(this, message.sender),
+          receiver: user.bind(this, message.receiver),
+        };
+      });
+    } catch(err) {
+      throw err;
+    }
+};
+
+const rates = async (ratesIds) => {
+  try{
+  const rates = await Rate.find({ _id: { $in: ratesIds } })
       return rates.map((rate) => {
         return {
           ...rate._doc,
@@ -14,66 +34,115 @@ const rates = (ratesIds) => {
           createdAt: new Date(rate._doc.createdAt).toISOString(),
           updatedAt: new Date(rate._doc.updatedAt).toISOString(),
           repartidor: repartidor.bind(this, rate.repartidor),
+          user: user.bind(this, rate.user),
         };
       });
-    })
-    .catch((err) => {
+    }catch(err) {
       throw err;
-    });
+    }
 };
 
-const comments = (commentsIds) => {
-  return Comment.find({ _id: { $in: commentsIds } })
-    .then((comments) => {
-      return comments.map((comment) => {
-        return {
-          ...comment._doc,
-          _id: comment.id,
-          createdAt: new Date(comment._doc.createdAt).toISOString(),
-          updatedAt: new Date(comment._doc.updatedAt).toISOString(),
-          repartidor: repartidor.bind(this, comment.repartidor),
-          user: user.bind(this, comment.user),
-        };
-      });
-    })
-    .catch((err) => {
-      throw err;
+const comments = async (commentsIds) => {
+  try {
+    const comments = await Comment.find({ _id: { $in: commentsIds } })
+    return comments.map((comment) => {
+      return {
+        ...comment._doc,
+        _id: comment.id,
+        createdAt: new Date(comment._doc.createdAt).toISOString(),
+        updatedAt: new Date(comment._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, comment.repartidor),
+        user: user.bind(this, comment.user),
+      };
     });
+  } catch (err) {
+    throw err;
+  }
 };
 
-const repartidor = (repartidorId) => {
-  return User.findById(repartidorId)
-    .then((repartidor) => {
+const orders = async (ordersIds) => {
+  try {
+    const orders = await Order.find({ _id: { $in: ordersIds } });
+    return orders.map((order) => {
+      return {
+        ...order._doc,
+        _id: order.id,
+        createdAt: new Date(order._doc.createdAt).toISOString(),
+        updatedAt: new Date(order._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, order.repartidor),
+        user: user.bind(this, order.user),
+        messages: messages.bind(this, order._doc.messages),
+      };
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+const order = async (orderId) => {
+  try{
+    const order = await Order.findById(orderId)
+    if(order){
+      return {
+        ...order._doc,
+        _id: order.id,
+        createdAt: new Date(order._doc.createdAt).toISOString(),
+        updatedAt: new Date(order._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, order.repartidor),
+        user: user.bind(this, order.user),
+        messages: messages.bind(this, order._doc.messages),
+      };
+    }else{
+      return null
+    }
+    
+    } catch(err) {
+      throw err;
+    }
+};
+
+const repartidor = async (repartidorId) => {
+  try{
+    const repartidor = await User.findById(repartidorId)
+    if(repartidor){
       return {
         ...repartidor._doc,
         _id: repartidor.id,
+        password: null,
         birthdate: new Date(repartidor._doc.birthdate).toISOString(),
         createdAt: new Date(repartidor._doc.createdAt).toISOString(),
         updatedAt: new Date(repartidor._doc.updatedAt).toISOString(),
         rating: rates.bind(this, repartidor._doc.rating),
         comments: comments.bind(this, repartidor._doc.comments),
+        orders: orders.bind(this, repartidor._doc.orders),
       };
-    })
-    .catch((err) => {
+    }else{
+      return null
+    }
+    
+    } catch(err) {
       throw err;
-    });
+    }
 };
 
-const user = (userId) => {
-  return User.findById(userId)
-    .then((user) => {
+const user = async (userId) => {
+  try {
+      const user = await User.findById(userId)
       return {
-        ...user._doc,
-        _id: user.id,
-        birthdate: new Date(user._doc.birthdate).toISOString(),
-        createdAt: new Date(user._doc.createdAt).toISOString(),
-        updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          ...user._doc,
+          _id: user.id,
+          password: null,
+          birthdate: new Date(user._doc.birthdate).toISOString(),
+          createdAt: new Date(user._doc.createdAt).toISOString(),
+          updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          orders: orders.bind(this, user._doc.orders),
       };
-    })
-    .catch((err) => {
+  } catch (err) {
       throw err;
-    });
+  }
 };
+
+
 
 module.exports = {
   users: (_, args, context) => {
@@ -82,10 +151,13 @@ module.exports = {
         return users.map((user) => {
           return {
             ...user._doc,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
             rating: rates.bind(this, user._doc.rating),
+            comments: comments.bind(this, user._doc.comments),
+            orders: orders.bind(this, user._doc.orders)
           };
         });
       })
@@ -99,9 +171,11 @@ module.exports = {
         return users.map((user) => {
           return {
             ...user._doc,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
+            orders: orders.bind(this, user._doc.orders),
           };
         });
       })
@@ -110,16 +184,19 @@ module.exports = {
       });
   },
   drivers: (_, args, context) => {
-    return User.find({ role: "DRIVER" })
+    return User.find({ role: "DRIVER" , workingStatus: true})
       .then((users) => {
         return users.map((user) => {
           return {
             ...user._doc,
+            password: null,
             birthdate: new Date(user._doc.birthdate).toISOString(),
             createdAt: new Date(user._doc.createdAt).toISOString(),
             updatedAt: new Date(user._doc.updatedAt).toISOString(),
             rating: rates.bind(this, user._doc.rating),
             comments: comments.bind(this, user._doc.comments),
+            orders: orders.bind(this, user._doc.orders),
+            currentOrder: order.bind(this, user._doc.currentOrder),
           };
         });
       })
@@ -133,7 +210,7 @@ module.exports = {
       .limit(2)
       .then((users) => {
         return users.map((user) => {
-          return { ...user._doc };
+          return { ...user._doc, password: null, };
         });
       })
       .catch((err) => {
@@ -141,12 +218,12 @@ module.exports = {
       });
   },
   newestDrivers: (_, args, context) => {
-    return User.find({ role: "DRIVER" })
+    return User.find({ role: "DRIVER" , workingStatus: true})
       .sort({ createdAt: -1 })
       .limit(2)
       .then((users) => {
         return users.map((user) => {
-          return { ...user._doc };
+          return { ...user._doc, password: null, };
         });
       })
       .catch((err) => {
@@ -169,7 +246,18 @@ module.exports = {
         expiresIn: "12h",
       }
     );
-    return { userId: user.id, token: token, tokenExpiration: 12 };
+    const loggedUser = {
+      ...user._doc,
+      password: null,
+      birthdate: new Date(user._doc.birthdate).toISOString(),
+      createdAt: new Date(user._doc.createdAt).toISOString(),
+      updatedAt: new Date(user._doc.updatedAt).toISOString(),
+      rating: rates.bind(this, user._doc.rating),
+      comments: comments.bind(this, user._doc.comments),
+      orders: orders.bind(this, user._doc.orders),
+      currentOrder: order.bind(this, user._doc.currentOrder),
+  }
+    return { user: loggedUser, token: token, tokenExpiration: 12 };
   },
 
   currentUser: async (_, args, context) => {
@@ -181,6 +269,13 @@ module.exports = {
       return {
         ...user._doc,
         password: null,
+        birthdate: new Date(user._doc.birthdate).toISOString(),
+        createdAt: new Date(user._doc.createdAt).toISOString(),
+        updatedAt: new Date(user._doc.updatedAt).toISOString(),
+        rating: rates.bind(this, user._doc.rating),
+        comments: comments.bind(this, user._doc.comments),
+        orders: orders.bind(this, user._doc.orders),
+        currentOrder: order.bind(this, user._doc.currentOrder),
       };
     } catch (err) {
       throw err;
@@ -195,6 +290,46 @@ module.exports = {
         rating: rates.bind(this, driver._doc.rating),
         comments: comments.bind(this, driver._doc.comments),
       };
+    } catch (err) {
+      throw err;
+    }
+  },
+  driversAroundMe: async (_, args, context) => {
+    try{
+    drivers = await User.find({ role: "DRIVER" , available: true, latitud: { $ne: null }, longitud: { $ne: null }})
+        return drivers.map((driver) => {
+          return {
+            ...driver._doc,
+            password: null,
+            birthdate: new Date(driver._doc.birthdate).toISOString(),
+            createdAt: new Date(driver._doc.createdAt).toISOString(),
+            updatedAt: new Date(driver._doc.updatedAt).toISOString(),
+            rating: rates.bind(this, driver._doc.rating),
+            comments: comments.bind(this, driver._doc.comments),
+            orders: orders.bind(this, driver._doc.orders),
+          };
+        });
+      }catch(err) {
+        throw err;
+      }
+  },
+  getCurrentOrder: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const theuser = await User.findById(context.token.userId);
+      const currentOrder = await Order.findById(theuser.currentOrder);
+
+      return {
+        ...currentOrder._doc,
+        _id: currentOrder.id,
+        createdAt: new Date(currentOrder._doc.createdAt).toISOString(),
+        updatedAt: new Date(currentOrder._doc.updatedAt).toISOString(),
+        repartidor: repartidor.bind(this, currentOrder.repartidor),
+        user: user.bind(this, currentOrder.user),
+        messages: messages.bind(this, currentOrder._doc.messages),
+      }
     } catch (err) {
       throw err;
     }

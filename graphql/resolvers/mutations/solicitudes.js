@@ -27,19 +27,21 @@ module.exports = {
     reviewSolicitud: async (_, args) =>{
 
         try {
-            const solicitud = await Solicidud.findById(args.reviewInput.id);
+            const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
-            solicitud.status = args.reviewInput.approved;
-            await solicitud.save();
-            solResult = {
-                ...result._doc,
-                _id: solResult.id
-            }
+            solicitud.status = args.reviewInput.status;
+            await solicitud.save().then(result =>{
+                solResult = {
+                    ...result._doc,
+                    _id: result._doc.id
+                }
+            });
             const driver = await User.findById(solicitud.repartidor);
-            if(args.approved){
+            if(args.reviewInput.status){
                 driver.workingStatus = true;
                 driver.experience = args.reviewInput.experience;
                 driver.vehiculo = args.reviewInput.vehiculo;
+                driver.placaVehiculo = args.reviewInput.placaVehiculo;
                 driver.licencia = args.reviewInput.licencia;
                 driver.carnetCirculacion = args.reviewInput.carnetCirculacion;
                 driver.seguroVehiculo = args.reviewInput.seguroVehiculo;
