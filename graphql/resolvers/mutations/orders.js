@@ -138,4 +138,40 @@ module.exports = {
       throw err;
     }
   },
+  orderPickedUp: async (_, args) => {
+    try {
+      let orderPickedUp;
+      const order = await Order.findById(args.orderId);
+      order.status = "Package picked up!";
+      orderPickedUp = await order.save();
+
+      orderPickedUp = {
+        ...orderPickedUp._doc,
+        user: user.bind(this, orderPickedUp._doc.user),
+        repartidor: repartidor.bind(this, orderPickedUp._doc.repartidor),
+      }
+
+      return orderPickedUp;
+    } catch (err) {
+      throw err;
+    }
+  },
+  orderDelivered: async (_, args) => {
+    try {
+      let orderDelivered;
+      const order = await Order.findById(args.orderId);
+      order.status = "Package delivered!";
+      orderDelivered = await order.save();
+
+      orderDelivered = {
+        ...orderDelivered._doc,
+        user: user.bind(this, orderDelivered._doc.user),
+        repartidor: repartidor.bind(this, orderDelivered._doc.repartidor),
+      }
+
+      return orderDelivered;
+    } catch (err) {
+      throw err;
+    }
+  },
 };
