@@ -161,7 +161,8 @@ module.exports = {
       let orderDelivered;
       const order = await Order.findById(args.orderId);
       order.status = "Package delivered!";
-      order.currentOrder = null;
+      order.repartidor.currentOrder = null;
+      order.concluded = true;
       orderDelivered = await order.save();
 
       orderDelivered = {
