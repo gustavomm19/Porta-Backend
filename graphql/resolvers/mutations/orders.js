@@ -179,11 +179,21 @@ module.exports = {
       let orderDelivered;
       const order = await Order.findById(args.orderId);
       order.status = "Completed";
+      order.concluded = true;
+      orderDelivered = await order.save();
+
       const driver = await User.findById(order.repartidor);
       driver.currentOrder = null;
       await driver.save();
-      order.concluded = true;
-      orderDelivered = await order.save();
+
+      const costumer = await User.findById(order.user);
+      costumer.currentOrder = null;
+      await costumer.save();
+
+      pubsub.publish("ORDER_COMPLETED", {
+        orderComplete: orderDelivered,
+        order: order
+      });
 
       orderDelivered = {
         ...orderDelivered._doc,

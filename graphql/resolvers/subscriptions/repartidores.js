@@ -9,4 +9,12 @@ module.exports = {
   addDriver: {
     subscribe: () => pubsub.asyncIterator("DRIVER_ADDED"),
   },
+  orderComplete: {
+    subscribe: withFilter( 
+      () => pubsub.asyncIterator("ORDER_COMPLETED"),
+      ({ order }, { driverId }) => {
+        return order.repartidor == driverId;
+      }
+    )
+  }
 };
