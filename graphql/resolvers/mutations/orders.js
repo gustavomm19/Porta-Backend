@@ -151,6 +151,11 @@ module.exports = {
         repartidor: repartidor.bind(this, orderPickedUp._doc.repartidor),
       }
 
+      pubsub.publish("ORDER_UPDATED", {
+        orderUpdate: orderPickedUp,
+        order: order
+      });
+
       return orderPickedUp;
     } catch (err) {
       throw err;
@@ -168,6 +173,11 @@ module.exports = {
         user: user.bind(this, orderArrived._doc.user),
         repartidor: repartidor.bind(this, orderArrived._doc.repartidor),
       }
+
+      pubsub.publish("ORDER_UPDATED", {
+        orderUpdate: orderArrived,
+        order: order
+      });
 
       return orderArrived;
     } catch (err) {
@@ -190,16 +200,16 @@ module.exports = {
       costumer.currentOrder = null;
       await costumer.save();
 
-      pubsub.publish("ORDER_COMPLETED", {
-        orderComplete: orderDelivered,
-        order: order
-      });
-
       orderDelivered = {
         ...orderDelivered._doc,
         user: user.bind(this, orderDelivered._doc.user),
         repartidor: repartidor.bind(this, orderDelivered._doc.repartidor),
       }
+
+      pubsub.publish("ORDER_COMPLETED", {
+        orderComplete: orderDelivered,
+        order: order
+      });
 
       return orderDelivered;
     } catch (err) {
