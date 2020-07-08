@@ -67,6 +67,7 @@ module.exports = gql`
     text: String!
     name: String!
     lastName: String!
+    role: String!
   }
 
   type Solicitud {

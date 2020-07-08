@@ -24,6 +24,7 @@ module.exports = {
             subject: `${message.subject}`, // Subject line
             html: `<p> De: ${message.name} </p>
                 <p> Cuenta de usuario: ${message.from} </p>  
+                <p> Rol: ${message.role} </p>  
                 <h3> ${message.subject} </h3>
                 <p> ${message.text} </p>` // html body
         };

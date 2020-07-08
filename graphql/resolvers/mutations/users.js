@@ -303,6 +303,7 @@ module.exports = {
         from: args.contactInput.from,
         subject:args.contactInput.subject,
         text:args.contactInput.text,
+        role: args.contactInput.role
       };
 
       const sended = contactanos(_,message);
