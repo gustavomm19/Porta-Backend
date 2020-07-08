@@ -9,6 +9,9 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_CONTACT, // generated ethereal user
         pass: process.env.PASS_CONTACT // generated ethereal password
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -19,9 +22,10 @@ module.exports = {
             from: `${message.from}`, // sender address
             to: `${process.env.EMAIL_CONTACT}`, // list of receivers
             subject: `${message.subject}`, // Subject line
-            html: `<p> De: ${message.name} </p> 
-                  <h3> ${message.subject} </h3>
-                  <p> ${message.text} </p>` // html body
+            html: `<p> De: ${message.name} </p>
+                <p> Cuenta de usuario: ${message.from} </p>  
+                <h3> ${message.subject} </h3>
+                <p> ${message.text} </p>` // html body
         };
 
         const { messageId } = await transporter.sendMail(messageOption);

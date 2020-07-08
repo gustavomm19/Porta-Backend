@@ -297,8 +297,9 @@ module.exports = {
   },
   contactUs: async (_, args, context) =>{
     try {
+      const name = args.contactInput.name + " " + args.contactInput.lastName
       const message = {
-        name: args.contactInput.name,
+        name: name,
         from: args.contactInput.from,
         subject:args.contactInput.subject,
         text:args.contactInput.text,
