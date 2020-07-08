@@ -1,4 +1,6 @@
 const { pubsub } = require("../../puhsub");
+const { withFilter } = require("apollo-server-express");
+
 module.exports = {
   notificationAdded: {
     subscribe: () => pubsub.asyncIterator("NOTIFICATION_ADDED"),
