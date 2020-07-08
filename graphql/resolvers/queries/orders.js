@@ -78,37 +78,39 @@ const user = async (userId) => {
 };
 
 module.exports = {
-    orders: async (_, args, context) => {
+  orders: async (_, args, context) => {
     // if (!context.token) throw new Error("No authorized");
     return Order.find({ status: "Waiting for a driver to accept" })
       .then((orders) => {
         return orders.map((order) => {
-          return { ...order._doc,
+          return {
+            ...order._doc,
             createdAt: new Date(order._doc.createdAt).toISOString(),
             updatedAt: new Date(order._doc.updatedAt).toISOString(),
             user: user.bind(this, order._doc.user),
             repartidor: repartidor.bind(this, order._doc.repartidor),
-            };
+          };
         });
       })
       .catch((err) => {
         throw err;
       });
   },
-  newOrders: async (_, args, context) => {
+  allOrders: async (_, args, context) => {
     // if (!context.token) throw new Error("No authorized");
-    return Order.find()
-      .then((orders) => {
-        return orders.map((order) => {
-          return { ...order._doc,
-            createdAt: new Date(order._doc.createdAt).toISOString(),
-            updatedAt: new Date(order._doc.updatedAt).toISOString(),
-            user: user.bind(this, order._doc.user),
-            };
-        });
-      })
-      .catch((err) => {
-        throw err;
+    try {
+      const orders = await Order.find()
+      return orders.map((order) => {
+        return {
+          ...order._doc,
+          createdAt: new Date(order._doc.createdAt).toISOString(),
+          updatedAt: new Date(order._doc.updatedAt).toISOString(),
+          user: user.bind(this, order._doc.user),
+          repartidor: repartidor.bind(this, order._doc.repartidor),
+        };
       });
+    } catch (err) {
+      throw err;
+    }
   },
 };

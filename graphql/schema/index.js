@@ -195,7 +195,7 @@ module.exports = gql`
     rates: [Rate!]!
     comments: [Comment!]
     orders: [Order!]
-    newOrders: [Order!]!
+    allOrders: [Order!]!
     pendingOrders: [Order!]!
     messages(order: String!): [Message!]!
     getCurrentOrder: Order
