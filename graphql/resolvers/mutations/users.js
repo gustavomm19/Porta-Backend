@@ -170,7 +170,7 @@ module.exports = {
 
         result = await user.save();
 
-        const costumer = await stripe.customers.create({
+        const customer = await stripe.customers.create({
           email: result.mail
         });
 
@@ -178,7 +178,7 @@ module.exports = {
           customer: customer.id,
         });
 
-        result.stripeId = costumer.id;
+        result.stripeId = customer.id;
         result = await result.save();
 
       } else if (args.userInput.role === "DRIVER") {
