@@ -315,17 +315,19 @@ module.exports = {
   },
   setUpCreditCard: async (_, args, context) => {
     try {
-      const name = args.contactInput.name + " " + args.contactInput.lastName
-      const message = {
-        name: name,
-        from: args.contactInput.from,
-        subject:args.contactInput.subject,
-        text:args.contactInput.text,
-        role: args.contactInput.role
-      };
+      // if (!context.token) {
+      //   throw new Error("No authorized");
+      // }
+      const theUser = await User.findById(args.cardInput.userId);
+      
+      const costumer = await stripe.customers.create({
+        email: theUser.mail
+      });
 
-      const sended = contactanos(_,message);
-      return sended;
+      theUser.stripeId = costumer.id;
+      await theUser.save();
+
+      return theUser
     } catch (err) {
       throw err;
     }

@@ -174,6 +174,7 @@ module.exports = gql`
   }
 
   input CardInput {
+    userId: String
     something: String
   }
 
