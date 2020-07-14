@@ -175,7 +175,10 @@ module.exports = gql`
 
   input CardInput {
     userId: String
-    something: String
+    number: String
+    exp_month: Int
+    exp_year: Int
+    cvc: String
   }
 
   type Query {

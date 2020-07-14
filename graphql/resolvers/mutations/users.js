@@ -325,6 +325,17 @@ module.exports = {
       theUser.stripeId = costumer.id;
       await theUser.save();
 
+      await stripe.paymentMethods.create({
+        type: 'card',
+        customer: costumer.id,
+        card: {
+          number: args.cardInput.number,
+          exp_month: args.cardInput.exp_month,
+          exp_year: args.cardInput.exp_year,
+          cvc: args.cardInput.cvc,
+        },
+      });
+
       return theUser
     } catch (err) {
       throw err;
