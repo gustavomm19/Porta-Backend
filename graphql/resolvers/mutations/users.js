@@ -169,8 +169,13 @@ module.exports = {
         });
 
         result = await user.save();
+
         const costumer = await stripe.customers.create({
           email: result.mail
+        });
+
+        const intent =  await stripe.setupIntents.create({
+          customer: customer.id,
         });
 
         result.stripeId = costumer.id;
