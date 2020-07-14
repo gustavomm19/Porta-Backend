@@ -145,65 +145,76 @@ const user = async (userId) => {
 
 module.exports = {
   createUser: async (_, args) => {
-    try{
-    const findUser = await User.findOne({ mail: args.userInput.mail, role: args.userInput.role })
+    try {
+      const findUser = await User.findOne({ mail: args.userInput.mail, role: args.userInput.role })
       if (findUser) {
         throw new Error('User exists already');
       }
       const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
-        let user
-        if (args.userInput.role === "COSTUMER") {
-          user = new User({
-            role: "COSTUMER",
-            name: args.userInput.name,
-            lastName: args.userInput.lastName,
-            birthdate: new Date(args.userInput.birthdate).toISOString(),
-            mail: args.userInput.mail,
-            password: hashedPassword,
-            zone: args.userInput.zone,
-            cellphone: args.userInput.cellphone,
-            haveCard: false,
-            userImageURL: args.userInput.userImageURL,
-            userImageURL: args.userInput.userImageURL
-          });
-        } else if (args.userInput.role === "DRIVER") {
-          user = new User({
-            role: "DRIVER",
-            cedula: args.userInput.cedula,
-            name: args.userInput.name,
-            lastName: args.userInput.lastName,
-            birthdate: new Date(args.userInput.birthdate).toISOString(),
-            mail: args.userInput.mail,
-            password: hashedPassword,
-            zone: args.userInput.zone,
-            cellphone: args.userInput.cellphone,
-            experience: "Not declared",
-            available: false,
-            workingStatus: false,
-            vehiculo: "Not declared",
-            licencia: "Not declared",
-            carnetCirculacion: "Not declared",
-            seguroVehiculo: "Not declared",
-            placaVehiculo: "Not declared"
-          });
-        } else {
-          user = new User({
-            role: "ADMIN",
-            name: args.userInput.name,
-            lastName: args.userInput.lastName,
-            birthdate: new Date(args.userInput.birthdate).toISOString(),
-            mail: args.userInput.mail,
-            password: hashedPassword,
-            cellphone: args.userInput.cellphone
-          });
-        }
-        const result = await user.save();
+      let user
+      let result
+      if (args.userInput.role === "COSTUMER") {
+        user = new User({
+          role: "COSTUMER",
+          name: args.userInput.name,
+          lastName: args.userInput.lastName,
+          birthdate: new Date(args.userInput.birthdate).toISOString(),
+          mail: args.userInput.mail,
+          password: hashedPassword,
+          zone: args.userInput.zone,
+          cellphone: args.userInput.cellphone,
+          haveCard: false,
+          userImageURL: args.userInput.userImageURL,
+          userImageURL: args.userInput.userImageURL
+        });
 
-        console.log(result);
-        return { ...result._doc, password: null, _id: result.id };
-      }catch(err){
-        throw err;
+        result = await user.save();
+        const costumer = await stripe.customers.create({
+          email: result.mail
+        });
+
+        result.stripeId = costumer.id;
+        result = await result.save();
+
+      } else if (args.userInput.role === "DRIVER") {
+        user = new User({
+          role: "DRIVER",
+          cedula: args.userInput.cedula,
+          name: args.userInput.name,
+          lastName: args.userInput.lastName,
+          birthdate: new Date(args.userInput.birthdate).toISOString(),
+          mail: args.userInput.mail,
+          password: hashedPassword,
+          zone: args.userInput.zone,
+          cellphone: args.userInput.cellphone,
+          experience: "Not declared",
+          available: false,
+          workingStatus: false,
+          vehiculo: "Not declared",
+          licencia: "Not declared",
+          carnetCirculacion: "Not declared",
+          seguroVehiculo: "Not declared",
+          placaVehiculo: "Not declared"
+        });
+        result = await user.save();
+      } else {
+        user = new User({
+          role: "ADMIN",
+          name: args.userInput.name,
+          lastName: args.userInput.lastName,
+          birthdate: new Date(args.userInput.birthdate).toISOString(),
+          mail: args.userInput.mail,
+          password: hashedPassword,
+          cellphone: args.userInput.cellphone
+        });
+        result = await user.save();
       }
+
+      console.log(result);
+      return { ...result._doc, password: null, _id: result.id };
+    } catch (err) {
+      throw err;
+    }
 
   },
   updateUser: async (_, args) => {
