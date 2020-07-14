@@ -37,6 +37,22 @@ module.exports = {
             throw err;
         })
         
-    }
+    },
+    updateRepartidor: async (_, args) => {
+
+        const repartidor = await repartidor.findById(args.updateInput.id);
+        repartidor.name = args.updateInput.name;
+        repartidor.lastName = args.updateInput.lastName;
+        repartidor.birthdate = new Date(args.updateInput.birthdate).toISOString()
+        repartidor.zone = args.updateInput.zone;
+        repartidor.save().then(result => {
+            console.log(result);
+            return { ...result._doc, _id: repartidor.id };
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+        return repartidor
+    },
 
 }
