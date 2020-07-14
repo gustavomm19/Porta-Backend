@@ -366,7 +366,7 @@ module.exports = {
         customer: theUser.stripeId,
       });
 
-      return { client_secret: intent.client_secret }
+      return { client_secret: intent.client_secret.toString() }
     } catch (err) {
       throw err;
     }
