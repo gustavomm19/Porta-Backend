@@ -223,6 +223,7 @@ module.exports = gql`
     orderCompleted(orderId: String!): Order
     contactUs(contactInput: ContactInput): Boolean
     setUpCreditCard(cardInput: CardInput): User
+    setUpIntent: String
   }
 
   type Subscription {

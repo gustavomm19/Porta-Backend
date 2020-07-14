@@ -174,9 +174,9 @@ module.exports = {
           email: result.mail
         });
 
-        const intent =  await stripe.setupIntents.create({
-          customer: customer.id,
-        });
+        // const intent =  await stripe.setupIntents.create({
+        //   customer: customer.id,
+        // });
 
         result.stripeId = customer.id;
         result = await result.save();
@@ -351,6 +351,22 @@ module.exports = {
       });
 
       return theUser
+    } catch (err) {
+      throw err;
+    }
+  },
+  setUpIntent: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const theUser = await User.findById(context.token.userId);
+      
+      const intent =  await stripe.setupIntents.create({
+        customer: theUser.stripeId,
+      });
+
+      return { client_secret: intent.client_secret }
     } catch (err) {
       throw err;
     }
