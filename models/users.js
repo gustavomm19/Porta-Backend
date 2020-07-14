@@ -114,6 +114,11 @@ const userSchema = new Schema(
     userImageId: {
       type: String,
       require: false,
+    },
+    stripeId: {
+      type: String,
+      require: false,
+      default: null,
     }
   },
   { timestamps: true }

@@ -28,6 +28,7 @@ module.exports = gql`
     orders: [Order!]
     userImageURL: String
     userImageId: String
+    stripeId: String
     createdAt: String!
     updatedAt: String!
   }
@@ -172,12 +173,8 @@ module.exports = gql`
     content: String!
   }
 
-  type Conversation {
-    _id: ID!
-    participants: [User!]
-    messages: [Message!]
-    createdAt: String!
-    updatedAt: String!
+  input CardInput {
+    something: String
   }
 
   type Query {
@@ -220,6 +217,7 @@ module.exports = gql`
     orderArrived(orderId: String!): Order
     orderCompleted(orderId: String!): Order
     contactUs(contactInput: ContactInput): Boolean
+    setUpCreditCard(cardInput: CardInput): User
   }
 
   type Subscription {

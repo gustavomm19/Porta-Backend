@@ -7,6 +7,7 @@ const { contactanos } = require("../../../services/EmailService");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { pubsub } = require("../../puhsub");
+const { stripe } = require("../../../stripe/stripe");
 
 const messages = async (messagesIds) => {
   try {
@@ -296,6 +297,23 @@ module.exports = {
     }
   },
   contactUs: async (_, args, context) =>{
+    try {
+      const name = args.contactInput.name + " " + args.contactInput.lastName
+      const message = {
+        name: name,
+        from: args.contactInput.from,
+        subject:args.contactInput.subject,
+        text:args.contactInput.text,
+        role: args.contactInput.role
+      };
+
+      const sended = contactanos(_,message);
+      return sended;
+    } catch (err) {
+      throw err;
+    }
+  },
+  setUpCreditCard: async (_, args, context) => {
     try {
       const name = args.contactInput.name + " " + args.contactInput.lastName
       const message = {

@@ -5,6 +5,7 @@
     "MONGO_DB": "porta",
     "CREDENTIALS_JWT": "somesupersecretkey",
     "EMAIL_CONTACT":"portaapp20@gmail.com",
-    "PASS_CONTACT":"hasta tu puerta"
+    "PASS_CONTACT":"hasta tu puerta",
+    "STRIPE_SECRET":"sk_test_51H4Vo7HrEh2luE8FeVEYFcNwKHv7HOzAw41BTwfYX4c1BG8zSJCfh48xjsgaBnWvomCvcVJoQ9uL57DajQcko6U40090a8XMlD"
   }
 }
