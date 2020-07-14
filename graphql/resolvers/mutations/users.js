@@ -144,15 +144,13 @@ const user = async (userId) => {
 };
 
 module.exports = {
-  createUser: (_, args) => {
-
-    return User.findOne({ mail: args.userInput.mail, role: args.userInput.role }).then(user => {
-      if (user) {
+  createUser: async (_, args) => {
+    try{
+    const findUser = await User.findOne({ mail: args.userInput.mail, role: args.userInput.role })
+      if (findUser) {
         throw new Error('User exists already');
       }
-      return bcrypt.hash(args.userInput.password, 12);
-    })
-      .then(hashedPassword => {
+      const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
         let user
         if (args.userInput.role === "COSTUMER") {
           user = new User({
@@ -164,6 +162,7 @@ module.exports = {
             password: hashedPassword,
             zone: args.userInput.zone,
             cellphone: args.userInput.cellphone,
+            haveCard: false,
             userImageURL: args.userInput.userImageURL,
             userImageURL: args.userInput.userImageURL
           });
@@ -198,14 +197,13 @@ module.exports = {
             cellphone: args.userInput.cellphone
           });
         }
-        return user.save();
-      }).then(result => {
+        const result = await user.save();
+
         console.log(result);
         return { ...result._doc, password: null, _id: result.id };
-      })
-      .catch(err => {
+      }catch(err){
         throw err;
-      })
+      }
 
   },
   updateUser: async (_, args) => {

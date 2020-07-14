@@ -29,6 +29,7 @@ module.exports = gql`
     userImageURL: String
     userImageId: String
     stripeId: String
+    haveCard: Boolean
     createdAt: String!
     updatedAt: String!
   }

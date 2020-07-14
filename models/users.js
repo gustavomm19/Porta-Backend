@@ -119,6 +119,10 @@ const userSchema = new Schema(
       type: String,
       require: false,
       default: null,
+    },
+    haveCard: {
+      type: Boolean,
+      require: false,
     }
   },
   { timestamps: true }
