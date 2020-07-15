@@ -30,6 +30,7 @@ module.exports = gql`
     userImageId: String
     stripeId: String
     haveCard: Boolean
+    saldo: Float
     createdAt: String!
     updatedAt: String!
   }
@@ -229,6 +230,7 @@ module.exports = gql`
     setUpCreditCard(cardInput: CardInput): User
     setUpIntent: String
     cardSaved: User
+    collectPay: User
   }
 
   type Subscription {

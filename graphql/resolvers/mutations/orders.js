@@ -218,6 +218,7 @@ module.exports = {
 
       const driver = await User.findById(order.repartidor);
       driver.currentOrder = null;
+      driver.saldo += order.price;
       await driver.save();
 
       const costumer = await User.findById(order.user);

@@ -123,7 +123,12 @@ const userSchema = new Schema(
     haveCard: {
       type: Boolean,
       require: false,
-    }
+    },
+    saldo: {
+      type: Number,
+      require: false,
+      default: 0
+    },
   },
   { timestamps: true }
 );

@@ -405,7 +405,22 @@ module.exports = {
     } catch (err) {
       throw err;
     }
-  }
+  },
+  collectPay: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const driver = await User.findById(context.token.userId);
+      
+      driver.saldo = 0;
+      const save = await driver.save();
+
+      return save;
+    } catch (err) {
+      throw err;
+    }
+  },
 
 
 }
