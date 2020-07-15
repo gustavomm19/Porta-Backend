@@ -70,14 +70,20 @@ module.exports = {
         type: 'card',
       });
 
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: parseInt(args.orderInput.price*100),
-        currency: 'usd',
-        customer: theuser.stripeId,
-        payment_method: paymentMethods.id,
-        off_session: true,
-        confirm: true,
-      });
+
+      if (paymentMethods) {
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: parseInt(args.orderInput.price * 100),
+          currency: 'usd',
+          customer: theuser.stripeId,
+          payment_method: paymentMethods.id,
+          off_session: true,
+          confirm: true,
+        });
+      }else{
+        throw new Error("No paymentMethods");
+      }
+      
 
       const order = new Order({
         user: args.orderInput.user,
