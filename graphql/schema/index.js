@@ -207,6 +207,9 @@ module.exports = gql`
   type Mutation {
     createUser(userInput: UserInput): User
     updateUser(updateInput: UpdateUserInput): User
+
+    updateRepartidor(updateInput: UpdateUserInput): User
+
     userLogin(mail: String!, password: String!, role: String!): AuthUser!
     changeAvailable(lat: String, lng: String): User
     createSolicitud(solicitudInput: SolicitudInput): Solicitud
