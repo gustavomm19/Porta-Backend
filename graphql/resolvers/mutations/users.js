@@ -229,6 +229,7 @@ module.exports = {
       user.lastName = args.updateInput.lastName;
       user.birthdate = new Date(args.updateInput.birthdate).toISOString()
       user.zone = args.updateInput.zone;
+      user.cedula = args.updateInput.cedula;
       const result = await user.save()
       console.log(result);
       return { ...result._doc, _id: user.id };

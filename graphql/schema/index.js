@@ -47,6 +47,7 @@ module.exports = gql`
     lastName: String!
     birthdate: String!
     zone: String
+    cedula: String
   }
 
   input UserInput {
