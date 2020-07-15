@@ -72,14 +72,15 @@ module.exports = {
 
 
       if (paymentMethods) {
-        const paymentIntent = await stripe.paymentIntents.create({
-          amount: parseInt(args.orderInput.price * 100),
-          currency: 'usd',
-          customer: theuser.stripeId,
-          payment_method: paymentMethods.id,
-          off_session: true,
-          confirm: true,
-        });
+        // const paymentIntent = await stripe.paymentIntents.create({
+        //   amount: parseInt(args.orderInput.price * 100),
+        //   currency: 'usd',
+        //   customer: theuser.stripeId,
+        //   payment_method: paymentMethods.id,
+        //   off_session: true,
+        //   confirm: true,
+        // });
+        throw new Error("There is paymentMethods");
       }else{
         throw new Error("No paymentMethods");
       }
