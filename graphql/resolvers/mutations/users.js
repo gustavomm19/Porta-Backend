@@ -373,6 +373,21 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  cardSaved: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const theUser = await User.findById(context.token.userId);
+      
+      theUser.haveCard = true;
+      const save = await theUser.save();
+
+      return save;
+    } catch (err) {
+      throw err;
+    }
   }
 
 

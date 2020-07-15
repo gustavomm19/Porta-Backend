@@ -224,6 +224,7 @@ module.exports = gql`
     contactUs(contactInput: ContactInput): Boolean
     setUpCreditCard(cardInput: CardInput): User
     setUpIntent: String
+    cardSaved: User
   }
 
   type Subscription {
