@@ -355,7 +355,6 @@ module.exports = {
       throw err;
     }
   },
-<<<<<<< HEAD
   updateRepartidor: async (_, args) => {
     try {
       const repartidor = await User.findById(args.updateInput.id);
@@ -372,7 +371,6 @@ module.exports = {
     }
   },
 
-=======
   setUpIntent: async (_, args, context) => {
     try {
       if (!context.token) {
@@ -407,7 +405,6 @@ module.exports = {
       throw err;
     }
   }
->>>>>>> 72f8fb34e15379474dea8fdf3f93000c6f8a4477
 
 
 }
