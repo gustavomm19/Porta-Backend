@@ -80,7 +80,7 @@ module.exports = {
         //   off_session: true,
         //   confirm: true,
         // });
-        throw paymentMethods;
+        throw new Error(paymentMethods);
       }else{
         throw new Error("No paymentMethods");
       }
