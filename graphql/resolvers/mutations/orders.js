@@ -1,6 +1,7 @@
 const Order = require("../../../models/orders");
 const User = require("../../../models/users");
 const { pubsub } = require("../../puhsub");
+const { stripe } = require("../../../stripe/stripe");
 
 const orders = async (ordersIds) => {
   try {
@@ -61,6 +62,23 @@ const user = async (userId) => {
 module.exports = {
   createOrder: async (_, args) => {
     try {
+
+      const theuser = await User.findById(args.orderInput.user);
+
+      const paymentMethods = await stripe.paymentMethods.list({
+        customer: theuser.stripeId,
+        type: 'card',
+      });
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: (args.orderInput.price/100),
+        currency: 'usd',
+        customer: theuser.stripeId,
+        payment_method: paymentMethods.id,
+        off_session: true,
+        confirm: true,
+      });
+
       const order = new Order({
         user: args.orderInput.user,
         repartidor: null,
@@ -84,8 +102,6 @@ module.exports = {
         ...createdOrder._doc,
         user: user.bind(this, args.orderInput.user)
       }
-
-      const theuser = await User.findById(args.orderInput.user);
 
       theuser.orders.push(order);
       theuser.currentOrder = order;
