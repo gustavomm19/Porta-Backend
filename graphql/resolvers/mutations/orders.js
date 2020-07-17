@@ -153,9 +153,9 @@ module.exports = {
         order: order
       });
 
-      // pubsub.publish("NOTIFICATION_DELETED", {
-      //   notificationDeleted: order,
-      // });
+      pubsub.publish("NOTIFICATION_ADDED", {
+        notificationAdded: acceptedOrder,
+      });
 
       return acceptedOrder;
     } catch (err) {
