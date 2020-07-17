@@ -4,6 +4,7 @@ const Comment = require("../../../models/comment");
 const Order = require("../../../models/orders");
 const Message = require("../../../models/messages");
 const { contactanos } = require("../../../services/EmailService");
+const secretKey = require("../../../crypto/crypto");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { pubsub } = require("../../puhsub");
@@ -274,7 +275,7 @@ module.exports = {
     }
     const token = jwt.sign(
       { userId: user.id, mail: user.mail },
-      "somesupersecretkey",
+      secretKey,
       {
         expiresIn: "12h",
       }

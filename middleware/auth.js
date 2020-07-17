@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const secretKey = require("../crypto/crypto");
 
 module.exports = async ({ req, connection }) => {
   let authToken;
@@ -18,7 +19,7 @@ module.exports = async ({ req, connection }) => {
   }
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, process.env.CREDENTIALS_JWT);
+    decodedToken = jwt.verify(token, secretKey);
   } catch (err) {
     return;
   }
