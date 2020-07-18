@@ -7,14 +7,19 @@ cloudinary.config({
 });
 
 exports.uploadImage = async (req, res, next) => {
-  const { userId } = req.body;
-  const user = await User.findById(userId);
+  try {
+    const { userId } = req.body;
+    const user = await User.findById(userId);
 
-  const result = await cloudinary.v2.uploader.upload(req.file.path);
-  user.userImageURL = result.url;
-  user.userImageId = result.public_id;
+    const result = await cloudinary.v2.uploader.upload(req.file.path);
+    user.userImageURL = result.url;
+    user.userImageId = result.public_id;
 
-  const newUser = await user.save();
+    const newUser = await user.save();
 
-  return res.status(200).send(newUser);
+    return res.status(200).send(newUser);
+  } catch (err) {
+    console.log(err);
+    return err
+  }
 };
