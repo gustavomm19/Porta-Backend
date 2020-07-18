@@ -165,8 +165,6 @@ module.exports = {
           zone: args.userInput.zone,
           cellphone: args.userInput.cellphone,
           haveCard: false,
-          userImageURL: args.userInput.userImageURL,
-          userImageURL: args.userInput.userImageURL
         });
 
         result = await user.save();

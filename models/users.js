@@ -109,11 +109,13 @@ const userSchema = new Schema(
     userImageURL: {
       type: String,
       require: false,
+      default: null
     },
     //public_id de Cloudinary
     userImageId: {
       type: String,
       require: false,
+      default: null
     },
     stripeId: {
       type: String,
