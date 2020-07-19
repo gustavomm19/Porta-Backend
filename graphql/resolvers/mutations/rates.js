@@ -1,44 +1,60 @@
 const Rate = require('../../../models/rates');
 const User = require('../../../models/users');
 
+const user = async (userId) => {
+    try {
+        const user = await User.findById(userId)
+        return {
+            ...user._doc,
+            _id: user.id,
+            password: null,
+            birthdate: new Date(user._doc.birthdate).toISOString(),
+            createdAt: new Date(user._doc.createdAt).toISOString(),
+            updatedAt: new Date(user._doc.updatedAt).toISOString(),
+        };
+    } catch (err) {
+        throw err;
+    }
+};
+
 module.exports = {
     createRate: async (_, args) => {
-        const lookRate = await Rate.findOne({ user: args.user, repartidor: args.repartidor});
-            if(lookRate){
+        try {
+            const lookRate = await Rate.findOne({ user: args.user, repartidor: args.repartidor });
+            if (lookRate) {
                 lookRate.score = args.score;
-                lookRate.save().then(result => {
-                    console.log(result);
-                    return { ...result._doc, _id: lookRate.id };
-                }).catch(err => {
-                    console.log(err);
-                    throw err;
-                });
-                return lookRate
+                const updateRate = await lookRate.save()
+                console.log(updateRate);
+                return { 
+                    ...updateRate._doc, 
+                    user: user.bind(this, updateRate._doc.user),
+                };
             }
-        const rate = new Rate({
-            user: args.user,
-            repartidor: args.repartidor,
-            score: args.score
-        });
-        let createdRate;
-        rate.save().then(result => {
-            createdRate = { ...result._doc, _id: rate.id };
-            return User.findById(args.repartidor);
-        })
-        .then(repartidor => {
+
+            const rate = new Rate({
+                user: args.user,
+                repartidor: args.repartidor,
+                score: args.score
+            });
+
+            let createdRate;
+            const result = await rate.save()
+            createdRate = { 
+                ...result._doc, 
+                user: user.bind(this, result._doc.user),
+            };
+
+            const repartidor = await User.findById(args.repartidor);
             console.log(repartidor)
             repartidor.rating.push(rate);
-            return repartidor.save();
-        })
-        .then(result => {
+            await repartidor.save();
+
             return createdRate;
-        })
-        .catch(err => {
+        } catch (err) {
             console.log(err);
             throw err;
-        });
-        return rate
-        
+        }
+
     }
 
 }

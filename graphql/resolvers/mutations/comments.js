@@ -1,33 +1,49 @@
 const Comment = require("../../../models/comment");
 const User = require('../../../models/users');
 
+const user = async (userId) => {
+    try {
+        const user = await User.findById(userId)
+        return {
+            ...user._doc,
+            _id: user.id,
+            password: null,
+            birthdate: new Date(user._doc.birthdate).toISOString(),
+            createdAt: new Date(user._doc.createdAt).toISOString(),
+            updatedAt: new Date(user._doc.updatedAt).toISOString(),
+        };
+    } catch (err) {
+        throw err;
+    }
+};
+
 module.exports = {
     createComment: async (_, args) => {
-        
-        const comment = new Comment({
-            user: args.user,
-            repartidor: args.repartidor,
-            content: args.content
-        });
-        let createdComment;
-        comment.save().then(result => {
-            createdComment = { ...result._doc, _id: comment.id };
-            return User.findById(args.repartidor);
-        })
-        .then(repartidor => {
+        try {
+            const comment = new Comment({
+                user: args.user,
+                repartidor: args.repartidor,
+                content: args.content
+            });
+            let createdComment;
+            const result = await comment.save()
+
+            createdComment = { 
+                ...result._doc,
+                _id: result._doc.id,
+                user: user.bind(this, result._doc.user),
+                createdAt: new Date(result._doc.createdAt).toISOString(),
+                updatedAt: new Date(result._doc.updatedAt).toISOString(),
+            };
+            const repartidor = await User.findById(args.repartidor);
             console.log(repartidor)
             repartidor.comments.push(comment);
-            return repartidor.save();
-        })
-        .then(result => {
+            await repartidor.save();
             return createdComment;
-        })
-        .catch(err => {
+        } catch (err) {
             console.log(err);
             throw err;
-        });
-        return comment
-        
+        }
     },
     updateComment: async (_, args) => {
         try {

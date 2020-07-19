@@ -3,41 +3,39 @@ const User = require("../../../models/users");
 
 module.exports = {
     createSolicitud: (_, args) => {
+        try {
+            const solicitud = new Solicitud({
+                vehiculo: args.solicitudInput.vehiculo,
+                licencia: args.solicitudInput.licencia,
+                carnetCirculacion: args.solicitudInput.carnetCirculacion,
+                seguroVehiculo: args.solicitudInput.seguroVehiculo,
+                repartidor: args.solicitudInput.repartidorID,
+                experience: args.solicitudInput.experience,
+                placaVehiculo: args.solicitudInput.placaVehiculo,
+                status: null
+            });
 
-        const solicitud = new Solicitud({
-            vehiculo : args.solicitudInput.vehiculo,
-            licencia : args.solicitudInput.licencia,
-            carnetCirculacion : args.solicitudInput.carnetCirculacion,
-            seguroVehiculo : args.solicitudInput.seguroVehiculo,
-            repartidor: args.solicitudInput.repartidorID,
-            experience: args.solicitudInput.experience,
-            placaVehiculo: args.solicitudInput.placaVehiculo,
-            status: null
-        });
-        
-        solicitud.save().then(result => {
+            const result = await solicitud.save()
             console.log(result);
             return { ...result._doc, _id: solicitud.id };
-        }).catch(err => {
+        } catch (err) {
             console.log(err);
             throw err;
-        });
-        return solicitud
+        }
     },
-    reviewSolicitud: async (_, args) =>{
+    reviewSolicitud: async (_, args) => {
 
         try {
             const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
             solicitud.status = args.reviewInput.status;
-            await solicitud.save().then(result =>{
-                solResult = {
-                    ...result._doc,
-                    _id: result._doc.id
-                }
-            });
+            const result = await solicitud.save()
+            solResult = {
+                ...result._doc,
+                _id: result._doc.id
+            }
             const driver = await User.findById(solicitud.repartidor);
-            if(args.reviewInput.status){
+            if (args.reviewInput.status) {
                 driver.workingStatus = true;
                 driver.experience = args.reviewInput.experience;
                 driver.vehiculo = args.reviewInput.vehiculo;
@@ -49,10 +47,10 @@ module.exports = {
                 await driver.save();
             }
 
-            return  solResult ;
-          } catch (err) {
+            return solResult;
+        } catch (err) {
             throw err;
-          }
+        }
 
     }
 }
