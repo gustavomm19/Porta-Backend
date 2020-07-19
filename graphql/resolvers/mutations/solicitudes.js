@@ -2,7 +2,7 @@ const Solicitud = require('../../../models/solicitudes');
 const User = require("../../../models/users");
 
 module.exports = {
-    createSolicitud: (_, args) => {
+    createSolicitud: async (_, args) => {
         try {
             const solicitud = new Solicitud({
                 vehiculo: args.solicitudInput.vehiculo,
