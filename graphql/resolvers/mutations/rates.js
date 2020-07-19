@@ -26,7 +26,8 @@ module.exports = {
                 const updateRate = await lookRate.save()
                 console.log(updateRate);
                 return { 
-                    ...updateRate._doc, 
+                    ...updateRate._doc,
+                    _id:updateRate._doc._id,
                     user: user.bind(this, updateRate._doc.user),
                 };
             }
@@ -41,6 +42,7 @@ module.exports = {
             const result = await rate.save()
             createdRate = { 
                 ...result._doc, 
+                _id:result._doc._id,
                 user: user.bind(this, result._doc.user),
             };
 

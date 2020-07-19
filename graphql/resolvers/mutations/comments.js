@@ -30,7 +30,7 @@ module.exports = {
 
             createdComment = { 
                 ...result._doc,
-                _id: result._doc.id,
+                _id: result.id,
                 user: user.bind(this, result._doc.user),
                 createdAt: new Date(result._doc.createdAt).toISOString(),
                 updatedAt: new Date(result._doc.updatedAt).toISOString(),
