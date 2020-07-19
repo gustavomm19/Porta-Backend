@@ -420,6 +420,22 @@ module.exports = {
       throw err;
     }
   },
+  updateProfilePic:async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const theUser = await User.findById(context.token.userId);
+      
+      theUser.userImageURL = args.imageURL;
+      
+      const save = await theUser.save();
+
+      return save;
+    } catch (err) {
+      throw err;
+    }
+  },
 
 
 }
