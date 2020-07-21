@@ -18,8 +18,11 @@ const user = async (userId) => {
 };
 
 module.exports = {
-    createRate: async (_, args) => {
+    createRate: async (_, args, context) => {
         try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
             const lookRate = await Rate.findOne({ user: args.user, repartidor: args.repartidor });
             if (lookRate) {
                 lookRate.score = args.score;

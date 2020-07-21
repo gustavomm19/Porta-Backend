@@ -193,7 +193,6 @@ module.exports = gql`
     driversAroundMe: [User!]!
     selectedDriver(driverId: String!): User
     selectedRequest(solicitudId: String!): Solicitud
-    userLogin(mail: String!, password: String!, role: String!): AuthUser!
     currentUser: User
     solicitudes: [Solicitud!]!
     newestRequests: [Solicitud!]!

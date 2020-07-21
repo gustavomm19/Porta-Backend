@@ -60,9 +60,11 @@ const user = async (userId) => {
 };
 
 module.exports = {
-  createOrder: async (_, args) => {
+  createOrder: async (_, args, context) => {
     try {
-
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       const theuser = await User.findById(args.orderInput.user);
 
       const paymentMethods = await stripe.paymentMethods.list({
@@ -80,8 +82,6 @@ module.exports = {
           off_session: true,
           confirm: true,
         });
-        // console.log(paymentMethods.data[0].id);
-        // throw paymentMethods.data;
       }else{
         throw new Error("No paymentMethods");
       }
@@ -126,8 +126,11 @@ module.exports = {
     }
       
   },
-  acceptOrder: async (_, args) => {
+  acceptOrder: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       let acceptedOrder;
       const order = await Order.findById(args.orderId);
       order.repartidor = args.repartidor;
@@ -162,8 +165,11 @@ module.exports = {
       throw err;
     }
   },
-  orderPickedUp: async (_, args) => {
+  orderPickedUp: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       let orderPickedUp;
       const order = await Order.findById(args.orderId);
       order.status = "Delivering package";
@@ -185,8 +191,11 @@ module.exports = {
       throw err;
     }
   },
-  orderArrived: async (_, args) => {
+  orderArrived: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       let orderArrived;
       const order = await Order.findById(args.orderId);
       order.status = "Your package arrived";
@@ -208,8 +217,11 @@ module.exports = {
       throw err;
     }
   },
-  orderCompleted: async (_, args) => {
+  orderCompleted: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       let orderDelivered;
       const order = await Order.findById(args.orderId);
       order.status = "Completed";

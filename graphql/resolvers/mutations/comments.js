@@ -18,8 +18,11 @@ const user = async (userId) => {
 };
 
 module.exports = {
-    createComment: async (_, args) => {
+    createComment: async (_, args, context) => {
         try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
             const comment = new Comment({
                 user: args.user,
                 repartidor: args.repartidor,

@@ -2,8 +2,11 @@ const Solicitud = require('../../../models/solicitudes');
 const User = require("../../../models/users");
 
 module.exports = {
-    createSolicitud: async (_, args) => {
+    createSolicitud: async (_, args, context) => {
         try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
             const solicitud = new Solicitud({
                 vehiculo: args.solicitudInput.vehiculo,
                 licencia: args.solicitudInput.licencia,
@@ -23,9 +26,11 @@ module.exports = {
             throw err;
         }
     },
-    reviewSolicitud: async (_, args) => {
-
+    reviewSolicitud: async (_, args, context) => {
         try {
+            if (!context.token) {
+                throw new Error("No authorized");
+            }
             const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
             solicitud.status = args.reviewInput.status;

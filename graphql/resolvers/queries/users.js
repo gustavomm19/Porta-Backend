@@ -145,121 +145,98 @@ const user = async (userId) => {
 
 
 module.exports = {
-  users: (_, args, context) => {
-    return User.find()
-      .then((users) => {
-        return users.map((user) => {
-          return {
-            ...user._doc,
-            password: null,
-            birthdate: new Date(user._doc.birthdate).toISOString(),
-            createdAt: new Date(user._doc.createdAt).toISOString(),
-            updatedAt: new Date(user._doc.updatedAt).toISOString(),
-            rating: rates.bind(this, user._doc.rating),
-            comments: comments.bind(this, user._doc.comments),
-            orders: orders.bind(this, user._doc.orders)
-          };
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  costumers: (_, args, context) => {
-    return User.find({ role: "COSTUMER" })
-      .then((users) => {
-        return users.map((user) => {
-          return {
-            ...user._doc,
-            password: null,
-            birthdate: new Date(user._doc.birthdate).toISOString(),
-            createdAt: new Date(user._doc.createdAt).toISOString(),
-            updatedAt: new Date(user._doc.updatedAt).toISOString(),
-            orders: orders.bind(this, user._doc.orders),
-          };
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  drivers: (_, args, context) => {
-    return User.find({ role: "DRIVER" , workingStatus: true})
-      .then((users) => {
-        return users.map((user) => {
-          return {
-            ...user._doc,
-            password: null,
-            birthdate: new Date(user._doc.birthdate).toISOString(),
-            createdAt: new Date(user._doc.createdAt).toISOString(),
-            updatedAt: new Date(user._doc.updatedAt).toISOString(),
-            rating: rates.bind(this, user._doc.rating),
-            comments: comments.bind(this, user._doc.comments),
-            orders: orders.bind(this, user._doc.orders),
-            currentOrder: order.bind(this, user._doc.currentOrder),
-          };
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  newestUsers: (_, args, context) => {
-    return User.find({ role: "COSTUMER" })
-      .sort({ createdAt: -1 })
-      .limit(2)
-      .then((users) => {
-        return users.map((user) => {
-          return { ...user._doc, password: null, };
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  newestDrivers: (_, args, context) => {
-    return User.find({ role: "DRIVER" , workingStatus: true})
-      .sort({ createdAt: -1 })
-      .limit(2)
-      .then((users) => {
-        return users.map((user) => {
-          return { ...user._doc, password: null, };
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  userLogin: async (_, args, context) => {
-    const user = await User.findOne({ mail: args.mail, role: args.role });
-    if (!user) {
-      throw new Error("User does not exist");
-    }
-    const isEqual = await bcrypt.compare(args.password, user.password);
-    if (!isEqual) {
-      throw new Error("Wrong password");
-    }
-    const token = jwt.sign(
-      { userId: user.id, mail: user.mail },
-      "somesupersecretkey",
-      {
-        expiresIn: "12h",
+  users: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
       }
-    );
-    const loggedUser = {
-      ...user._doc,
-      password: null,
-      birthdate: new Date(user._doc.birthdate).toISOString(),
-      createdAt: new Date(user._doc.createdAt).toISOString(),
-      updatedAt: new Date(user._doc.updatedAt).toISOString(),
-      rating: rates.bind(this, user._doc.rating),
-      comments: comments.bind(this, user._doc.comments),
-      orders: orders.bind(this, user._doc.orders),
-      currentOrder: order.bind(this, user._doc.currentOrder),
-  }
-    return { user: loggedUser, token: token, tokenExpiration: 12 };
+      const users = await User.find()
+      return users.map((user) => {
+        return {
+          ...user._doc,
+          password: null,
+          birthdate: new Date(user._doc.birthdate).toISOString(),
+          createdAt: new Date(user._doc.createdAt).toISOString(),
+          updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          rating: rates.bind(this, user._doc.rating),
+          comments: comments.bind(this, user._doc.comments),
+          orders: orders.bind(this, user._doc.orders)
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
   },
-
+  costumers: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const costumers = await User.find({ role: "COSTUMER" })
+      return costumers.map((user) => {
+        return {
+          ...user._doc,
+          password: null,
+          birthdate: new Date(user._doc.birthdate).toISOString(),
+          createdAt: new Date(user._doc.createdAt).toISOString(),
+          updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          orders: orders.bind(this, user._doc.orders),
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  drivers: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const drivers = await User.find({ role: "DRIVER", workingStatus: true })
+      return drivers.map((user) => {
+        return {
+          ...user._doc,
+          password: null,
+          birthdate: new Date(user._doc.birthdate).toISOString(),
+          createdAt: new Date(user._doc.createdAt).toISOString(),
+          updatedAt: new Date(user._doc.updatedAt).toISOString(),
+          rating: rates.bind(this, user._doc.rating),
+          comments: comments.bind(this, user._doc.comments),
+          orders: orders.bind(this, user._doc.orders),
+          currentOrder: order.bind(this, user._doc.currentOrder),
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  newestUsers: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const users = await User.find({ role: "COSTUMER" })
+        .sort({ createdAt: -1 })
+        .limit(2);
+      return users.map((user) => {
+        return { ...user._doc, password: null, };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  newestDrivers: async (_, args, context) => {
+    try {
+      const drivers = await User.find({ role: "DRIVER", workingStatus: true })
+        .sort({ createdAt: -1 })
+        .limit(2)
+      return drivers.map((user) => {
+        return { ...user._doc, password: null, };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
   currentUser: async (_, args, context) => {
     try {
       if (!context.token) {
@@ -283,6 +260,9 @@ module.exports = {
   },
   selectedDriver: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       const driver = await User.findById(args.driverId);
       return {
         ...driver._doc,
@@ -296,7 +276,10 @@ module.exports = {
   },
   driversAroundMe: async (_, args, context) => {
     try{
-    drivers = await User.find({ role: "DRIVER" , available: true, latitud: { $ne: null }, longitud: { $ne: null }})
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      drivers = await User.find({ role: "DRIVER" , available: true, latitud: { $ne: null }, longitud: { $ne: null }})
         return drivers.map((driver) => {
           return {
             ...driver._doc,

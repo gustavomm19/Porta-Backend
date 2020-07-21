@@ -60,8 +60,11 @@ const messages = async (messagesIds) => {
 };
 
 module.exports = {
-  createMessage: async (_, args) => {
+  createMessage: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+    }
       let order;
       let theMessage;
       const message = new Message({

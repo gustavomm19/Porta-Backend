@@ -79,8 +79,10 @@ const user = async (userId) => {
 
 module.exports = {
   messages: async (_, args, context) => {
-    // if (!context.token) throw new Error("No authorized");
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       //const messages = await Message.find({ $or:[ {'receiver':args.user}, {'sender':args.user},  ]});
       const theMessages = await Message.find({ order: args.order }).sort({
         _id: -1,

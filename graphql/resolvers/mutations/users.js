@@ -221,8 +221,11 @@ module.exports = {
     }
 
   },
-  updateUser: async (_, args) => {
+  updateUser: async (_, args, context) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       const user = await User.findById(args.updateInput.id);
       user.name = args.updateInput.name;
       user.lastName = args.updateInput.lastName;
@@ -310,6 +313,9 @@ module.exports = {
   },
   contactUs: async (_, args, context) =>{
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       const name = args.contactInput.name + " " + args.contactInput.lastName
       const message = {
         name: name,
@@ -327,9 +333,9 @@ module.exports = {
   },
   setUpCreditCard: async (_, args, context) => {
     try {
-      // if (!context.token) {
-      //   throw new Error("No authorized");
-      // }
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       const theUser = await User.findById(args.cardInput.userId);
       
       const costumer = await stripe.customers.create({
@@ -357,6 +363,9 @@ module.exports = {
   },
   updateRepartidor: async (_, args) => {
     try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
       const repartidor = await User.findById(args.updateInput.id);
       repartidor.name = args.updateInput.name;
       repartidor.lastName = args.updateInput.lastName;
