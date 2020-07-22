@@ -32,11 +32,13 @@ module.exports = {
             if (!context.token) {
                 throw new Error("No authorized");
             }
+            const solicitud = await Solicitud.findById(args.reviewInput.id);
+            const driver = await User.findById(solicitud.repartidor);
             const message = {
                 name: driver.name,
                 to: driver.mail,
             };
-            const solicitud = await Solicitud.findById(args.reviewInput.id);
+            
             let solResult;
             solicitud.status = args.reviewInput.status;
             const result = await solicitud.save()
@@ -44,7 +46,7 @@ module.exports = {
                 ...result._doc,
                 _id: result._doc.id
             }
-            const driver = await User.findById(solicitud.repartidor);
+            
             if (args.reviewInput.status) {
                 driver.workingStatus = true;
                 driver.experience = args.reviewInput.experience;
