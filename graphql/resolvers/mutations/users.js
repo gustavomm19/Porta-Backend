@@ -268,11 +268,11 @@ module.exports = {
   userLogin: async (_, args, context) => {
     const user = await User.findOne({ mail: args.mail, role: args.role });
     if (!user) {
-      throw new Error("User does not exist");
+      throw new Error("User and/or password are incorrect");
     }
     const isEqual = await bcrypt.compare(args.password, user.password);
     if (!isEqual) {
-      throw new Error("Wrong password");
+      throw new Error("User and/or password are incorrect");
     }
     const token = jwt.sign(
       { userId: user.id, mail: user.mail },

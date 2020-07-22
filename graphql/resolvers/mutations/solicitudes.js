@@ -1,5 +1,6 @@
 const Solicitud = require('../../../models/solicitudes');
 const User = require("../../../models/users");
+const { approvedRequest, rejectedRequest } = require("../../../services/EmailService");
 
 module.exports = {
     createSolicitud: async (_, args, context) => {
@@ -31,6 +32,10 @@ module.exports = {
             if (!context.token) {
                 throw new Error("No authorized");
             }
+            const message = {
+                name: driver.name,
+                to: driver.mail,
+            };
             const solicitud = await Solicitud.findById(args.reviewInput.id);
             let solResult;
             solicitud.status = args.reviewInput.status;
@@ -49,7 +54,12 @@ module.exports = {
                 driver.carnetCirculacion = args.reviewInput.carnetCirculacion;
                 driver.seguroVehiculo = args.reviewInput.seguroVehiculo;
 
+                
+                approvedRequest(_,message);
+
                 await driver.save();
+            }else{
+                rejectedRequest(_,message);
             }
 
             return solResult;
