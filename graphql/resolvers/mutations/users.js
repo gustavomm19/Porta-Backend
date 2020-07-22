@@ -373,7 +373,7 @@ module.exports = {
       repartidor.zone = args.updateInput.zone;
       const result = await repartidor.save()
       console.log(result);
-      return { ...result._doc, _id: user.id };
+      return { ...result._doc, _id: repartidor._id };
     } catch (err) {
       console.log(err);
       throw err;
