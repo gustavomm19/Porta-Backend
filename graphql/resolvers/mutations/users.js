@@ -361,7 +361,7 @@ module.exports = {
       throw err;
     }
   },
-  updateRepartidor: async (_, args) => {
+  updateRepartidor: async (_, args, context) => {
     try {
       if (!context.token) {
         throw new Error("No authorized");
