@@ -75,6 +75,7 @@ const orders = async (ordersIds) => {
         updatedAt: new Date(order._doc.updatedAt).toISOString(),
         repartidor: repartidor.bind(this, order.repartidor),
         user: user.bind(this, order.user),
+        messages: messages.bind(this, order._doc.messages),
       };
     });
   } catch (err) {
