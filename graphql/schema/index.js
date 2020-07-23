@@ -229,6 +229,7 @@ module.exports = gql`
     cardSaved: User
     collectPay: User
     updateProfilePic(imageURL: String): User
+    disableDriver(driverId: String): User
   }
 
   type Subscription {

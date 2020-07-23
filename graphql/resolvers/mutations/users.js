@@ -451,6 +451,20 @@ module.exports = {
       throw err;
     }
   },
+  disableDriver: async (_, args, context) => {
+    try {
+      if (!context.token) {
+        throw new Error("No authorized");
+      }
+      const driver = await User.findById(args.driverId);
+      driver.workingStatus = false;
+      const result = await driver.save();
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  },
 
 
 }
