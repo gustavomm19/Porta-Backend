@@ -192,7 +192,7 @@ module.exports = {
       if (!context.token) {
         throw new Error("No authorized");
       }
-      const drivers = await User.find({ role: "DRIVER", workingStatus: true })
+      const drivers = await User.find({ role: "DRIVER" })
       return drivers.map((user) => {
         return {
           ...user._doc,
@@ -227,7 +227,7 @@ module.exports = {
   },
   newestDrivers: async (_, args, context) => {
     try {
-      const drivers = await User.find({ role: "DRIVER", workingStatus: true })
+      const drivers = await User.find({ role: "DRIVER" })
         .sort({ createdAt: -1 })
         .limit(2)
       return drivers.map((user) => {

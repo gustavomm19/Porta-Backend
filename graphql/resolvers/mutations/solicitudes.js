@@ -8,6 +8,10 @@ module.exports = {
             if (!context.token) {
                 throw new Error("No authorized");
             }
+            const otherRequest = await Solicitud.findOne({repartidor: args.solicitudInput.repartidorID, status: null});
+            if(otherRequest){
+                throw new Error("You can only have one pending request!");
+            }
             const solicitud = new Solicitud({
                 vehiculo: args.solicitudInput.vehiculo,
                 licencia: args.solicitudInput.licencia,
