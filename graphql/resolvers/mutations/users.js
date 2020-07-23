@@ -147,6 +147,12 @@ const user = async (userId) => {
 module.exports = {
   createUser: async (_, args) => {
     try {
+      if(args.userInput.mail == ""){
+        throw new Error('Invalid Input: Empty email');
+      }
+      if(args.userInput.password == ""){
+        throw new Error('Invalid Input: Empty password');
+      }
       const findUser = await User.findOne({ mail: args.userInput.mail, role: args.userInput.role })
       if (findUser) {
         throw new Error('User exists already');
